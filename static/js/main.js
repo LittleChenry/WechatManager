@@ -9,6 +9,8 @@ window.onresize = function() {
 }
 
 function PageInit() {
+	$(".dialog-menu").hide();
+	$(".function-menu").hide();
 	$(".menulist").find("li").each(function(){
 		$(this).unbind("click").bind("click",function(){
 			if ($(this).find("a").hasClass("menu-a")) {
@@ -22,6 +24,23 @@ function PageInit() {
 				$(this).find("a").removeClass("menu-a").addClass("menu-a-active");
 				var contentclass = $(this).find("a").attr("data-content");
 				$(".menu-content").find("." + contentclass).show();
+			}
+		});
+	});
+
+	$(".dialog-func-tab").find("a").each(function(){
+		$(this).unbind("click").bind("click",function(){
+			if (!($(this).find("span").hasClass("tab-active"))) {
+				$(".dialog-func-tab").find("a").each(function(){
+					if ($(this).find("span").hasClass("tab-active")) {
+						$(this).find("span").removeClass("tab-active");
+						var contentclass = $(this).attr("data-content");
+						$(this).parent().parent().find("." + contentclass).hide();
+					}
+				});
+				$(this).find("span").addClass("tab-active");
+				var contentclass = $(this).attr("data-content");
+				$(this).parent().parent().find("." + contentclass).show();
 			}
 		});
 	});
@@ -274,7 +293,8 @@ function MessageSync(UserName) {
 				dialogs.append(dialogul);
 				GroupList.find("li").each(function(index,e){
 					$(this).unbind("click").bind("click",function(){
-						//choose-file   send 
+						$(".dialog-menu").show();
+						$(".function-menu").show();
 						$("#dialog-name").html($(this).find(".group-name").attr("title"));
 						GroupList.find("li").each(function(index,e){
 							if ($(this).hasClass("active")) {
@@ -371,9 +391,11 @@ function getBasicInfo() {
 				}
 				var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ content +'</span>'
 	                          + '<span class="group-name" title="'+ data.groups[i].name +'" data-content="'+ groupid +'">'+ data.groups[i].name +'</span>'
-	                          + '<span class="pull-right"><i class="'+ need +'"></i></span></li>';
+	                          + '<span class="choosebox pull-right"><i class="'+ need +'"></i></span></li>';
 				Allgroups.append(groupli);
 				if (need == 'fa fa-check-square') {
+					var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ content +'</span>'
+		                          + '<span class="group-name" title="'+ data.groups[i].name +'" data-content="'+ groupid +'">'+ data.groups[i].name +'</span></li>';
 					Manager.append(groupli);
 				}
 			}

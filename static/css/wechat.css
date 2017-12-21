@@ -494,9 +494,26 @@ body {
 	box-sizing: border-box;
 }
 
+.configs {
+	width: 80%;
+	border-left: 1px solid #C1C1C1;
+	box-sizing: border-box;
+}
 
+.config-name {
+	padding: 0px;
+    margin: 17px;
+    position: absolute;
+    max-width: 90%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 
-
+.choosebox {
+    margin-top: 17px;
+    margin-right: 10px;
+}
 
 
 

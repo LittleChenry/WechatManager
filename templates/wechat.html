@@ -58,11 +58,20 @@
                     </div>
                 </div>
                 <div class="single-row function-menu">
-                    <div class="title-content">
-                        <span>@消息列表</span>
-                        <span>群管理</span>
-                        <span>详细信息</span>
+                    <div class="title-content dialog-func-tab">
+                        <a class="tab-a" href="javascript:;" data-content="aite-content"><span class="tab-3 tab-active">@消息列表</span></a>
+                        <a class="tab-a" href="javascript:;" data-content="groupmanage-content"><span class="tab-3">群管理</span></a>
+                        <a class="tab-a" href="javascript:;" data-content="detail-content"><span class="tab-3">详细信息</span></a>
                     </div>
+                    <ul class="groups aite-content">
+                        
+                    </ul>
+                    <ul class="groups groupmanage-content hide">
+                        
+                    </ul>
+                    <ul class="groups detail-content hide">
+                        
+                    </ul>
                 </div>
             </div>
             <div class="sub-menu contact-content">
@@ -95,7 +104,16 @@
                 </div>
             </div>
             <div class="sub-menu config-content">
-                config
+                <div class="single-row contact-menu">
+                    <ul id="groups-ul" class="groups">
+                        <li class="single-message">
+                            <span class="config-name" title="测试1群">config1</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="single-row configs">
+                    configs
+                </div>
             </div>
         </div>
     </div>
