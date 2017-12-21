@@ -9,8 +9,8 @@ window.onresize = function() {
 }
 
 function PageInit() {
-	$(".dialog-menu").hide();
-	$(".function-menu").hide();
+	$("#contact").hide();
+	$("#func").hide();
 	$(".menulist").find("li").each(function(){
 		$(this).unbind("click").bind("click",function(){
 			if ($(this).find("a").hasClass("menu-a")) {
@@ -255,8 +255,8 @@ function MessageSync(UserName) {
 		    			var message = '<video class="message-video" src="'+ msg.info +'" controls="controls">your browser does not support the video tag</video>';
 		    			break;
 		    		case "Picture":
-		    			var message = '<img src="'+ msg.info +'" class="emoji-pic" onclick="ShowOptions(this)"><i class="fa fa-search-plus" title="查看" onclick="ShowPic(this)"></i><i class="fa fa-plus" title="添加表情"></i>';
-		    			break;
+		    			var message = '<img src="'+ msg.info +'" class="emoji-pic" onclick="ShowOptions(this)"><div class="picture-func"><i class="fa fa-search-plus" title="查看" onclick="ShowPic(this)"></i><i class="fa fa-plus" title="添加表情"></i></div>';
+			    		break;
 		    		case "Recording":
 		    			var message = '<audio src="'+ msg.info +'" controls="controls">your browser does not support the audio tag</audio>';
 		    			break;
@@ -293,8 +293,8 @@ function MessageSync(UserName) {
 				dialogs.append(dialogul);
 				GroupList.find("li").each(function(index,e){
 					$(this).unbind("click").bind("click",function(){
-						$(".dialog-menu").show();
-						$(".function-menu").show();
+						$("#contact").show();
+						$("#func").show();
 						$("#dialog-name").html($(this).find(".group-name").attr("title"));
 						GroupList.find("li").each(function(index,e){
 							if ($(this).hasClass("active")) {
