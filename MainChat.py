@@ -126,9 +126,12 @@ class ChatRun(object):
         @itchat.msg_register([PICTURE,RECORDING,ATTACHMENT,VIDEO], isGroupChat=True)
         def reply_files(msg):
             print msg['Text'], msg['FromUserName']
-            msg['Text']('static\\picture\\'+msg['FileName'])
+            basepath = os.path.dirname(__file__)
+            upload_path = os.path.join(basepath, 'static/picture',msg['FileName'])
+            print upload_path
+            msg['Text'](upload_path)
             if self.getmySelfID() == msg['ActualUserName']:
-                self.sendMsg('static\\picture\\'+msg['FileName'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['ActualUserName'],msg['ToUserName'],msg['Type'])
+                self.sendMsg('static/picture/'+msg['FileName'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['ActualUserName'],msg['ToUserName'],msg['Type'])
             self.updateGid()
             gid = self.__gid
 
