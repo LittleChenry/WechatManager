@@ -1,0 +1,527 @@
+body {
+	background-color: #EDEBE9;
+	margin: 0px;
+	font-family: "宋体";
+	min-width: 1300px;
+	min-height: 800px;
+}
+
+.ScanArea {
+
+}
+
+.ScanTitle {
+	width: 400px;
+    margin: auto;
+    font-size: 18px;
+    font-family: "微软雅黑";
+    margin-top: 80px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.QRArea {
+	width: 400px;
+    margin: 0px auto;
+    box-shadow: 0px 0px 4px 4px #5d5959;
+}
+
+.qrcode {
+	width: 400px;
+}
+
+.content {
+    background-color: #EDEBE9;
+    margin: auto;
+}
+
+.menu {
+    width: 60px;
+    background-color: #27292E;
+    color: white;
+    float:left;
+}
+
+.menu-a-active {
+	color: #09BB07;
+}
+
+.message-pic {
+	width: 40px;
+	margin: 5px 10px;
+}
+
+.pic {
+	margin: 40px 10px 30px 10px;
+}
+
+.self-pic {
+	width: 40px;
+}
+
+.menulist {
+	list-style-type: none;
+    padding: 0px;
+    margin: 15px;
+    font-size: 30px;
+    text-align: center;
+}
+
+.list-item {
+	padding-top: 10px;
+    padding-bottom: 30px;
+}
+
+.menu-a {
+	color: white;
+}
+
+.menu-a:active {
+	color: #09BB07;
+}
+
+.modal {
+	display: none;
+	overflow: auto;
+	position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    background-color: rgba(128,128,128,0.7);
+}
+
+.menu-content {
+	float: left;
+}
+
+.dialog-content {
+	
+}
+
+.sub-menu {
+	width: 100%;
+    height: 100%;
+}
+
+.contact-content {
+	display: none;
+}
+
+.multisend-content {
+	display: none;
+}
+
+.config-content {
+	display: none;
+}
+
+.single-row {
+	float: left;
+	height: 100%;
+	box-sizing: border-box;
+	position: relative;
+	overflow-y: auto;
+}
+
+.title-content {
+	height: 53px;
+	width: 100%;
+	top: 0px;
+    line-height: 2.72;
+	box-sizing: border-box;
+	padding: 0px;
+    border-bottom: 1px solid #c1c1c1;
+}
+
+.messages-title {
+	height: 53px;
+    width: 100%;
+    top: 0px;
+    line-height: 2.62;
+    font-size: 20px;
+    font-weight: 600;
+    box-sizing: border-box;
+    padding-left: 15px;
+    padding-right: 10px;
+    border-bottom: 1px solid #c1c1c1;
+    border-right: 1px solid #c1c1c1;
+    border-left: 1px solid #c1c1c1;
+}
+
+.messages-content {
+	position: absolute;
+	width: 100%;
+	top: 53px;
+	bottom: 250px;
+    border-bottom: 1px solid #c1c1c1;
+    border-right: 1px solid #c1c1c1;
+    border-left: 1px solid #c1c1c1;
+	box-sizing: border-box;
+}
+
+.send-area {
+    border-bottom: 1px solid #c1c1c1;
+    border-right: 1px solid #c1c1c1;
+    border-left: 1px solid #c1c1c1;
+	box-sizing: border-box;
+	height: 250px;
+	width: 100%;
+	position: absolute;
+	bottom: 0px;
+}
+
+.function-area {
+	border-bottom: 1px solid #c1c1c1;
+	box-sizing: border-box;
+	height: 40px;
+    width: 100%;
+    top: 0px;
+}
+
+.single-fun {
+	float: left;
+    margin-left: 15px;
+    padding: 4px 0px;
+}
+
+.text-area {
+	position: absolute;
+	width: 100%;
+	top: 40px;
+	bottom: 40px;
+	background-color: white;
+}
+
+.form-textarea {
+	resize : none;
+	border: 0px;
+	font-size: 18px;
+	padding: 0px;
+	width: 100%;
+	height: 100%;
+    background-color: #F5F5F5;
+    outline: none;
+}
+
+.form-textarea:focus {
+	background-color: white;
+}
+
+.button-area {
+	height: 40px;
+	width: 100%;
+	position: absolute;
+	bottom: 0px;
+	text-align: right;
+}
+
+.scroll {
+	overflow-y: auto;
+}
+
+.ellipsis {
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.contact-menu {
+	width: 20%;
+	background-color: #EDEAE8;
+}
+
+.dialog-menu {
+	width: 50%;
+	background-color: #F5F5F5;
+}
+
+.function-menu {
+	width: 30%;
+	background-color: #f9f9f9;
+}
+
+.message-box-left {
+	float: left;
+	width: 80%;
+}
+
+.message-box-right {
+	float: right;
+	width: 80%;
+}
+
+.NickName-left {
+    margin: 0px 17px 5px 17px;
+}
+
+.NickName-right {
+	text-align: right;
+    margin: 0px 17px 5px 17px;
+}
+
+.conversation-area {
+	list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+    display: none;
+}
+
+.current-area {
+	display: block;
+}
+
+.message {
+	min-height: 36px;
+	padding: 5px 15px 10px 15px;
+	overflow: auto;
+}
+
+.pic-left {
+	width: 36px;
+	float: left;
+}
+
+.pic-right {
+	width: 36px;
+	float: right;
+}
+
+.text-left {
+	float: left;
+	padding: 9px 10px 9px 10px;
+    background-color: white;
+    max-width: 90%;
+    border-radius: 3px;
+}
+
+.text-right {
+	float: right;
+	padding: 9px 10px 9px 10px;
+    background-color: white;
+    max-width: 90%;
+    border-radius: 3px;
+}
+
+.angle-left {
+    width: 0px;
+    height: 0px;
+    border-top: 8px solid transparent;
+    border-right: 8px solid white;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid transparent;
+    float: left;
+    margin-top: 9px;
+}
+
+.angle-right {
+    width: 0px;
+    height: 0px;
+    border-top: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid white;
+    float: right;
+    margin-top: 9px;
+}
+
+.groups {
+	list-style-type: none;
+	background-color: #E6E5E5;
+    padding: 0px;
+    margin: 0px;
+}
+
+.single-message {
+	position: relative;
+	height: 53px;
+}
+
+.single-message:hover {
+	background-color: #D9D8D8;
+}
+
+.active {
+	background-color: #CAC8C6;
+}
+
+.message-pic {
+	float: left;
+    width: 13px;
+    margin: 1px;
+}
+
+.group-name {
+	padding: 17px 2px 17px 65px;
+    position: absolute;
+    max-width: 73%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.unreadnum {
+    float: right;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    margin-top: 20px;
+    margin-right: 5px;
+    width: 14px;
+    height: 14px;
+    text-align: center;
+    border-radius: 14px;
+    background-color: red;
+}
+
+.group-pic {
+	width: 45px;
+    height: 45px;
+    background-color: white;
+    position: absolute;
+    margin: 3px 3px 3px 8px;
+    padding: 1px;
+}
+
+.form-btn {
+    padding: 4px 12px;
+    margin: 5px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border-radius: 0px;
+    box-shadow: none;
+    border: 1px solid #E5E5E5;
+    background-color: #F5F5F5;
+    color: #444444;
+    outline: none;
+}
+
+.form-btn:hover {
+    background-color: #129611;
+    color: white;
+}
+
+.hide {
+	display: none;
+}
+
+.emoji-pic {
+	max-width: 150px;
+}
+
+.message-video {
+	width: 150px;
+}
+
+.picture-func {
+	text-align: right;
+	display: none;
+}
+
+.picture-func > i {
+	padding-right: 15px;
+}
+
+.pull-left {
+	float: left;
+}
+
+.pull-right {
+	float: right;
+}
+
+.adjust-pic {
+	width: 800px;
+}
+
+.showfunc {
+    text-align: center;
+    font-size: 40px;
+}
+
+.showarea {
+    text-align: center;
+    margin: 10px;
+}
+
+.multisend-contacts {
+	width: 100%;
+	height: 40%;
+    border-bottom: 1px solid #c1c1c1;
+    border-right: 1px solid #c1c1c1;
+    border-left: 1px solid #c1c1c1;
+	box-sizing: border-box;
+}
+
+.multisend-area {
+    border-right: 1px solid #c1c1c1;
+    border-left: 1px solid #c1c1c1;
+	box-sizing: border-box;
+	height: 60%;
+	width: 100%;
+}
+
+.tab-a:hover, .tab-a:visited, .tab-a:link, .tab-a:active {
+	color: black;
+}
+
+.tab-3 {
+    width: 33.33%;
+    float: left;
+    height: 51px;
+    font-size: 18px;
+    text-align: center;
+    padding-top: 2px;
+}
+
+.tab-3:hover {
+	color: white;
+	background-color: #09BB07;
+}
+
+.tab-active {
+	color: white;
+	background-color: #09BB07;
+}
+
+.line-right {
+	border-right: 1px solid #C1C1C1;
+	box-sizing: border-box;
+}
+
+
+
+
+
+
+
+
+
+
+
+/*滚动样式*/
+::-webkit-scrollbar
+{
+	width: 6px;
+	height: 6px;
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 0px rgba(0,0,0,0);
+	border-radius: 6px;
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+	border-radius: 6px;
+	-webkit-box-shadow: inset 0 0 0px rgba(0,0,0,0);
+	background-color: #CDCDCD;
+}

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" href="static/css/wechatframe.css">
+    <link rel="stylesheet" href="static/plugins/FontAwesome/css/font-awesome.min.css">
+    <title>Wechat</title>
+</head>
+<body>
+    <div class="content">
+        <div class="conversation">
+            <div class="menu">
+                <div class="pic">
+                    <a id="login" href="javascript:;"><img class="self-pic" src="static/img/pic.jpg"></a>
+                </div>
+                <ul class="menulist">
+                    <li id="menu-groupsend" title="群发" class="menu-list list-item">
+                        <a class="menu-a-active" href="javascript:;"><i class="fa fa-comment"></i></a>
+                    </li>
+                    <li id="menu-setting" title="关键词回复" class="menu-list list-item">
+                        <a class="menu-a" href="javascript:;"><i class="fa fa-key"></i></a>
+                    </li>
+                    <li class="menu-list list-item">
+                        <a class="menu-a" href="javascript:;"><i class="fa fa-cube"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="submenu">
+                <div class="search">
+                    <input type="text" class="search-text" placeholder="搜索">
+                    <i class="fa fa-search"></i>
+                </div>
+                <div class="contact">
+                    <div class="contact-type">
+                        <div class="people-part">
+                            <span>联系人</span>
+                        </div>
+                        <div class="groups-part chose">
+                            <span>群组</span>
+                        </div>
+                    </div>
+                    <div class="contact-list">
+                        <ul class="people">
+                            
+                        </ul>
+                        <ul id="groups-ul" class="groups">
+                            <!-- <li class="single-message">
+                                <img class="message-pic" src="static/img/weixin.jpg">
+                                <span class="group-name" title="微信群管理内部讨论群">微信群管理内部讨论群</span>
+                                <span class="choose-box">
+                                    <i class="fa fa-square-o"></i>
+                                </span>
+                            </li>
+                            <li class="single-message">
+                                <img class="message-pic" src="static/img/weixin.jpg">
+                                <span class="group-name" title="产业技术研究院_南邮一乙联盟">产业技术研究院_南邮一乙联盟</span>
+                                <span class="choose-box">
+                                    <i class="fa fa fa-check-square"></i>
+                                </span>
+                            </li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="groupsend">
+                <div class="thirdmenu">
+                    <div class="dialogue-name">
+                        群发记录
+                    </div>
+                    <div class="dialogue-area">
+                        <ul class="conversation-area">
+                            <!-- <li class="message">
+                                <img class="pic-right" src="static/img/u1.jpg">
+                                <span class="message-box-right">
+                                    <span class="message-content">
+                                        <i class="angle-right"></i>
+                                        <span class="text-right">
+                                            <p class="group-names-p" title="微信群管理内部讨论群、产业技术研究院_南邮一乙联盟">微信群管理内部讨论群、产业技术研究院_南邮一乙联盟</p>
+                                            <p class="group-text-p">不是所有的人都能成为朋友，不是所有的情都值得你去珍惜。时间是一剂良药，它会沉淀最美的感情，也会带走留不住的虚情 ～～～～～～每一个清晨，伴着阳光和希望上路，清新的空气净化着灵魂，给自己一个微笑，告诉自己今天会更美好，清晨的第一声问候，大家早上好噢~</p>
+                                        </span>
+                                    </span>
+                                </span>
+                            </li> -->
+                            <!-- <li class="message">
+                                <img class="pic-right" src="static/img/pic.jpg">
+                                <span class="message-box-right">
+                                    <span class="message-user">
+                                        <p class="NickName-right">Lily</p>
+                                    </span>
+                                    <span class="message-content">
+                                        <i class="angle-right"></i>
+                                        <span class="text-right">一乙欢迎您</span>
+                                    </span>
+                                </span>
+                            </li>
+                            <li class="message">
+                                <img class="pic-right" src="static/img/pic.jpg">
+                                <span class="message-box-right">
+                                    <span class="message-user">
+                                        <p class="NickName-right">Lily</p>
+                                    </span>
+                                    <span class="message-content">
+                                        <i class="angle-right"></i>
+                                        <span class="text-right">欢迎新人</span>
+                                    </span>
+                                </span>
+                            </li>
+                            <li class="message">
+                                <img class="pic-left" src="static/img/u1.jpg">
+                                <span class="message-box-left">
+                                    <span class="message-user">
+                                        <p class="NickName-left">Mike</p>
+                                    </span>
+                                    <span class="message-content">
+                                        <i class="angle-left"></i>
+                                        <span class="text-left">请大家多多指教</span>
+                                    </span>
+                                </span>
+                            </li>
+                            <li class="message">
+                                <img class="pic-left" src="static/img/u1.jpg">
+                                <span class="message-box-left">
+                                    <span class="message-user">
+                                        <p class="NickName-left">Mike</p>
+                                    </span>
+                                    <span class="message-content">
+                                        <i class="angle-left"></i>
+                                        <span class="text-left">【天气】南京天气。今天是2017年12月11号，星期一，农历十月廿四。全市今天多云转睛；空气质量：良，紫外线指数：中等；湿度70%；东北风四到五级；白天最高温度11℃，最低温度0℃；～～～～坚持就是胜利，加油！又是新的一周，学习、工作的安排准备好了吗？加油～～～男神早语录： 不是所有的人都能成为朋友，不是所有的情都值得你去珍惜。时间是一剂良药，它会沉淀最美的感情，也会带走留不住的虚情 ～～～～～～每一个清晨，伴着阳光和希望上路，清新的空气净化着灵魂，给自己一个微笑，告诉自己今天会更美好，清晨的第一声问候，大家早上好噢~</span>
+                                    </span>
+                                </span>
+                            </li>
+                            <li class="message">
+                                <img class="pic-right" src="static/img/pic.jpg">
+                                <span class="message-box-right">
+                                    <span class="message-user">
+                                        <p class="NickName-right">Lily</p>
+                                    </span>
+                                    <span class="message-content">
+                                        <i class="angle-right"></i>
+                                        <span class="text-right">
+                                            <img class="emoji-pic" src="static/img/emoji.png">
+                                        </span>
+                                    </span>
+                                </span>
+                            </li> -->
+                        </ul>
+                    </div>
+                    <div class="dialogue-send">
+                        <div class="send-function">
+                            <i class="fa fa-smile-o fa-lg"></i>
+                            <i class="fa fa-folder-o fa-lg"></i>
+                        </div>
+                        <textarea id="message-text" class="send-area"></textarea>
+                        <div class="send-button">
+                            <button id="send" type="button" class="form-btn">发送</button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="config">
+                <div class="thirdmenu">
+                    <div class="dialogue-name">
+                        关键词回复
+                    </div>
+                    <div class="dialogue-area">
+                        <ul id="keyword-reply-ul" class="groups">
+                            <!-- <li class="message">
+                                <span class="message-box-left">
+                                    <span class="message-content">
+                                        <i class="angle-left"></i>
+                                        <span class="text-left">
+                                            <p class="group-names-p">微信群管理内部讨论群、项目测试</p>
+                                            <p class="group-text-p">关键词：一乙</p>
+                                            <p class="group-text-p">回复：一乙欢迎您，欢迎加入我们的大家庭。</p>
+                                        </span>
+                                    </span>
+                                </span>
+                            </li> -->
+                        </ul>
+                        <!-- <div class="keyword-history right-line">
+                            <p class="first-p">关键词1</p>
+                            <p class="second-p">群1</p>
+                            <p class="second-p">群2</p>
+                            <p class="second-p">群3</p>
+                            <p class="first-p">关键词2</p>
+                            <p class="second-p">群1</p>
+                            <p class="second-p">群3</p>
+                            <p class="first-p">关键词3</p>
+                            <p class="second-p">群1</p>
+                            <p class="second-p">群3</p>
+                            <p class="first-p">关键词4</p>
+                            <p class="second-p">群1</p>
+                            <p class="second-p">群3</p>
+                        </div>
+                        <div class="keyword-history">
+                            <p class="first-p">群1</p>
+                            <p class="second-p">关键词1</p>
+                            <p class="second-p">关键词2</p>
+                            <p class="second-p">关键词3</p>
+                            <p class="second-p">关键词4</p>
+                            <p class="first-p">群2</p>
+                            <p class="second-p">关键词1</p>
+                            <p class="second-p">关键词3</p>
+                            <p class="first-p">群3</p>
+                            <p class="second-p">关键词1</p>
+                            <p class="second-p">关键词2</p>
+                            <p class="second-p">关键词3</p>
+                            <p class="second-p">关键词4</p>
+                        </div> -->
+                    </div>
+                    <div class="keyword-send">
+                        <div class="keyword-area">
+                            <input id="keyword" type="text" class="form-text" placeholder="关键词">
+                        </div>
+                        <div class="reply-area">
+                            <textarea id="reply" class="form-text" placeholder="关键词回复"></textarea>
+                        </div>
+                        <div class="btn-area">
+                            <button id="keyword-save" type="button" class="form-btn">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="collection">
+                <div class="thirdmenu">
+                    collection
+                </div>
+            </div>
+            <div class="extramenu">
+                <div class="dialogue-name">
+                    <span>选择列表</span>
+                </div>
+                <div id="ChoseGroup-area" class="dialogue-area">
+                </div>
+                <div class="dialogue-send">
+                    <div class="btn-area">
+                        <button id="setdefaultgroups" class="btn" type="button">设置管理群</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="modal">
+        <div class="ScanArea">
+            <img class="qrcode" src="static/img/loginqrcode.png">
+        </div>
+    </div>
+    
+    <script src="static/js/jquery-2.2.3.min.js"></script>
+    <script src="static/js/wechatmain.js"></script>
+</body>
+
+</html>

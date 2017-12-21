@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" href="static/css/wechat.css">
+    <title>Wechat</title>
+</head>
+<body>
+    <div class="ScanArea">
+        <div class="ScanTitle">
+            <span>扫描二维码登录微信</span>
+        </div>
+        <div class="QRArea">
+            <img class="qrcode" src="static/img/loginqrcode.jpg">
+        </div>
+    </div>
+    <script src="static/js/jquery-2.2.3.min.js"></script>
+    <script>
+        $.ajax({
+            type: "post",
+            url: "/getQR",
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data.success) {
+                    window.location.href="ToIndex";
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

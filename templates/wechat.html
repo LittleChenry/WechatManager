@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" href="static/css/wechat.css">
+    <link rel="stylesheet" href="static/plugins/FontAwesome/css/font-awesome.min.css">
+    <title>Wechat</title>
+</head>
+<body>
+    <div class="content">
+        <div class="menu">
+            <div class="pic">
+                <a id="login" href="javascript:;"><img id="mypic" class="self-pic" src="static/img/pic.jpg"></a>
+            </div>
+            <ul class="menulist">
+                <li class="menu-list list-item" title="会话">
+                    <a id="at" class="menu-a-active" href="javascript:;" data-content="dialog-content"><i class="fa fa-comment"></i></a>
+                </li>
+                <li class="menu-list list-item" title="联系人">
+                    <a class="menu-a" href="javascript:;" data-content="contact-content"><i class="fa fa-user-o"></i></a>
+                </li>
+                <li class="menu-list list-item" title="群发">
+                    <a class="menu-a" href="javascript:;" data-content="multisend-content"><i class="fa fa-send-o"></i></a>
+                </li>
+                <li class="menu-list list-item" title="配置">
+                    <a class="menu-a" href="javascript:;" data-content="config-content"><i class="fa fa-cog"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="menu-content">
+            <div class="sub-menu dialog-content">
+                <div class="single-row contact-menu">
+                    <ul id="groups-ul" class="groups">
+                    </ul>
+                </div>
+                <div class="single-row dialog-menu">
+                    <div class="messages-title ellipsis">
+                        <span id="dialog-name"></span>
+                    </div>
+                    <div id="dialogs" class="messages-content scroll">
+
+                    </div>
+                    <div class="send-area">
+                        <div class="function-area">
+                            <div class="single-fun"><i class="fa fa-smile-o fa-2x"></i></div>
+                            <div class="single-fun">
+                                <i id="choose-file" class="fa fa-folder-o fa-2x"></i>
+                                <input class="hide" id="send-file" type="file">
+                            </div>
+                            <button type="button" class="form-btn pull-right">历史消息</button>
+                        </div>
+                        <div class="text-area">
+                            <textarea id="message-text" class="form-textarea"></textarea>
+                        </div>
+                        <div class="button-area">
+                            <button id="send" type="button" class="form-btn">发送</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="single-row function-menu">
+                    <div class="title-content">
+                        <span>@消息列表</span>
+                        <span>群管理</span>
+                        <span>详细信息</span>
+                    </div>
+                </div>
+            </div>
+            <div class="sub-menu contact-content">
+                
+            </div>
+            <div class="sub-menu multisend-content">
+                <div class="single-row contact-menu">
+                    <div class="title-content contact-tab">
+                        <a class="tab-a" href="javascript:;" data-content="manager-content"><span class="tab-3 tab-active">管理群组</span></a>
+                        <a class="tab-a" href="javascript:;" data-content="allgroups-content"><span class="tab-3">群组</span></a>
+                        <a class="tab-a" href="javascript:;" data-content="allcontact-content"><span class="tab-3">联系人</span></a>
+                    </div>
+                    <ul class="groups manager-content">
+                        
+                    </ul>
+                    <ul class="groups allgroups-content hide">
+                        
+                    </ul>
+                    <ul class="groups allcontact-content hide">
+                        
+                    </ul>
+                </div>
+                <div class="single-row dialog-menu">
+                    <div class="multisend-contacts scroll">
+
+                    </div>
+                    <div class="multisend-area scroll">
+
+                    </div>
+                </div>
+            </div>
+            <div class="sub-menu config-content">
+                config
+            </div>
+        </div>
+    </div>
+    <div class="modal">
+        <div class="showfunc">
+            <a href="javascript:;" class="menu-a"><i id="larger" class="fa fa-search-plus"></i></a>
+            <a href="javascript:;" class="menu-a"><i id="smaller" class="fa fa-search-minus"></i></a>
+        </div>
+        <div class="showarea">
+            <img class="adjust-pic" src="static/img/loginqrcode.jpg">
+        </div>
+    </div>
+    
+    <script src="static/js/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="static/js/socket.io.min.js"></script>
+    <script src="static/js/main.js"></script>
+</body>
+
+</html>

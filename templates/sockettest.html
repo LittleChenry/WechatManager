@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <input id="login" type="button" value="login" />
+    <input id="in" />
+    <input id="out" />
+    <input type="button" id="submit" value="submit" />
+    <ul id="msgul"></ul>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <script src="static/js/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function() {
+            $("#login").bind("click", function () {
+                $.ajax({
+                   type: "post",
+                   url: "/getQR",
+                   success: function (data) {
+
+                   } 
+                });
+            })
+            namespace = '/test';
+            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+            socket.emit('myconnect',{data: 'I am connect'});
+            $("#submit").bind("click", function () {
+               socket.emit('send',{data:$("#in").val()});
+            });
+            socket.on('response', function (msg) {
+                $("#out").val(msg.data);
+            });
+            socket.on('msg', function (msg) {
+                alert(msg);
+                $("#msgul").append("<li>" + msg.info + " " + msg.name + " " + msg.gname + " " + msg.time + " " + msg.uid+ "</li>");
+            })
+        });
+    </script>
+</body>
+</html>
