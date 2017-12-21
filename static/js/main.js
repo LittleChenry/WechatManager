@@ -291,6 +291,7 @@ function MessageSync(UserName) {
 				var dialogul = '<ul id="'+ groupid +'" class="conversation-area">'+ li +'</ul>';
 				GroupList.append(groupli);
 				dialogs.append(dialogul);
+
 				GroupList.find("li").each(function(index,e){
 					$(this).unbind("click").bind("click",function(){
 						$("#contact").show();
@@ -323,7 +324,7 @@ function MessageSync(UserName) {
 		}
     	
         //$("#msgul").append("<li>" + msg.info + " " + msg.name + " " + msg.gname + "</li>");
-    })
+    })//div.scrollTop = div.scrollHeight;
 }
 
 function RefreshDialogList() {
@@ -334,6 +335,7 @@ function RefreshDialogList() {
 		}
 		if ($(this).hasClass("active")) {
 			var ulid = $(this).find(".group-name").attr("data-content");
+			$("#dialogs").scrollTop($("#dialogs")[0].scrollHeight);
 			$("#" + ulid).find("li").each(function(index,e){
 				if ($(this).hasClass("unread")) {
 					$(this).removeClass("unread");
@@ -341,6 +343,7 @@ function RefreshDialogList() {
 			});
 		}else{
 			var ulid = $(this).find(".group-name").attr("data-content");
+			$("#dialogs").scrollTop($("#dialogs")[0].scrollHeight);
 			var count = 0;
 			$("#" + ulid).find("li").each(function(index,e){
 				if ($(this).hasClass("unread")) {
