@@ -88,7 +88,7 @@ def towechat():
     return send_file("templates/login.html")
 
 @app.route('/logg')
-def tolog():
+def tologg():
     return send_file("templates/messagelogging.html")
 #
 # @app.route('/shit')
