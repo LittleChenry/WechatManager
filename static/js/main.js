@@ -125,7 +125,7 @@ function PageInit() {
 					}
 					sendid = $(this).find(".group-name").attr("data-content");
 					groups[count] = aites + $(this).find(".group-name").attr("data-content");
-					alert(groups[count]);
+					//alert(groups[count]);
 					groupnames[count++] = $(this).find(".group-name").attr("title");
 				}
 				return count;
@@ -148,7 +148,7 @@ function PageInit() {
 	                        + '</span><span class="message-content"><i class="angle-right"></i>'
 	                        + '<span class="text-right">'+ message +'</span></span></span></li>';
                     $("#" + sendid).append(li);*/
-                    alert("success");
+                    //alert("success");
 				}
 			});
 		}else{
@@ -157,7 +157,7 @@ function PageInit() {
 	});
 
 	$("#choose-file").unbind("click").bind("click",function(){
-		$("#send-file").click();
+		$("#choose-file").click();
 		$("#send-file").unbind("change").on("change",function(e){
 			var data=new FormData()
 			data.append('image',$("#send-file")[0].files[0]);
@@ -202,6 +202,59 @@ function PageInit() {
 		        }
 	        });
 		});
+	});
+
+	$("#multichoose-file").unbind("click").bind("click",function(){
+		$("#multichoose-file").click();
+		$("#multisend-file").unbind("change").on("change",function(e){
+			var data=new FormData()
+			data.append('image',$("#multisend-file")[0].files[0]);
+			var groups = new Array();
+			var groupnames = new Array();
+			var count = 0;
+			$("#multigroups-ul").find("li").each(function(index, e){
+				if ($(this).find("i").hasClass("fa-check-square")) {
+					var aitecount = parseInt($(this).attr("data-aite"));
+					var aites = "";
+					for (var i = 0; i < aitecount; i++) {
+						aites += "@";
+					}
+					sendid = $(this).find(".group-name").attr("data-content");
+					groups[count] = aites + $(this).find(".group-name").attr("data-content");
+					//alert(groups[count]);
+					groupnames[count++] = $(this).find(".group-name").attr("title");
+				}
+				return count;
+			});
+			data.append('groups',groups);
+	        $.ajax({
+	        	type: "post",
+				url: "/picture",
+				data:data,
+				async: true,
+				dataType: "json",
+				contentType: false,
+          		processData: false,
+				success: function (data) {
+					/*var today = new Date();
+					var sendtime = today.toLocaleTimeString();
+					var pic = $("#mypic").attr("src");
+					var filepath = data.success.split("\\");
+    				var length = filepath.length;
+					var message = '<span>'+ filepath[length - 1] +'</span><a href="'+ data.success +'" download><i class="fa fa-download fa-fw"></i></a>';
+					var li = '<li class="message"><img class="pic-right" src="'+ pic +'"/>'
+	                     	+ '<span class="message-box-right"><span class="message-user">'
+	                        + '<p class="NickName-right"><span>'+ sendtime +'</span><span> 我</span></p>'
+	                        + '</span><span class="message-content"><i class="angle-right"></i>'
+	                        + '<span class="text-right">'+ message +'</span></span></span></li>';
+                    $("#" + sendid).append(li);*/
+		        }
+	        });
+		});
+	});
+
+	$("#messages-history").unbind("click").bind("click",function(){
+		window.open("/logg");
 	});
 
 	$(".modal").unbind("click").bind("click",function(){
