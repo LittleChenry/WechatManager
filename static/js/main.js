@@ -72,9 +72,9 @@ function PageInit() {
 			var count = 0;
 			$("#groups-ul").find("li").each(function(index, e){
 				if ($(this).hasClass("active")) {
-					var count = parseInt($(this).attr("data-aite"));
+					var aitecount = parseInt($(this).attr("data-aite"));
 					var aites = "";
-					for (var i = 0; i < count; i++) {
+					for (var i = 0; i < aitecount; i++) {
 						aites += "@";
 					}
 					sendid = $(this).find(".group-name").attr("data-content");
@@ -118,9 +118,9 @@ function PageInit() {
 			var count = 0;
 			$("#multigroups-ul").find("li").each(function(index, e){
 				if ($(this).find("i").hasClass("fa-check-square")) {
-					var count = parseInt($(this).attr("data-aite"));
+					var aitecount = parseInt($(this).attr("data-aite"));
 					var aites = "";
-					for (var i = 0; i < count; i++) {
+					for (var i = 0; i < aitecount; i++) {
 						aites += "@";
 					}
 					sendid = $(this).find(".group-name").attr("data-content");
