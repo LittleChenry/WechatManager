@@ -392,6 +392,7 @@ function getBasicInfo() {
 		    	for(var j = 0; j < pic.length; j++) {
 	                 content = content + '<img class="message-pic" src="data:image/jpg;base64,'+ pic[j] +'"/>';
 				}
+				content = content == "" ? '<img class="single-pic" src="static/img/weixin.jpg"/>' : content;
 				var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ content +'</span>'
 	                          + '<span class="group-name" title="'+ data.groups[i].name +'" data-content="'+ groupid +'">'+ data.groups[i].name +'</span>'
 	                          + '<span class="choosebox pull-right"><i class="'+ need +'"></i></span></li>';
@@ -400,32 +401,30 @@ function getBasicInfo() {
 					var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ content +'</span>'
 		                          + '<span class="group-name" title="'+ data.groups[i].name +'" data-content="'+ groupid +'">'+ data.groups[i].name +'</span></li>';
 					Manager.append(groupli);
+					var groupp = '<p class="selected-group"><span title="'+ data.groups[i].name +'">'+ data.groups[i].name +' </span><i class="delete-selected-group fa fa-close" title="删除"></i></p>';
+					$(".multisend-contacts").append(groupp);
 				}
 			}
-			//findChoseGroup();
-			$(".choose-box").unbind("click").bind("click",function(){
+			DeleteSelectedGroup();
+			$(".choosebox").unbind("click").bind("click",function(){
+				var name = $(this).prev().attr("title");
     			if ($(this).find("i").hasClass("fa-check-square")) {
     				$(this).find("i").removeClass("fa-check-square");
     				$(this).find("i").addClass("fa-square-o");
+    				$(".multisend-contacts").find(".selected-group").each(function(){
+    					if ($(this).find("span").attr("title") == name) {
+    						$(this).remove();
+    					}
+    				});
     			}else{
     				$(this).find("i").removeClass("fa-square-o");
     				$(this).find("i").addClass("fa-check-square");
+    				var groupp = '<p class="selected-group"><span title="'+ name +'">'+ name +' </span><i class="fa fa-close" title="删除"></i></p>';
+					$(".multisend-contacts").append(groupp);
     			}
-    			//findChoseGroup();
+    			DeleteSelectedGroup();
 			});
-
         }
-	});
-}
-
-function findChoseGroup(){
-	$("#ChoseGroup-area").html("");
-	$(".single-group").each(function(){
-		if ($(this).find("i").hasClass("fa-check-square")) {
-			var name = $(this).find("span:first").attr("title");
-			var p = '<p class="chosegroup-p">'+ name +'</p>';
-			$("#ChoseGroup-area").append(p);
-		}
 	});
 }
 
@@ -445,6 +444,27 @@ function ShowPic(e) {
 	
 }
 
-function LargerPic(e) {
+function findChoseGroup(){
+	$("#ChoseGroup-area").html("");
+	$(".allgroups-content").find("li").each(function(){
+		if ($(this).find("i").hasClass("fa-check-square")) {
+			var name = $(this).find(".group-name").attr("title");
+			var p = '<p class="chosegroup-p">'+ name +'</p>';
+			$("#ChoseGroup-area").append(p);
+		}
+	});
+}
 
+function DeleteSelectedGroup() {
+	$(".selected-group").each(function(){
+		$(this).find("i").unbind("click").bind("click",function(){
+			var name = $(this).prev().attr("title");
+			$(this).parent().remove();
+			$(".allgroups-content").find(".group-name").each(function(){
+				if ($(this).attr("title") == name) {
+					$(this).next().find("i").removeClass("fa-check-square").addClass("fa-square-o");
+				}
+			});
+		});
+	});
 }
