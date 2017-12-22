@@ -108,6 +108,54 @@ function PageInit() {
 		}
 	});
 
+	$("#multisend").unbind("click").bind("click",function(){
+		var message = $("#multimessage-text").val();
+		var sendid;
+		$("#multimessage-text").val("");
+		if (message != "") {
+			var groups = new Array();
+			var groupnames = new Array();
+			var count = 0;
+			$("#multigroups-ul").find("li").each(function(index, e){
+				if ($(this).find("i").hasClass("fa-check-square")) {
+					var count = parseInt($(this).attr("data-aite"));
+					var aites = "";
+					for (var i = 0; i < count; i++) {
+						aites += "@";
+					}
+					sendid = $(this).find(".group-name").attr("data-content");
+					groups[count] = aites + $(this).find(".group-name").attr("data-content");
+					alert(groups[count]);
+					groupnames[count++] = $(this).find(".group-name").attr("title");
+				}
+				return count;
+			});
+			$.ajax({
+				type: "post",
+				url: "/info",
+				data:{
+					groups:groups,
+					message:message
+				},
+				dataType: "json",
+				success: function (data) {
+					/*var today = new Date();
+					var sendtime = today.toLocaleTimeString();
+					var pic = $("#mypic").attr("src");
+					var li = '<li class="message"><img class="pic-right" src="'+ pic +'"/>'
+	                     	+ '<span class="message-box-right"><span class="message-user">'
+	                        + '<p class="NickName-right"><span>'+ sendtime +'</span><span> 我</span></p>'
+	                        + '</span><span class="message-content"><i class="angle-right"></i>'
+	                        + '<span class="text-right">'+ message +'</span></span></span></li>';
+                    $("#" + sendid).append(li);*/
+                    alert("success");
+				}
+			});
+		}else{
+			alert("消息不能为空");
+		}
+	});
+
 	$("#choose-file").unbind("click").bind("click",function(){
 		$("#send-file").click();
 		$("#send-file").unbind("change").on("change",function(e){
