@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" href="static/css/wechat.css">
+    <title>logging</title>
+</head>
+<body>
+    <div >
+        <div>
+            <span>消息记录</span>
+        </div>
+        <div>
+            <input id="begintime" name="begintime" type="text"/>
+            <input id="endtime" name="endtime" type="text"/>
+            <select id="group" name="group" ></select>
+            <button id="query" type="button" >查询</button>
+        </div>
+        <div id="logging">
+        </div>
+    </div>
+    <script src="static/js/jquery-2.2.3.min.js"></script>
+    <script>
+        $.ajax({
+            type: "post",
+            url: "/getGroupSelect",
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                for(var i=0;i<data.length;i++){
+                    var obj=document.getElementById('group');
+                    obj.options.add(new Option(data[i].name,data[i].id));
+                }
+            },
+            error:function (data) {
+                alert(error);
+            }
+        });
+
+        $("#query").bind("click", function () {
+            var begin=$("#begintime").val();
+            var end=$("#endtime").val();
+            var obj=document.getElementById('group');
+            var index=obj.selectedIndex;
+            var groupid=obj.options[index].value;
+            $.ajax({
+				type: "post",
+				url: "/msglogging1",
+				data:{
+					begin:begin,
+					end:end,
+                    group:groupid
+				},
+				dataType: "json",
+				success: function (data) {
+                    for(var i=0;i<data.length;i++){
+                        $('#logging').append('<br>' + $('<div/>').text(data[i].content + ', ' + data[i].NickName+','+data[i].Time+','+data[i].type).html());
+				    }
+                 }
+            });
+        });
+    </script>
+</body>
+
+</html>

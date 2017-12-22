@@ -14,7 +14,9 @@ from PIL import Image
 import StringIO
 import os
 from werkzeug.utils import secure_filename
-
+from addmessage import *
+from SelectForGroup import *
+from messagelog import *
 app = Flask(__name__)
 chat = ChatRun()
 
@@ -30,6 +32,7 @@ def background_thread():
         if chat.hasNewMsg():
             print 'send'
             m=chat.realSend()
+            addmessage(m)
             buffer = StringIO.StringIO(chat.getheadpic(m['uid']))
             buffer2 = StringIO.StringIO()
             try:
@@ -84,6 +87,9 @@ def toindex():
 def towechat():
     return send_file("templates/login.html")
 
+@app.route('/logg')
+def tolog():
+    return send_file("templates/messagelogging.html")
 #
 # @app.route('/shit')
 # def hello_shit():
@@ -116,6 +122,12 @@ def getQR():
     while not chat.loginSuccess():
         pass
     return json.dumps({'success': True})
+
+@app.route('/getGroupSelect', methods=["POST"])
+def getGroupSelect():
+    select=SelectForGroup()
+    print select
+    return select
 
 @app.route('/login')
 def toLogin():
@@ -150,6 +162,14 @@ def groupInfor():
     chat.group_information(str, group)
     return json.dumps({'success':True})
 
+@app.route('/msglogging1', methods=['POST'])
+def msglogging1():
+    begin = request.form.get('begin')
+    end = request.form.get('end')
+    groupid=request.form.get('group')
+    msg=messagelog(begin,end,groupid)
+    return msg
+
 @app.route('/picture', methods=['POST'])
 def groupPic():
     global chat
@@ -163,8 +183,9 @@ def groupPic():
         upload_path = os.path.join(basepath, 'static\\sendFile', secure_filename( time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))+file.filename))
         file.save(upload_path)
         print upload_path
-        chat.group_file(upload_path, group=group)
-        rpath = 'static\\sendFile' + secure_filename( time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))+file.filename)
+        rpath = 'static\\sendFile' + secure_filename(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time())) + file.filename)
+        chat.group_file(upload_path,rpath,group=group)
+
         return json.dumps({'success': rpath})
     return json.dumps(({'success': False}))
 

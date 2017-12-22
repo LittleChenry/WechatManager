@@ -12,7 +12,7 @@ import types
 from PIL import Image
 import StringIO
 import random
-
+from addmessage import *
 picDir = '/Users/apple/Documents/mavenProject/WechatManager/static/qr/QR.png'
 
 class ChatRun(object):
@@ -256,7 +256,18 @@ class ChatRun(object):
             for g in group:
                 time.sleep(3)
                 itchat.send(info, g)
-
+        for gi in group:
+            gname=self.getGroupNameById(gi)
+            if gname==None:
+                continue
+            else:
+                msg={}
+                msg['info']=info
+                msg['name']=self.__mySelf['NickName']
+                msg['gname']=gname
+                msg['time']=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+                msg['type']='Text'
+                addmessage(msg)
     # 更新群
     def updateGroup(self):
         self.__groups = itchat.get_chatrooms()
@@ -370,7 +381,7 @@ class ChatRun(object):
  # 群发文件
     # @param info 图片
     # @param group 需要发送的群，默认为None，如果为None则向所有管理的群发送
-    def group_file(self, info, ftype='Picture', group=None):
+    def group_file(self, info,mes, ftype='Picture', group=None):
         if group == None:
             list = self.__gid
             group = []
@@ -383,3 +394,15 @@ class ChatRun(object):
             for g in group:
                 time.sleep(3)
                 itchat.send('@%s@%s' % ({'Picture': 'img', 'Video': 'vid'}.get(ftype, 'fil'), info), g)
+        for gi in group:
+            gname = self.getGroupNameById(gi)
+            if gname == None:
+                continue
+            else:
+                msg = {}
+                msg['info'] = mes
+                msg['name'] = self.__mySelf['NickName']
+                msg['gname'] = gname
+                msg['time'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+                msg['type'] = ftype
+                addmessage(msg)
