@@ -11,13 +11,13 @@
             <span>消息记录</span>
         </div>
         <div>
-            <input id="begintime" name="begintime" type="text"/>
-            <input id="endtime" name="endtime" type="text"/>
+            <input id="begintime" name="begintime" value="2017/12/22" type="text"/>
+            <input id="endtime" name="endtime" value="2017/12/23" type="text"/>
             <select id="group" name="group" ></select>
             <button id="query" type="button" >查询</button>
         </div>
-        <div id="logging">
-        </div>
+        <ul id="logging">
+        </ul>
     </div>
     <script src="static/js/jquery-2.2.3.min.js"></script>
     <script>
@@ -53,8 +53,11 @@
 				},
 				dataType: "json",
 				success: function (data) {
+				$('#logging').html("");
                     for(var i=0;i<data.length;i++){
-                        $('#logging').append('<br>' + $('<div/>').text(data[i].content + ', ' + data[i].NickName+','+data[i].Time+','+data[i].type).html());
+                        var p = '<li style="padding:5px 0px;">' + data[i].NickName+ ',' + data[i].Time + ',' + data[i].type +  ', ' + data[i].content +'</li>';
+                        //alert(p);
+                        $('#logging').append(p);
 				    }
                  }
             });

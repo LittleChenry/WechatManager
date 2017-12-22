@@ -175,6 +175,7 @@ def groupPic():
     global chat
     print 'picture success'
     group = request.form.getlist('groups')
+    groups = group[0].split(',');
     file = request.files['image']
     if len(group) == 0:
         group = None
@@ -184,7 +185,7 @@ def groupPic():
         file.save(upload_path)
         print upload_path
         rpath = 'static\\sendFile' + secure_filename(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time())) + file.filename)
-        chat.group_file(upload_path,rpath,group=group)
+        chat.group_file(upload_path,rpath,group=groups)
 
         return json.dumps({'success': rpath})
     return json.dumps(({'success': False}))

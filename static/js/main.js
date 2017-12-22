@@ -157,7 +157,7 @@ function PageInit() {
 	});
 
 	$("#choose-file").unbind("click").bind("click",function(){
-		$("#choose-file").click();
+		$("#send-file").click();
 		$("#send-file").unbind("change").on("change",function(e){
 			var data=new FormData()
 			data.append('image',$("#send-file")[0].files[0]);
@@ -205,7 +205,7 @@ function PageInit() {
 	});
 
 	$("#multichoose-file").unbind("click").bind("click",function(){
-		$("#multichoose-file").click();
+		$("#multisend-file").click();
 		$("#multisend-file").unbind("change").on("change",function(e){
 			var data=new FormData()
 			data.append('image',$("#multisend-file")[0].files[0]);
@@ -221,7 +221,7 @@ function PageInit() {
 					}
 					sendid = $(this).find(".group-name").attr("data-content");
 					groups[count] = aites + $(this).find(".group-name").attr("data-content");
-					//alert(groups[count]);
+					alert(groups[count]);
 					groupnames[count++] = $(this).find(".group-name").attr("title");
 				}
 				return count;
