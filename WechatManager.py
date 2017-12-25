@@ -11,57 +11,47 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
 import time
 from PIL import Image
-import StringIO
+from io import BytesIO
 import os
 from werkzeug.utils import secure_filename
 from addmessage import *
 from SelectForGroup import *
 from messagelog import *
+from recordGname import *
+from datetime import datetime
+
 app = Flask(__name__)
-chat = ChatRun()
+
 
 async_mode = None
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 thread_lock = Lock()
-
+chat = ChatRun(socketio)
 def background_thread():
     global chat
     while True:
         if chat.hasNewMsg():
-            print 'send'
             m=chat.realSend()
             addmessage(m)
-            buffer = StringIO.StringIO(chat.getheadpic(m['uid']))
-            buffer2 = StringIO.StringIO()
+            buffer = BytesIO(chat.getheadpic(m['uid']))
+            buffer2 = BytesIO()
             try:
                 image = Image.open(buffer)
                 image.save(buffer2, format="JPEG")
                 img_str = base64.b64encode(buffer2.getvalue())
             except:
-                 img_str="";
+                img_str = ""
             listbase= chat.getgrouppic(m['gid'])
             dic = {}
-            for k, v in m.iteritems():
+            for k, v in m.items():
                 dic[k] = v;
             dic['grouppic'] = listbase
-            dic['pic'] = img_str
+            dic['pic'] = bytes.decode(img_str)
+            print(dic)
             socketio.emit('msg', dic, json=True,namespace='/test')
 
-
-@socketio.on('myconnect',namespace='/test')
-def conncet(msg):
-    print msg
-'''
-@socketio.on('send',namespace='/test')
-def send(msg):
-    print msg
-    emit('response',{'data': msg['data']})
-'''
-@socketio.on('send', namespace='/test')
-def connect():
-    print 'success'
 
 @socketio.on('connect', namespace='/test')
 def sendNewMsg():
@@ -87,9 +77,9 @@ def toindex():
 def towechat():
     return send_file("templates/login.html")
 
-@app.route('/logg')
-def tologg():
-    return send_file("templates/messagelogging.html")
+@app.route('/logg/<gname>')
+def tologg(gname):
+    return render_template("messagelogging.html",gname=gname)
 #
 # @app.route('/shit')
 # def hello_shit():
@@ -126,7 +116,6 @@ def getQR():
 @app.route('/getGroupSelect', methods=["POST"])
 def getGroupSelect():
     select=SelectForGroup()
-    print select
     return select
 
 @app.route('/login')
@@ -136,15 +125,16 @@ def toLogin():
 @app.route('/update', methods=['POST'])
 def updatepage():
     global chat
-    buffer = StringIO.StringIO(chat.getMypic())
-    buffer2 = StringIO.StringIO()
+    buffer = BytesIO(chat.getMypic())
+    buffer2 = BytesIO()
     try:
         image = Image.open(buffer)
         image.save(buffer2, format="JPEG")
         img_str = base64.b64encode(buffer2.getvalue())
     except:
-        img_str=""
-    return json.dumps({'groups': chat.getAllGroup(), 'user': chat.getMyself(), 'userpic': img_str})
+        img_str = ""
+    return json.dumps({'groups': chat.getAllGroup(), 'user': chat.getMyself(), 'userpic': bytes.decode(img_str)})
+
 
 @app.route('/test',methods=['POST'])
 def test():
@@ -156,13 +146,12 @@ def groupInfor():
     global chat
     str = request.form.get('message')
     group = request.form.getlist('groups[]')
-    print group, type(group)
     if len(group) == 0:
         group = None
     chat.group_information(str, group)
     return json.dumps({'success':True})
 
-@app.route('/msglogging1', methods=['POST'])
+@app.route('/msglogging', methods=['POST'])
 def msglogging1():
     begin = request.form.get('begin')
     end = request.form.get('end')
@@ -173,7 +162,6 @@ def msglogging1():
 @app.route('/picture', methods=['POST'])
 def groupPic():
     global chat
-    print 'picture success'
     group = request.form.getlist('groups')
     groups = group[0].split(',');
     file = request.files['image']
@@ -183,7 +171,6 @@ def groupPic():
         basepath = os.path.dirname(__file__)
         upload_path = os.path.join(basepath, 'static\\sendFile', secure_filename( time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))+file.filename))
         file.save(upload_path)
-        print upload_path
         rpath = 'static\\sendFile' + secure_filename(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time())) + file.filename)
         chat.group_file(upload_path,rpath,group=groups)
 
@@ -209,8 +196,12 @@ def getKeyWord():
 @app.route('/setDefault', methods=['POST'])
 def setDefaultGroup():
     global chat
-    print 'default'
     namelist = request.form.getlist("groups[]")
+    gname = []
+    for item in namelist:
+        name = chat.getGroupNameById(item)
+        gname.append(name)
+    recordGname(gname)
     chat.setNeedGroup(namelist)
     return json.dumps({'success':True})
 @app.route('/addKeyWord', methods=['POST'])
@@ -220,6 +211,84 @@ def addKeyWord():
     val = request.form.get('reply')
     chat.addKeyWordResponse({'key': key, 'val': val})
     return json.dumps({'success':True})
+
+@app.route('/emoij', methods=["POST"])
+def getemoij():
+    list=[]
+    for root, dirs, files in os.walk("static/img/emoij/guanfang"):
+        for file in files:
+            if os.path.splitext(file)[1] == '.jpeg' or '.gif' or '.png':
+                list.append(root+"/"+file)
+    return json.dumps({'list':list})
+
+@app.route('/emoijtitle', methods=["POST"])
+def getemoijtitle():
+    list=[]
+    jsonlist={}
+    for root, dirs, files in os.walk("static/img/emoij"):
+        for file in dirs:
+                list.append(file)
+    jsonlist["titlelist"]=list
+    return json.dumps(jsonlist)
+
+@app.route('/emoijone', methods=["POST"])
+def getemoijone():
+    list = []
+    id=request.form.get("id")
+    for root, dirs, files in os.walk("static/img/emoij/"+id):
+        for file in files:
+            if os.path.splitext(file)[1] == '.jpeg' or '.gif' or '.png':
+                list.append(root+"/"+file)
+    return json.dumps({'list': list})
+
+@app.route('/impemoij', methods=["POST"])
+def importemoij():
+    list = []
+    id=request.form.get("title")
+    lenth = int(request.form.get("length"))
+    for i in range(0,lenth):
+        file = request.files['importlist'+str(i)]
+        # print(id);
+        filename = file.filename.split('.')[0] + '_new.' + file.filename.split('.')[-1]
+        if os.path.exists("static/img/emoij/"+id):
+              file.save("static/img/emoij/"+id+"/"+datetime.now().date().strftime('%Y%m%d%H%M')+filename)
+        else:
+            os.makedirs("static/img/emoij/"+id)
+            file.save("static/img/emoij/" + id + "/" + datetime.now().date().strftime('%Y%m%d%H%M') + filename)
+    return "success"
+
+@app.route('/sendemoij', methods=['POST'])
+def groupemoij():
+    global chat
+    group = request.form.getlist("groups[]")
+    filepath=request.form.get("message");
+    if len(group) == 0:
+        group = None
+    rpath = filepath
+    chat.group_file(filepath,filepath,group=group)
+    return json.dumps({'success': filepath})
+
+@app.route('/sendguangfangemoij', methods=['POST'])
+def groupguangfangemoij():
+    global chat
+    str = request.form.get('message')
+    src= request.form.get('src')
+    group = request.form.getlist('groups[]')
+    if len(group) == 0:
+        group = None
+    chat.group_information(str, group)
+    return json.dumps({'success': src})
+
+@app.route('/addemoij', methods=['POST'])
+def addemoij():
+    global chat
+    str = request.form.get('message')
+    filename=str.split("/");
+    with open(str,'rb') as f:
+         s=f.read()
+    with open("static/img/emoij/shoucang/"+datetime.now().date().strftime('%Y%m%d%H%M')+filename[len(filename)-1], 'wb') as f:
+         f.write(s)
+    return json.dumps({'success': "success"})
 
 if __name__ == '__main__':
     #app.run(debug=True)

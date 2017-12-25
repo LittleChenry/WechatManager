@@ -8,18 +8,27 @@
 <body>
     <div class="ScanArea">
         <div class="ScanTitle">
-            <span>扫描二维码登录微信</span>
+            <span id="confirm">扫描二维码登录微信</span>
         </div>
         <div class="QRArea">
-            <img class="qrcode" src="static/img/loginqrcode.jpg">
+            <img  id="qr" class="qrcode" src="static/img/loginqrcode.jpg">
         </div>
     </div>
     <script src="static/js/jquery-2.2.3.min.js"></script>
+     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
     <script>
+       namespace = '/login';
+       var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+       socket.on('qrinfo', function (msg){
+           $("#qr").attr("src","data:image/jpg;base64,"+msg);
+       })
+       socket.on('confirminfo', function (msg){
+          $("#confirm").html("请在手机上确认登录");
+       })
         $.ajax({
             type: "post",
             url: "/getQR",
-            async: false,
+            async: true,
             dataType: "json",
             success: function (data) {
                 if (data.success) {

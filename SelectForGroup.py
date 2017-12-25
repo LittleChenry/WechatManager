@@ -1,9 +1,9 @@
 #-*- coding: utf-8 -*-
-import MySQLdb
+import mysql.connector
 import database1
 import json
 def SelectForGroup():
-    conn = MySQLdb.connect(
+    conn = mysql.connector.connect(
         host=database1.host,
         port=database1.port,
         user=database1.user,

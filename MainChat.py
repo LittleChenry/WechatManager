@@ -10,15 +10,17 @@ import os
 import itchat.config
 import types
 from PIL import Image
-import StringIO
+from io import BytesIO
+from io import StringIO
 import random
 from addmessage import *
+from readGname import *
 picDir = '/Users/apple/Documents/mavenProject/WechatManager/static/qr/QR.png'
 
 class ChatRun(object):
-    def __init__(self, *args, **kw):
+    def __init__(self,socketio, *args, **kw):
         self.__friends = []
-
+        self.socketio=socketio
         # 获取自己
         self.__mySelf = {}
 
@@ -49,14 +51,12 @@ class ChatRun(object):
         self.__newMsgList = []
 
     def run(self):
-        itchat.login()
+        itchat.login(self.socketio)
         #itchat.auto_login(enableCmdQR=True)
 
         self.__friends = itchat.get_friends(update=True)[0:]
-        for f in self.__friends:
-            print f['UserName'],f['NickName'],'\n'
 
-        # 获取自己
+        #获取自己
         self.__mySelf = self.__friends[0]
 
         # 获取所有群
@@ -69,7 +69,7 @@ class ChatRun(object):
         self.__keyWordReponse = {u'一乙': 'auto', u'test': u'测试成功'}
 
         # 待管理的群
-        self.setNeedGroupByName([u'测试2群', u'微信群管理内部讨论群',u'测试1群'])
+        self.setNeedGroupByName(readGname())
 
         #gid
         self.updateGid()
@@ -81,13 +81,13 @@ class ChatRun(object):
         # 文本
         @itchat.msg_register([TEXT, MAP, CARD, NOTE, SHARING], isGroupChat=True)
         def reply_group(msg):
-            if self.getmySelfID() == msg['ActualUserName']:
+            if self.getmySelfID() == msg['FromUserName']:
                 if msg['Type'] == 'Sharing':
                     self.sendMsg(msg['Text'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),
-                                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), msg['ActualUserName'],
+                                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), self.getmySelfID(),
                                  msg['ToUserName'], msg['Type'], url = msg['Url'])
                 else:
-                    self.sendMsg(msg['Text'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['ActualUserName'],msg['ToUserName'],msg['Type'])
+                    self.sendMsg(msg['Text'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['FromUserName'],msg['ToUserName'],msg['Type'])
             self.updateGid()
             gid = self.__gid
             #print 'need:',self.__needGroups, 'gid:', len(gid)
@@ -97,10 +97,10 @@ class ChatRun(object):
                 if msg['FromUserName'] in gs:
                     text = msg['Text']
                     if msg['Type'] == 'Sharing':
-                        self.sendMsg(msg['Text'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),
+                        self.sendMsg(msg['Text'], msg['ActualNickName'], self.getGroupNameById(msg['FromUserName']),
                                      time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
                                      msg['ActualUserName'],
-                                     msg['ToUserName'], msg['Type'], url=msg['Url'])
+                                     msg['FromUserName'], msg['Type'], url=msg['Url'])
                     else:
                         self.sendMsg(text,msg['ActualNickName'],gs[msg['FromUserName']], time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['ActualUserName'],msg['FromUserName'],msg['Type'])
                     # print msg, 'type:', type(msg),'\n'
@@ -125,13 +125,11 @@ class ChatRun(object):
 
         @itchat.msg_register([PICTURE,RECORDING,ATTACHMENT,VIDEO], isGroupChat=True)
         def reply_files(msg):
-            print msg['Text'], msg['FromUserName']
             basepath = os.path.dirname(__file__)
             upload_path = os.path.join(basepath, 'static/picture',msg['FileName'])
-            print upload_path
             msg['Text'](upload_path)
-            if self.getmySelfID() == msg['ActualUserName']:
-                self.sendMsg('static/picture/'+msg['FileName'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['ActualUserName'],msg['ToUserName'],msg['Type'])
+            if self.getmySelfID() == msg['FromUserName']:
+                self.sendMsg('static/picture/'+msg['FileName'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['FromUserName'],msg['ToUserName'],msg['Type'])
             self.updateGid()
             gid = self.__gid
 
@@ -154,7 +152,6 @@ class ChatRun(object):
     def saveText(self, text, group, user):
         now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
         str = u'%s 收到来自于群%s中用户%s的@消息: %s' % (now[5:], group, user, text)
-        print str
     # 设置关键回复字字典
     def setKeyWordResponse(self, map):
         self.__keyWordReponse = map
@@ -163,7 +160,6 @@ class ChatRun(object):
         key = map['key']
         val = map['val']
         self.__keyWordReponse[key] = val
-        print self.__keyWordReponse
     # 删除指定关键回复字
     def deleteKeyWordResponse(self, *args):
         for k in args:
@@ -199,18 +195,15 @@ class ChatRun(object):
         num = 0
         for i in memberlist:
             img = itchat.get_head_img(userName=i["id"])
-            if type(img) == types.StringType:
-                buffer = StringIO.StringIO(img)
-                buffer2 = StringIO.StringIO()
-                try:
-                    image = Image.open(buffer)
-                    image.save(buffer2, format="JPEG")
-                    img_str = base64.b64encode(buffer2.getvalue())
-                    list2.append(img_str)
-                    num += 1
-                except:
-                    num = num
-            else:
+            buffer = BytesIO(img)
+            buffer2 = BytesIO()
+            try:
+                image = Image.open(buffer)
+                image.save(buffer2, format="JPEG")
+                img_str = base64.b64encode(buffer2.getvalue())
+                list2.append(bytes.decode(img_str))
+                num += 1
+            except:
                 num = num
             if num >= 8:
                 return list2
@@ -233,6 +226,7 @@ class ChatRun(object):
 
     # 根据id获取群名
     def getGroupNameById(self,id):
+        self.updateGroup()
         for group in self.__groups:
             if id == group['UserName']:
                 return group['NickName']
@@ -248,9 +242,6 @@ class ChatRun(object):
                 for x in l:
                     group.append(x)
         if len(group) == 1:
-            print group,' d:', group[0]
-            print self.getGroupNameById(group[0])
-            print self.__groups
             itchat.send(info, group[0])
         else:
             for g in group:
@@ -284,7 +275,6 @@ class ChatRun(object):
     def getAllGroup(self):
         self.updateGroup()
         list = []
-        print 'need in getALLgroup:', self.__needGroups
         for x in self.__groups:
             # #img = itchat.get_head_img(x['UserName'])
             # list2 = []
@@ -343,7 +333,6 @@ class ChatRun(object):
 
     def setNeedGroup(self,idlist):
         self.__needGroups = idlist
-        print 'needgroup:', self.__needGroups
     def setNeedGroupByName(self,namelist):
         self.updateGroup()
         for group in self.__groups:
@@ -354,7 +343,6 @@ class ChatRun(object):
 
     # 收到消息就发送到前台
     def sendMsg(self, info, name, gname,time, uid, gid, t, **kw):
-        print 'info', info, 'name', name, 'gname', gname
         text = {}
         text['info'] = info
         text['name'] = name
@@ -363,9 +351,8 @@ class ChatRun(object):
         text['uid'] = uid
         text['gid'] = gid
         text['type'] = t
-        for k, v in kw.iteritems():
+        for k, v in kw.items():
             text[k] = v
-        print text
         self.__newMsgList.append(text)
         self.__newMsgCount += 1
 

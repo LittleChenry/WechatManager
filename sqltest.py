@@ -1,9 +1,7 @@
-import mysql.connector
+# coding=utf8
 
-conn = mysql.connector.connect(user='root', password='123456', database='wechat', use_unicode=True)
-cursor = conn.cursor()
-cursor.execute('SELECT * FROM user')
-values = cursor.fetchall()
-print values
-cursor.close()
-conn.close()
+from distutils.core import setup
+import py2exe
+
+
+setup(console=['D:\python3\WechatManager\WechatManager.py\WechatManager.py'])

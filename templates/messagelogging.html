@@ -2,7 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link rel="stylesheet" type="text/css" href="static/css/wechat.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/wechat.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/pikaday.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/site.css">
     <title>logging</title>
 </head>
 <body>
@@ -11,57 +13,94 @@
             <span>消息记录</span>
         </div>
         <div>
-            <input id="begintime" name="begintime" value="2017/12/22" type="text"/>
-            <input id="endtime" name="endtime" value="2017/12/23" type="text"/>
-            <select id="group" name="group" ></select>
-            <button id="query" type="button" >查询</button>
+            <input id="begintime" name="begintime" type="text"/>
+            <input id="endtime" name="endtime" type="text"/>
+            <input type="hidden" id="gname" value="{{gname}}">
+            <button id="query" class="btn" type="button">查询</button>
         </div>
         <ul id="logging">
         </ul>
     </div>
-    <script src="static/js/jquery-2.2.3.min.js"></script>
+    <script src="../static/js/jquery-2.2.3.min.js"></script>
+    <script src="../static/js/date_fns.min.js"></script>
+    <script src="../static/js/pikaday.js"></script>
     <script>
-        $.ajax({
-            type: "post",
-            url: "/getGroupSelect",
-            async: false,
-            dataType: "json",
-            success: function (data) {
-                for(var i=0;i<data.length;i++){
-                    var obj=document.getElementById('group');
-                    obj.options.add(new Option(data[i].name,data[i].id));
-                }
+        var startDate,
+            endDate,
+            updateStartDate = function() {
+                startPicker.setStartRange(startDate);
+                endPicker.setStartRange(startDate);
+                endPicker.setMinDate(startDate);
             },
-            error:function (data) {
-                alert(error);
-            }
-        });
+            updateEndDate = function() {
+                startPicker.setEndRange(endDate);
+                startPicker.setMaxDate(endDate);
+                endPicker.setEndRange(endDate);
+            },
+            startPicker = new Pikaday({
+                field: document.getElementById('begintime'),
+                toString: function(date, format) {
+                    return dateFns.format(date, format);
+                },
+                parse: function(dateString, format) {
+                    return dateFns.parse(dateString);
+                },
+                onSelect: function() {
+                    startDate = this.getDate();
+                    updateStartDate();
+                }
+            }),
+            endPicker = new Pikaday({
+                field: document.getElementById('endtime'),
+                toString: function(date, format) {
+                    return dateFns.format(date, format);
+                },
+                parse: function(dateString, format) {
+                    return dateFns.parse(dateString);
+                },
+                onSelect: function() {
+                    endDate = this.getDate();
+                    updateEndDate();
+                }
+            }),
+            _startDate = startPicker.getDate(),
+            _endDate = endPicker.getDate();
 
-        $("#query").bind("click", function () {
-            var begin=$("#begintime").val();
-            var end=$("#endtime").val();
-            var obj=document.getElementById('group');
-            var index=obj.selectedIndex;
-            var groupid=obj.options[index].value;
-            $.ajax({
-				type: "post",
-				url: "/msglogging1",
-				data:{
-					begin:begin,
-					end:end,
-                    group:groupid
-				},
-				dataType: "json",
-				success: function (data) {
-				$('#logging').html("");
-                    for(var i=0;i<data.length;i++){
-                        var p = '<li style="padding:5px 0px;">' + data[i].NickName+ ',' + data[i].Time + ',' + data[i].type +  ', ' + data[i].content +'</li>';
-                        //alert(p);
-                        $('#logging').append(p);
-				    }
-                 }
+            if (_startDate) {
+                startDate = _startDate;
+                updateStartDate();
+            }
+
+            if (_endDate) {
+                endDate = _endDate;
+                updateEndDate();
+            }
+        </script>
+        <script>
+            $("#query").bind("click", function () {
+                var begin=$("#begintime").val();
+                var end=$("#endtime").val();
+                var obj=document.getElementById('group');
+                var gname = $("#gname").val();
+                $.ajax({
+    				type: "post",
+    				url: "/msglogging",
+    				data:{
+    					begin:begin,
+    					end:end,
+                        group:gname
+    				},
+    				dataType: "json",
+    				success: function (data) {
+    				$('#logging').html("");
+                        for(var i=0;i<data.length;i++){
+                            var p = '<li style="padding:5px 0px;">' + data[i].NickName+ ',' + data[i].Time + ',' + data[i].type +  ', ' + data[i].content +'</li>';
+                            //alert(p);
+                            $('#logging').append(p);
+    				    }
+                     }
+                });
             });
-        });
     </script>
 </body>
 

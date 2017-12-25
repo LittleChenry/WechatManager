@@ -1,6 +1,7 @@
 $(document).ready(function () {
 	AdjustPage();
-	getBasicInfo();
+	var UserInfo = getBasicInfo();
+	MessageSync(UserInfo.NickName);
 	PageInit();
 })
 
@@ -253,8 +254,42 @@ function PageInit() {
 		});
 	});
 
+	$("#setdefaultgroups").unbind("click").bind("click",function(){
+		var groups = new Array();
+		var groupnames = new Array();
+		var count = 0;
+		$("#multigroups-ul").find("li").each(function(index, e){
+			if ($(this).find("i").hasClass("fa-check-square")) {
+				var aitecount = parseInt($(this).attr("data-aite"));
+				var aites = "";
+				for (var i = 0; i < aitecount; i++) {
+					aites += "@";
+				}
+				sendid = $(this).find(".group-name").attr("data-content");
+				groups[count] = aites + $(this).find(".group-name").attr("data-content");
+				//alert(groups[count]);
+				groupnames[count++] = $(this).find(".group-name").attr("title");
+			}
+			return count;
+		});
+		$.ajax({
+			type: "post",
+			url: "/setDefault",
+			data:{
+				groups:groups,
+				groupnames:groupnames
+			},
+			dataType: "json",
+			success: function (data) {
+				alert("设置成功！");
+				getBasicInfo("/update");
+			}
+		});
+	});
+
 	$("#messages-history").unbind("click").bind("click",function(){
-		window.open("/logg");
+		var gname = $("#dialog-name").html();
+		window.open("/logg/" + gname);
 	});
 
 	$(".modal").unbind("click").bind("click",function(){
@@ -290,51 +325,54 @@ function MessageSync(UserName) {
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
     socket.on('msg', function (msg) {
     	var dialogs = $("#dialogs");
-    	var groupname = msg.gname == null ? "" : msg.gname;
+    	var groupname = msg["gname"] == null ? "" : msg["gname"];
 		if (groupname != "") {
 			var c = "@";
 			var regex = new RegExp(c, 'g');
-			var result = msg.gid.match(regex);
+			var result = msg["gid"].match(regex);
 			var count = !result ? 0 : result.length;
-	    	var groupid = msg.gid.substring(count , msg.gid.length);
+	    	var groupid = msg["gid"].substring(count , msg["gid"].length);
 	    	var GroupList = $("#groups-ul");
 	    	var flag = 0;
 			GroupList.find("li").each(function(index,e){
 				contentID = $(this).find(".group-name").attr("data-content");
 				if (groupid == contentID) {
 					flag = 1;
-					var name = msg.name;
-			    	var sendtime = " " + msg.time.split(" ")[1] + " ";
-			    	switch(msg.type){
+					var name = msg["name"];
+			    	var sendtime = " " + msg["time"].split(" ")[1] + " ";
+			    	switch(msg["type"]){
 			    		case "Text":
-			    			var message = msg.info;
+			    			var message = msg["info"];
 			    			break;
 			    		case "Video":
-			    			var message = '<video class="message-video" src="'+ msg.info +'" controls="controls">your browser does not support the video tag</video>';
+			    			var message = '<video class="message-video" src="'+ msg["info"] +'" controls="controls">your browser does not support the video tag</video>';
 			    			break;
 			    		case "Picture":
-			    			var message = '<img src="'+ msg.info +'" class="emoji-pic" onclick="ShowOptions(this)"><div class="picture-func"><i class="fa fa-search-plus" title="查看" onclick="ShowPic(this)"></i><i class="fa fa-plus" title="添加表情"></i></div>';
+			    			var message = '<img src="'+ msg["info"] +'" class="emoji-pic" onclick="ShowOptions(this)"><div class="picture-func"><i class="fa fa-search-plus" title="查看" onclick="ShowPic(this)"></i><i onclick="addemoij(this)" class="fa fa-plus" title="添加表情"></i></div>';
 			    			break;
 			    		case "Recording":
-			    			var message = '<audio src="'+ msg.info +'" controls="controls">your browser does not support the audio tag</audio>';
+			    			var message = '<audio src="'+ msg["info"] +'" controls="controls">your browser does not support the audio tag</audio>';
+			    			break;
+			    		case "Sharing":
+			    			var message = '<a class="tab-a" href="'+ msg["url"] +'" target="_blank">链接：'+ msg["info"] +'</a>';
 			    			break;
 		    			case "Attachment":
-		    				var filepath = msg.info.split("\\");
+		    				var filepath = msg["info"].split("\\");
 		    				var length = filepath.length;
-		    				var message = '<span>'+ filepath[length - 1] +'</span><a href="'+ msg.info +'" download><i class="fa fa-download fa-fw"></i></a>';
+		    				var message = '<span>'+ filepath[length - 1] +'</span><a href="'+ msg["info"] +'" download><i class="fa fa-download fa-fw"></i></a>';
 		    				break;
 						default:
 							var message = "不支持预览，请在手机上查看。";
 			    	}
 			    	
 			    	if (name == UserName) {
-			    		var li = '<li class="message"><img class="pic-right" src="data:image/jpg;base64,'+ msg.pic +'"/>'
+			    		var li = '<li class="message"><img class="pic-right" src="data:image/jpg;base64,'+ msg["pic"] +'"/>'
 			                     	+ '<span class="message-box-right"><span class="message-user">'
 			                        + '<p class="NickName-right"><span>'+ sendtime +'</span><span>我</span></p>'
 			                        + '</span><span class="message-content"><i class="angle-right"></i>'
 			                        + '<span class="text-right">'+ message +'</span></span></span></li>';
 			    	}else{
-			    		var li = '<li class="message unread"><img class="pic-left" src="data:image/jpg;base64,'+ msg.pic +'"/>'
+			    		var li = '<li class="message unread"><img class="pic-left" src="data:image/jpg;base64,'+ msg["pic"] +'"/>'
 			                     	+ '<span class="message-box-left"><span class="message-user">'
 			                        + '<p class="NickName-left"><span>'+ name +'</span><span>'+ sendtime +'</span></p>'
 			                        + '</span><span class="message-content"><i class="angle-left"></i>'
@@ -346,43 +384,46 @@ function MessageSync(UserName) {
 				return flag;
 			});
 			if (flag == 0) {
-				var name = msg.name;
+				var name = msg["name"];
 		    	var sendtime = " " + msg.time.split(" ")[1];
 		    	switch(msg.type){
 		    		case "Text":
-		    			var message = msg.info;
+		    			var message = msg["info"];
 		    			break;
 		    		case "Video":
-		    			var message = '<video class="message-video" src="'+ msg.info +'" controls="controls">your browser does not support the video tag</video>';
+		    			var message = '<video class="message-video" src="'+ msg["info"] +'" controls="controls">your browser does not support the video tag</video>';
 		    			break;
 		    		case "Picture":
-		    			var message = '<img src="'+ msg.info +'" class="emoji-pic" onclick="ShowOptions(this)"><div class="picture-func"><i class="fa fa-search-plus" title="查看" onclick="ShowPic(this)"></i><i class="fa fa-plus" title="添加表情"></i></div>';
+		    			var message = '<img src="'+ msg["info"] +'" class="emoji-pic" onclick="ShowOptions(this)"><div class="picture-func"><i class="fa fa-search-plus" title="查看" onclick="ShowPic(this)"></i><i onclick="addemoij(this)" class="fa fa-plus" title="添加表情"></i></div>';
 			    		break;
 		    		case "Recording":
-		    			var message = '<audio src="'+ msg.info +'" controls="controls">your browser does not support the audio tag</audio>';
+		    			var message = '<audio src="'+ msg["info"] +'" controls="controls">your browser does not support the audio tag</audio>';
+		    			break;
+		    		case "Sharing":
+		    			var message = '<a class="tab-a" href="'+ msg["url"] +'" target="_blank">链接：'+ msg["info"] +'</a>';
 		    			break;
 	    			case "Attachment":
-	    				var filepath = msg.info.split("\\");
+	    				var filepath = msg["info"].split("\\");
 	    				var length = filepath.length;
-	    				var message = '<span>'+ filepath[length - 1] +'</span><a href="'+ msg.info +'" download><i class="fa fa-download fa-fw"></i></a>';
+	    				var message = '<span>'+ filepath[length - 1] +'</span><a href="'+ msg["info"] +'" download><i class="fa fa-download fa-fw"></i></a>';
 	    				break;
 					default:
 						var message = "不支持预览，请在手机上查看。";
 		    	}
 		    	if (name == UserName) {
-		    		var li = '<li class="message"><img class="pic-right" src="data:image/jpg;base64,'+ msg.pic +'"/>'
+		    		var li = '<li class="message"><img class="pic-right" src="data:image/jpg;base64,'+ msg["pic"] +'"/>'
 		                     	+ '<span class="message-box-right"><span class="message-user">'
 		                        + '<p class="NickName-right"><span>'+ sendtime +'</span><span>我</span></p>'
 		                        + '</span><span class="message-content"><i class="angle-right"></i>'
 		                        + '<span class="text-right">'+ message +'</span></span></span></li>';
 		    	}else{
-		    		var li = '<li class="message unread"><img class="pic-left" src="data:image/jpg;base64,'+ msg.pic +'"/>'
+		    		var li = '<li class="message unread"><img class="pic-left" src="data:image/jpg;base64,'+ msg["pic"] +'"/>'
 		                     	+ '<span class="message-box-left"><span class="message-user">'
 		                        + '<p class="NickName-left"><span>'+ name +'</span><span>'+ sendtime +'</span></p>'
 		                        + '</span><span class="message-content"><i class="angle-left"></i>'
 		                        + '<span class="text-left">'+ message +'</span></span></span></li>';
 		    	}
-		    	var pic = msg.grouppic;
+		    	var pic = msg["grouppic"];
 		    	var content = "";
 		    	for(var i = 0; i < pic.length; i++) {
 	                 content = content + '<img class="message-pic" src="data:image/jpg;base64,'+ pic[i] +'"/>';
@@ -465,13 +506,13 @@ function getBasicInfo() {
 	$.ajax({
 		type: "post",
 		url: "/update",
-		async: true,
+		async: false,
 		dataType: "json",
 		success: function (data) {
 			UserInfo = data.user;
 			userpho = data.userpic;
 			$("#mypic").attr("src","data:image/jpg;base64," + userpho);
-			MessageSync(UserInfo.NickName);
+			
 
 			var Allgroups = $(".allgroups-content");
 			var Allcontact = $(".allcontact-content");
@@ -479,6 +520,9 @@ function getBasicInfo() {
 			Allgroups.html("");
 			Allcontact.html("");
 			Manager.html("");
+			$(".multisend-contacts").find(".selected-group").each(function(){
+				$(this).remove();
+			});
 			
 			var c = "@";
 			var regex = new RegExp(c, 'g');
@@ -527,6 +571,7 @@ function getBasicInfo() {
 			});
         }
 	});
+	return UserInfo;
 }
 
 function ShowOptions(e) {
@@ -568,4 +613,21 @@ function DeleteSelectedGroup() {
 			});
 		});
 	});
+}
+
+function addemoij(e)
+{
+  var $e=$(e);
+  var src=$e.parent().prev().attr("src");
+  $.ajax({
+        type: "post",
+        url: "/addemoij",
+        data:{
+            message:src
+        },
+        dataType: "json",
+        success: function (data) {
+            alert("添加成功!");
+        }
+    });
 }

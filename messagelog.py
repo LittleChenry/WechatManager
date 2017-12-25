@@ -1,10 +1,11 @@
 #-*- coding: utf-8 -*-
-import MySQLdb
+import mysql.connector
 import database1
 import json
 import time
+import datetime
 def messagelog(beg,end,group):
-    conn = MySQLdb.connect(
+    conn =  mysql.connector.connect(
         host=database1.host,
         port=database1.port,
         user=database1.user,
@@ -13,8 +14,12 @@ def messagelog(beg,end,group):
         charset="utf8"
     )
     cur2 = conn.cursor()
-    print beg,end,group
-    sel1 = "select message.content,message.Time,members.NickName,message.type from message,members where message.time>='%s' and message.time<='%s' and message.group_ID='%d' and message.member_ID=members.ID"%(beg,end,int(group))
+    sel="select ID from groups where name='%s'"% group
+    cur2.execute(sel)
+    groupid=cur2.fetchone()
+    if len(end)<13:
+        end=end+' 23:59:59'
+    sel1 = "select message.content,message.Time,members.NickName,message.type from message,members where message.time>='%s' and message.time<='%s' and message.group_ID='%d' and message.member_ID=members.ID"%(beg,end,int(groupid[0]))
     cur2.execute(sel1)
     results = cur2.fetchall()
 
