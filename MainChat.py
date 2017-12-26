@@ -81,6 +81,13 @@ class ChatRun(object):
         # 文本
         @itchat.msg_register([TEXT, MAP, CARD, NOTE, SHARING], isGroupChat=True)
         def reply_group(msg):
+            memberList = itchat.update_chatroom(msg['FromUserName'], detailedMember=True)
+            print(memberList)
+            realNickName=""
+            for member in memberList['MemberList']:
+                if msg['ActualUserName'] == member.get('UserName'):
+                    realNickName = member.get('NickName')
+            print(realNickName)
             if self.getmySelfID() == msg['FromUserName']:
                 if msg['Type'] == 'Sharing':
                     self.sendMsg(msg['Text'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),
