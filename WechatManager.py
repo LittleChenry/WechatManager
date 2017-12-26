@@ -239,7 +239,7 @@ def getemoijone():
     for root, dirs, files in os.walk(basepath+"/static/img/emoij/"+id):
         for file in files:
             if os.path.splitext(file)[1] == '.jpeg' or '.gif' or '.png':
-                list.append("/static/img/emoij/"+id+"/"+file)
+                list.append("static/img/emoij/"+id+"/"+file)
     return json.dumps({'list': list})
 
 @app.route('/impemoij', methods=["POST"])
@@ -267,7 +267,7 @@ def groupemoij():
     if len(group) == 0:
         group = None
     rpath = filepath
-    chat.group_file(filepath,filepath,group=group)
+    chat.group_file(filepath,request.form.get("message"),group=group)
     return json.dumps({'success': request.form.get("message")})
 
 @app.route('/sendguangfangemoij', methods=['POST'])
