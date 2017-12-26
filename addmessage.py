@@ -14,7 +14,7 @@ def addmessage(dic):
     cur1 = conn.cursor()
     cur2 = conn.cursor()
     cur3 = conn.cursor()
-    sel="select id from members where nickname='%s'" % dic['name']
+    sel="select id from members where nickname='%s'" % dic['rename']
     cur1.execute(sel)
     memberid =cur1.fetchone()
     sel1 = "select min(id) from groups where name='%s'" % dic['gname']
@@ -28,9 +28,9 @@ def addmessage(dic):
         pass
     else:
         if memberid == None:
-            inse = "insert into members (nickname,group_id)values('%s','%d')" % (dic['name'], int(groupid[0]))
+            inse = "insert into members (nickname,group_id)values('%s','%d')" % (dic['rename'], int(groupid[0]))
             cur1.execute(inse)
-            sel = "select id from members where nickname='%s'" % dic['name']
+            sel = "select id from members where nickname='%s'" % dic['rename']
             cur1.execute(sel)
             memberid = cur1.fetchone()
         str="insert into message (Content,group_id,member_id,time,Type,url) values('%s','%d','%d','%s','%s','%s')"%(dic['info'], int(groupid[0]) ,int(memberid[0]), dic['time'],dic['type'],url)
