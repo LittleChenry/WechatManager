@@ -19,7 +19,7 @@ def messagelog(beg,end,group):
     groupid=cur2.fetchone()
     if len(end)<13:
         end=end+' 23:59:59'
-    sel1 = "select message.content,message.Time,members.NickName,message.type from message,members where message.time>='%s' and message.time<='%s' and message.group_ID='%d' and message.member_ID=members.ID"%(beg,end,int(groupid[0]))
+    sel1 = "select message.content,message.Time,members.NickName,message.type,message.url from message,members where message.time>='%s' and message.time<='%s' and message.group_ID='%d' and message.member_ID=members.ID"%(beg,end,int(groupid[0]))
     cur2.execute(sel1)
     results = cur2.fetchall()
 
@@ -30,6 +30,7 @@ def messagelog(beg,end,group):
         user['Time'] = r[1].strftime("%Y-%m-%d %H:%M:%S")
         user['NickName'] = r[2]
         user['type'] = r[3]
+        user['url'] = r[4]
         users.append(user)
     jsonStr = json.dumps(users)
     cur2.close()
