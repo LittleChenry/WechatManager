@@ -129,6 +129,17 @@ body {
 	overflow-y: auto;
 }
 
+.sub-mainrow {
+    width: 25%;
+    background-color: #F5F5F5;
+}
+
+.sub-contentrow {
+    width: 75%;
+    background-color: #FCFCFC;
+    border-left: 1px solid #C1C1C1;
+}
+
 .title-content {
 	height: 53px;
 	width: 100%;
@@ -331,11 +342,39 @@ body {
     margin-top: 9px;
 }
 
+.text-groups {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+
 .groups {
 	list-style-type: none;
 	background-color: #E6E5E5;
     padding: 0px;
     margin: 0px;
+}
+
+.single-list {
+    position: relative;
+    height: 53px;
+    border-bottom: 1px solid #c1c1c1;
+    box-sizing: border-box;
+}
+
+.keyword-name {
+    margin: 0px;
+    font-size: 16px;
+    padding: 10px 15px 0px 15px;
+}
+
+.keyword-reply {
+    margin: 0px;
+    font-size: 12px;
+    padding: 2px 20px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .single-message {
@@ -535,9 +574,10 @@ body {
 
 .config-name {
 	padding: 0px;
-    margin: 17px;
+    margin: 17px 0px;
     position: absolute;
-    max-width: 90%;
+    text-align: center;
+    width: 100%;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -597,6 +637,28 @@ body {
 
 .multi-send-button {
 	text-align: right;
+}
+
+.templatemessage-content {
+    margin: 0px;
+    padding: 17px 20px;
+    position: absolute;
+    width: 90%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.sendinfo {
+    font-weight: 600;
+    margin-bottom: 0px;
+}
+
+.sendmessage {
+    margin: 0px;
+    padding-left: 20px;
+    font-size: 14px;
+    line-height: 0.5;
 }
 
 

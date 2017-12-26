@@ -94,9 +94,35 @@
     				success: function (data) {
     				$('#logging').html("");
                         for(var i=0;i<data.length;i++){
-                            var p = '<li style="padding:5px 0px;">' + data[i].NickName+ ',' + data[i].Time + ',' + data[i].type +  ', ' + data[i].content +'</li>';
-                            //alert(p);
-                            $('#logging').append(p);
+                            var type = data[i].type;
+                            switch(type){
+                                case "Text":
+                                    var message = data[i].content;
+                                    break;
+                                case "Video":
+                                    var message = '<video class="message-video" src="../'+ data[i].content +'" controls="controls">your browser does not support the video tag</video>';
+                                    break;
+                                case "Picture":
+                                    var message = '<img src="../'+ data[i].content +'" class="emoji-pic" onclick="ShowOptions(this)">';
+                                    break;
+                                case "Recording":
+                                    var message = '<audio src="../'+ data[i].content +'" controls="controls">your browser does not support the audio tag</audio>';
+                                    break;
+                                case "Sharing":
+                                    var message = '<a class="tab-a" href="'+ data[i].url +'" target="_blank">链接：'+ data[i].content +'</a>';
+                                    break;
+                                case "Attachment":
+                                    var filepath = data[i].content.split("\\");
+                                    var length = filepath.length;
+                                    var message = '<span>'+ filepath[length - 1] +'</span><a href="../'+ data[i].content +'" download><i class="fa fa-download fa-fw"></i></a>';
+                                    break;
+                                default:
+                                    var message = "不支持预览，请在手机上查看。";
+                            }
+                            var pSendInfo = '<p class="sendinfo">' + data[i].Time+ ' ， ' + data[i].NickName + '<p>';
+                            var pMessage = '<p class="sendmessage">'+ message +'</p>';
+                            var li = pSendInfo + pMessage;
+                            $('#logging').append(li);
     				    }
                      }
                 });

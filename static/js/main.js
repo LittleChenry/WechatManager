@@ -29,6 +29,23 @@ function PageInit() {
 		});
 	});
 
+	$("#config-lists").find("li").each(function(){
+		$(this).unbind("click").bind("click",function(){
+			if (!($(this).hasClass("active"))) {
+				$("#config-lists").find("li").each(function(){
+					if ($(this).hasClass("active")) {
+						$(this).removeClass("active");
+						var contentid = $(this).find("span").attr("data-content");
+						$("#" + contentid).hide();
+					}
+				});
+				$(this).addClass("active");
+				var contentid = $(this).find("span").attr("data-content");
+				$("#" + contentid).show();
+			}
+		});
+	});
+
 	$(".dialog-func-tab").find("a").each(function(){
 		$(this).unbind("click").bind("click",function(){
 			if (!($(this).find("span").hasClass("tab-active"))) {

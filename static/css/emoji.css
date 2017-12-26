@@ -1,0 +1,192 @@
+.emoijbox
+{
+    position: absolute;
+    left:0;
+    bottom: 250px;
+    display: none;
+    width: 419px;
+    background: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 2px;
+}
+.multiemoijbox
+{
+    position: absolute;
+    left:0;
+    bottom: 250px;
+    display: none;
+    width: 419px;
+    background: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 2px;
+}
+.emoji-title-names
+{
+    margin: 0px;
+    padding: 5px 20px;
+}
+.emoijbox .emoijtool .emoijtitle
+{
+    width:400px;
+    height:100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+}
+.emoijbox .emoijtool ul li
+{
+    position: relative;
+    width: auto;
+    float: left;
+    padding: 4px;
+    border: 1px solid #e8e8e8;
+    cursor: pointer;
+    display: list-item;
+    text-align: -webkit-match-parent;
+    list-style-type: none;
+
+}
+.emoijbox .emoijtool ul li.liactive
+{
+    background-color:green;
+    color: white;
+}
+.close
+{
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    color: black;
+}
+.emoijpanel ul
+{
+    width: 372px;
+    margin: 0 auto;
+    padding: 5px;
+    overflow: hidden;
+}
+
+.emoijpanel  li
+{
+   position: relative;
+    z-index: 8;
+    float: left;
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+    margin-left: -1px;
+    margin-top: -1px;
+    border: 1px solid #e8e8e8;
+    cursor: pointer;
+    display: list-item;
+    text-align: -webkit-match-parent;
+    list-style-type:none
+}
+.emoijpanel  img
+{
+    width: 28px;
+    height: 28px;
+}
+.emoijpanel
+{
+   width: 419px;
+   height:200px;
+   overflow-y:auto;
+ }
+.emoijimportbox
+{
+    position: absolute;
+    left:15%;
+    display: none;
+    width: 419px;
+    margin-top: 74%;
+    background: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 2px;
+}
+.emoijimporttool
+{
+   height: 34px;
+    background: white;
+    border:1px solid #e8e8e8;
+    text-align:center;
+    font-size:12px;
+    font-weight: bold;
+    font-family:"宋体"
+}
+.emoijimporttitle
+{
+    margin-left: 0;
+    margin-top: 2%;
+    padding: 8px;
+    text-align:center;
+    font-size:12px;
+    font-weight: bold;
+    font-family:"宋体"
+}
+.titleforemoij
+{
+   position: relative;
+   left: 2%;
+   padding:10px;
+   float:left;
+}
+.emoijimportemoijpanel
+{
+   width: 419px;
+   height:200px;
+   overflow-y:scroll;
+
+}
+.emoijimportemoijpanel ul
+{
+    width: 372px;
+    margin: 0 auto;
+    padding: 16px 5px 20px;
+    overflow: hidden;
+}
+.emoijimportemoijpanel  li
+{
+    position: relative;
+    z-index: 8;
+    float: left;
+    width: 50px;
+    height: 50px;
+    padding: 4px;
+    margin-left: -1px;
+    margin-top: -1px;
+    border: 1px solid #e8e8e8;
+    cursor: pointer;
+    display: list-item;
+    text-align: -webkit-match-parent;
+    list-style-type:none
+
+}
+.emoijimporttool .close
+{
+    float: right;
+    width: 10px;
+    height: 10px;
+    line-height: 28px;
+    text-align: center;
+    margin-right: 5px;
+    margin-top: 1px;
+    color: black;
+
+}
+.sub_btn
+{
+  float:right;
+}
+.emoijimportemoijpanel  img
+{
+    width: 50px;
+    height: 50px;
+}
+.closeli
+{
+    position: absolute;
+    margin-left: -15px;
+    margin-top: -1px;
+
+}

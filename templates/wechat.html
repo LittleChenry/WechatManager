@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" type="text/css" href="static/css/wechat.css">
-    <link rel="stylesheet" type="text/css" href="static/css/wechatframe2.css">
+    <link rel="stylesheet" type="text/css" href="static/css/emoji.css">
     <link rel="stylesheet" href="static/plugins/FontAwesome/css/font-awesome.min.css">
     <title>Wechat</title>
 </head>
@@ -17,14 +17,14 @@
                 <li class="menu-list list-item" title="会话">
                     <a id="at" class="menu-a-active" href="javascript:;" data-content="dialog-content"><i class="fa fa-comment"></i></a>
                 </li>
-                <li class="menu-list list-item" title="联系人">
-                    <a class="menu-a" href="javascript:;" data-content="contact-content"><i class="fa fa-user-o"></i></a>
-                </li>
                 <li class="menu-list list-item" title="群发">
                     <a class="menu-a" href="javascript:;" data-content="multisend-content"><i class="fa fa-send-o"></i></a>
                 </li>
                 <li class="menu-list list-item" title="配置">
                     <a class="menu-a" href="javascript:;" data-content="config-content"><i class="fa fa-cog"></i></a>
+                </li>
+                <li class="menu-list list-item" title="统计">
+                    <a class="menu-a" href="javascript:;" data-content="statistics-content"><i class="fa fa-bar-chart"></i></a>
                 </li>
             </ul>
         </div>
@@ -173,14 +173,107 @@
             </div>
             <div class="sub-menu config-content">
                 <div class="single-row contact-menu">
-                    <ul id="" class="groups">
+                    <ul id="config-lists" class="groups">
+                        <li class="single-message active">
+                            <span class="config-name" title="关键词回复" data-content="keywordreply-content">关键词回复</span>
+                        </li>
                         <li class="single-message">
-                            <span class="config-name" title="测试1群">config1</span>
+                            <span class="config-name" title="敏感消息" data-content="specialmessage-content">敏感消息</span>
+                        </li>
+                        <li class="single-message">
+                            <span class="config-name" title="消息模板" data-content="messagetemplate-content">消息模板</span>
                         </li>
                     </ul>
                 </div>
-                <div class="single-row configs">
-                    configs
+                <div id="keywordreply-content" class="single-row configs">
+                    <div class="single-row sub-mainrow">
+                        <ul class="text-groups">
+                            <li class="single-list">
+                                <p class="keyword-name">一乙农业</p>
+                                <p class="keyword-reply">一乙农业是江苏一乙生态农业科技有限公司的简称。公司坚持走绿色发展、和谐发展、融合发展之路，以为市民提供放心食品</p>
+                            </li>
+                            <li class="single-list">
+                                <p class="keyword-name">关键词2</p>
+                                <p class="keyword-reply">关键词2回复</p>
+                            </li>
+                            <li class="single-list">
+                                <p class="keyword-name">关键词3</p>
+                                <p class="keyword-reply">关键词3回复</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="single-row sub-contentrow">
+                        sub-contentrow
+                    </div>
+                </div>
+                <div id="specialmessage-content" class="single-row configs hide">
+                    <div class="single-row sub-mainrow">
+                        <ul class="text-groups">
+                            <li class="single-list">
+                                <p class="keyword-name">文本</p>
+                                <p class="keyword-reply">电话</p>
+                            </li>
+                            <li class="single-list">
+                                <p class="keyword-name">链接</p>
+                                <p class="keyword-reply">链接白名单</p>
+                            </li>
+                            <li class="single-list">
+                                <p class="keyword-name">白名单</p>
+                                <p class="keyword-reply">发送者白名单</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="single-row sub-contentrow">
+                        sub-contentrow
+                    </div>
+                </div>
+                <div id="messagetemplate-content" class="single-row configs hide">
+                    <div class="single-row sub-mainrow">
+                        <ul class="text-groups">
+                            <li class="single-list">
+                                <span class="templatemessage-content">一乙农业</span>
+                            </li>
+                            <li class="single-list">
+                                <span class="templatemessage-content">一乙酒业</span>
+                            </li>
+                            <li class="single-list">
+                                <span class="templatemessage-content">一乙茶业</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="single-row sub-contentrow">
+                        sub-contentrow
+                    </div>
+                </div>
+            </div>
+            <div class="sub-menu statistics-content hide">
+                <div class="single-row contact-menu">
+                    <ul id="statistics-lists" class="groups">
+                        <li class="single-message active">
+                            <span class="config-name" title="活跃度统计" data-content="activity-content">活跃度统计</span>
+                        </li>
+                    </ul>
+                </div>
+                <div id="activity-content" class="single-row configs">
+                    <div class="single-row sub-mainrow">
+                        <ul class="text-groups">
+                            <li class="single-message active" data-aite="2">
+                                <span class="group-pic">
+                                    <img class="single-pic" src="static/img/weixin.jpg">
+                                </span>
+                                <span class="group-name" title="微信群管理内部讨论群" data-content="">微信群管理内部讨论群</span>
+                            </li>
+                            <li class="single-message" data-aite="2">
+                                <span class="group-pic">
+                                    <img class="single-pic" src="static/img/weixin.jpg">
+                                </span>
+                                <span class="group-name" title="微信群管理内部讨论群" data-content="">测试1群</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="single-row sub-contentrow">
+                        sub-contentrow
+                    </div>
                 </div>
             </div>
         </div>
@@ -197,7 +290,7 @@
     
     <script src="static/js/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="static/js/socket.io.min.js"></script>
-    <script src="static/js/wechatmain2.js"></script>
+    <script src="static/js/emoji.js"></script>
     <script src="static/js/face.js"></script>
     <script src="static/js/main.js"></script>
 </body>

@@ -87,14 +87,15 @@ class ChatRun(object):
             for member in memberList['MemberList']:
                 if msg['ActualUserName'] == member.get('UserName'):
                     realNickName = member.get('NickName')
+                    break
             print(realNickName)
             if self.getmySelfID() == msg['FromUserName']:
                 if msg['Type'] == 'Sharing':
                     self.sendMsg(msg['Text'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),
                                  time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), self.getmySelfID(),
-                                 msg['ToUserName'], msg['Type'], url = msg['Url'],rename=realNickName)
+                                 msg['ToUserName'], msg['Type'], url = msg['Url'],rename=self.getmySelfName())
                 else:
-                    self.sendMsg(msg['Text'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['FromUserName'],msg['ToUserName'],msg['Type'],rename=realNickName)
+                    self.sendMsg(msg['Text'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['FromUserName'],msg['ToUserName'],msg['Type'],rename=self.getmySelfName())
             self.updateGid()
             gid = self.__gid
             #print 'need:',self.__needGroups, 'gid:', len(gid)
@@ -121,8 +122,19 @@ class ChatRun(object):
                             if not value == 'auto':
                                 itchat.send('%s @%s ' % (self.__keyWordReponse[key], msg['ActualNickName']),
                                             msg['FromUserName'])
+                                self.sendMsg(self.__keyWordReponse[key], self.__mySelf['NickName'],
+                                             gs[msg['FromUserName']],
+                                             time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                             self.__mySelf['UserName'], msg['FromUserName'], msg['Type'],
+                                             rename=self.__mySelf['NickName'])
+
                             else:
                                 itchat.send(u'收到消息: %s @%s ' % (text, msg['ActualNickName']), msg['FromUserName'])
+                                self.sendMsg(text, self.__mySelf['NickName'],
+                                             gs[msg['FromUserName']],
+                                             time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                             self.__mySelf['UserName'], msg['FromUserName'], msg['Type'],
+                                             rename=self.__mySelf['NickName'])
                             break
                         elif msg['isAt']:
                             time.sleep(3)
@@ -137,17 +149,20 @@ class ChatRun(object):
             for member in memberList['MemberList']:
                 if msg['ActualUserName'] == member.get('UserName'):
                     realNickName = member.get('NickName')
+                    break
             basepath = os.path.dirname(__file__)
-            upload_path = os.path.join(basepath, 'static/picture',msg['FileName'])
+            ran = (int)(time.time()) + random.randint(0,(int)(time.time() / 10000))
+            upload_path = os.path.join(basepath, 'static/picture',(str)(ran)+"-"+msg['FileName'])
+            print(upload_path)
             msg['Text'](upload_path)
             if self.getmySelfID() == msg['FromUserName']:
-                self.sendMsg('static/picture/'+msg['FileName'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['FromUserName'],msg['ToUserName'],msg['Type'],rename=realNickName)
+                self.sendMsg('static/picture/'+(str)(ran) + "-" + msg['FileName'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['FromUserName'],msg['ToUserName'],msg['Type'],rename=self.getmySelfName())
             self.updateGid()
             gid = self.__gid
 
             for gs in gid:
                 if msg['FromUserName'] in gs:
-                    text = 'static\\picture\\'+msg['FileName']
+                    text = 'static/picture/'+(str)(ran) + "-" + msg['FileName']
                     self.sendMsg(text, msg['ActualNickName'], gs[msg['FromUserName']],
                                  time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), msg['ActualUserName'],
                                  msg['FromUserName'],msg['Type'],rename=realNickName)
