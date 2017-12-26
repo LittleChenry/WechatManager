@@ -69,7 +69,7 @@ class ChatRun(object):
         self.__keyWordReponse = {u'一乙': 'auto', u'test': u'测试成功'}
 
         # 待管理的群
-        self.setNeedGroupByName(readGname())
+        self.setNeedGroupByName(readGname(self.__mySelf['NickName']))
 
         #gid
         self.updateGid()
@@ -202,9 +202,9 @@ class ChatRun(object):
         num = 0
         for i in memberlist:
             img = itchat.get_head_img(userName=i["id"])
-            buffer = BytesIO(img)
-            buffer2 = BytesIO()
             try:
+                buffer = BytesIO(img)
+                buffer2 = BytesIO()
                 image = Image.open(buffer)
                 image.save(buffer2, format="JPEG")
                 img_str = base64.b64encode(buffer2.getvalue())

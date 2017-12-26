@@ -201,7 +201,8 @@ def setDefaultGroup():
     for item in namelist:
         name = chat.getGroupNameById(item)
         gname.append(name)
-    recordGname(gname)
+    manager=chat.getmySelfName()
+    recordGname(gname,manager)
     chat.setNeedGroup(namelist)
     return json.dumps({'success':True})
 @app.route('/addKeyWord', methods=['POST'])

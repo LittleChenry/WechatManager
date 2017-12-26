@@ -17,9 +17,13 @@ def addmessage(dic):
     sel="select id from members where nickname='%s'" % dic['name']
     cur1.execute(sel)
     memberid =cur1.fetchone()
-    sel1 = "select id from groups where name='%s'" % dic['gname']
+    sel1 = "select min(id) from groups where name='%s'" % dic['gname']
     cur2.execute(sel1)
     groupid = cur2.fetchone()
+    if dic['type']=='Sharing':
+        url=dic['url']
+    else:
+        url=''
     if groupid==None:
         pass
     else:
@@ -29,7 +33,7 @@ def addmessage(dic):
             sel = "select id from members where nickname='%s'" % dic['name']
             cur1.execute(sel)
             memberid = cur1.fetchone()
-        str="insert into message (Content,group_id,member_id,time,Type) values('%s','%d','%d','%s','%s')"%(dic['info'], int(groupid[0]) ,int(memberid[0]), dic['time'],dic['type'])
+        str="insert into message (Content,group_id,member_id,time,Type,url) values('%s','%d','%d','%s','%s','%s')"%(dic['info'], int(groupid[0]) ,int(memberid[0]), dic['time'],dic['type'],url)
         cur3.execute(str)
     cur1.close()
     cur2.close()
