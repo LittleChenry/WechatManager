@@ -1,5 +1,5 @@
-host='localhost'
-port=3306
+host='139.224.94.195'
+port=3300
 user='root'
-passwd='123456'
+passwd='!Weixin123'
 db='wechat'
