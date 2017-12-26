@@ -24,7 +24,7 @@ def addmessage(dic):
         url=dic['url']
     else:
         url=''
-    if groupid==None:
+    if groupid[0]==None:
         pass
     else:
         if memberid == None:
