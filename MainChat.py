@@ -281,7 +281,7 @@ class ChatRun(object):
             else:
                 msg={}
                 msg['info']=info
-                msg['name']=self.__mySelf['NickName']
+                msg['rename']=self.__mySelf['NickName']
                 msg['gname']=gname
                 msg['time']=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
                 msg['type']='Text'
@@ -415,7 +415,7 @@ class ChatRun(object):
             else:
                 msg = {}
                 msg['info'] = mes
-                msg['name'] = self.__mySelf['NickName']
+                msg['rename'] = self.__mySelf['NickName']
                 msg['gname'] = gname
                 msg['time'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
                 msg['type'] = ftype
