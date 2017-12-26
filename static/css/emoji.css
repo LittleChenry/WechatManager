@@ -96,10 +96,9 @@
 .emoijimportbox
 {
     position: absolute;
-    left:15%;
     display: none;
     width: 419px;
-    margin-top: 74%;
+    bottom: 250px;
     background: #fff;
     border: 1px solid #dbdbdb;
     border-radius: 2px;
