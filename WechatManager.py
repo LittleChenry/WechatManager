@@ -22,7 +22,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-
+basepath = os.path.dirname(__file__)
 async_mode = None
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode=async_mode)
@@ -216,19 +216,19 @@ def addKeyWord():
 @app.route('/emoij', methods=["POST"])
 def getemoij():
     list=[]
-    for root, dirs, files in os.walk("static/img/emoij/guanfang"):
+    for root, dirs, files in os.walk(basepath+"/static/img/emoij/guanfang"):
         for file in files:
             if os.path.splitext(file)[1] == '.jpeg' or '.gif' or '.png':
-                list.append(root+"/"+file)
+                list.append("/static/img/emoij/"+"guanfang"+"/"+file)
     return json.dumps({'list':list})
 
 @app.route('/emoijtitle', methods=["POST"])
 def getemoijtitle():
     list=[]
     jsonlist={}
-    for root, dirs, files in os.walk("static/img/emoij"):
+    for root, dirs, files in os.walk(basepath+"/static/img/emoij"):
         for file in dirs:
-                list.append(file)
+            list.append(file)
     jsonlist["titlelist"]=list
     return json.dumps(jsonlist)
 
@@ -236,10 +236,10 @@ def getemoijtitle():
 def getemoijone():
     list = []
     id=request.form.get("id")
-    for root, dirs, files in os.walk("static/img/emoij/"+id):
+    for root, dirs, files in os.walk(basepath+"/static/img/emoij/"+id):
         for file in files:
             if os.path.splitext(file)[1] == '.jpeg' or '.gif' or '.png':
-                list.append(root+"/"+file)
+                list.append("/static/img/emoij/"+id+"/"+file)
     return json.dumps({'list': list})
 
 @app.route('/impemoij', methods=["POST"])
@@ -251,11 +251,11 @@ def importemoij():
         file = request.files['importlist'+str(i)]
         # print(id);
         filename = file.filename.split('.')[0] + '_new.' + file.filename.split('.')[-1]
-        if os.path.exists("static/img/emoij/"+id):
-              file.save("static/img/emoij/"+id+"/"+datetime.now().date().strftime('%Y%m%d%H%M')+filename)
+        if os.path.exists(basepath+"/static/img/emoij/"+id):
+              file.save(basepath+"/static/img/emoij/"+id+"/"+datetime.now().date().strftime('%Y%m%d%H%M')+filename)
         else:
-            os.makedirs("static/img/emoij/"+id)
-            file.save("static/img/emoij/" + id + "/" + datetime.now().date().strftime('%Y%m%d%H%M') + filename)
+            os.makedirs(basepath+"/static/img/emoij/"+id)
+            file.save(basepath+"/static/img/emoij/" + id + "/" + datetime.now().date().strftime('%Y%m%d%H%M') + filename)
     return "success"
 
 @app.route('/sendemoij', methods=['POST'])
@@ -263,11 +263,12 @@ def groupemoij():
     global chat
     group = request.form.getlist("groups[]")
     filepath=request.form.get("message");
+    filepath=basepath+filepath;
     if len(group) == 0:
         group = None
     rpath = filepath
     chat.group_file(filepath,filepath,group=group)
-    return json.dumps({'success': filepath})
+    return json.dumps({'success': request.form.get("message")})
 
 @app.route('/sendguangfangemoij', methods=['POST'])
 def groupguangfangemoij():
@@ -287,7 +288,7 @@ def addemoij():
     filename=str.split("/");
     with open(str,'rb') as f:
          s=f.read()
-    with open("static/img/emoij/shoucang/"+datetime.now().date().strftime('%Y%m%d%H%M')+filename[len(filename)-1], 'wb') as f:
+    with open(basepath+"/static/img/emoij/shoucang/"+datetime.now().date().strftime('%Y%m%d%H%M')+filename[len(filename)-1], 'wb') as f:
          f.write(s)
     return json.dumps({'success': "success"})
 
