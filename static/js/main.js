@@ -239,7 +239,6 @@ function PageInit() {
 					}
 					sendid = $(this).find(".group-name").attr("data-content");
 					groups[count] = aites + $(this).find(".group-name").attr("data-content");
-					alert(groups[count]);
 					groupnames[count++] = $(this).find(".group-name").attr("title");
 				}
 				return count;

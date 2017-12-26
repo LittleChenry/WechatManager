@@ -454,9 +454,11 @@ function sendemoijgroup(evt,event)
                     + '</span><span class="message-content"><i class="angle-right"></i>'
                     + '<span class="text-right">'+ message +'</span></span></span></li>';
             $("#" + sendid).append(li);
-            alert("发送成功!");
+
         }
     });
+   $("#emoijdivgroup").hide();
+   alert("发送成功!");
 }
 function sendguanfangemoijgroup(evt,event)
 {
@@ -514,4 +516,5 @@ function sendguanfangemoijgroup(evt,event)
             $("#" + sendid).append(li);
         }
     });*/
+
 }

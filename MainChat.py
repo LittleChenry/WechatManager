@@ -82,13 +82,11 @@ class ChatRun(object):
         @itchat.msg_register([TEXT, MAP, CARD, NOTE, SHARING], isGroupChat=True)
         def reply_group(msg):
             memberList = itchat.update_chatroom(msg['FromUserName'], detailedMember=True)
-            print(memberList)
             realNickName=""
             for member in memberList['MemberList']:
                 if msg['ActualUserName'] == member.get('UserName'):
                     realNickName = member.get('NickName')
                     break
-            print(realNickName)
             if self.getmySelfID() == msg['FromUserName']:
                 if msg['Type'] == 'Sharing':
                     self.sendMsg(msg['Text'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),
@@ -272,7 +270,8 @@ class ChatRun(object):
             itchat.send(info, group[0])
         else:
             for g in group:
-                time.sleep(3)
+                ran = random.randint(2,7)
+                time.sleep(3 + ran)
                 itchat.send(info, g)
         for gi in group:
             gname=self.getGroupNameById(gi)
@@ -406,7 +405,8 @@ class ChatRun(object):
             itchat.send('@%s@%s' % ({'Picture': 'img', 'Video': 'vid'}.get(ftype, 'fil'), info), group[0])
         else:
             for g in group:
-                time.sleep(3)
+                ran = random.randint(2, 7)
+                time.sleep(3+ran)
                 itchat.send('@%s@%s' % ({'Picture': 'img', 'Video': 'vid'}.get(ftype, 'fil'), info), g)
         for gi in group:
             gname = self.getGroupNameById(gi)

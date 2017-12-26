@@ -263,7 +263,7 @@ def groupemoij():
     global chat
     group = request.form.getlist("groups[]")
     filepath=request.form.get("message");
-    filepath=basepath+filepath;
+    filepath=basepath+ '/' + filepath;
     if len(group) == 0:
         group = None
     rpath = filepath
@@ -286,7 +286,7 @@ def addemoij():
     global chat
     str = request.form.get('message')
     filename=str.split("/");
-    with open(str,'rb') as f:
+    with open(basepath+"/"+str,'rb') as f:
          s=f.read()
     with open(basepath+"/static/img/emoij/shoucang/"+datetime.now().date().strftime('%Y%m%d%H%M')+filename[len(filename)-1], 'wb') as f:
          f.write(s)
