@@ -58,7 +58,7 @@
     right: 4px;
     color: black;
 }
-.emoijpanel ul
+.guanfang ul
 {
     width: 372px;
     margin: 0 auto;
@@ -66,7 +66,7 @@
     overflow: hidden;
 }
 
-.emoijpanel  li
+.guanfang  li
 {
    position: relative;
     z-index: 8;
@@ -82,7 +82,7 @@
     text-align: -webkit-match-parent;
     list-style-type:none
 }
-.emoijpanel  img
+.guanfang  img
 {
     width: 28px;
     height: 28px;
@@ -93,6 +93,36 @@
    height:200px;
    overflow-y:auto;
  }
+
+ .shoucang ul
+{
+    width: 372px;
+    margin: 0 auto;
+    padding: 5px;
+    overflow: hidden;
+}
+
+.shoucang  li
+{
+   position: relative;
+    z-index: 8;
+    float: left;
+    width: 80px;
+    height: 80px;
+    padding: 4px;
+    margin-left: -1px;
+    margin-top: -1px;
+    border: 1px solid #e8e8e8;
+    cursor: pointer;
+    display: list-item;
+    text-align: -webkit-match-parent;
+    list-style-type:none
+}
+.shoucang  img
+{
+    width: 80px;
+    height: 80px;
+}
 .emoijimportbox
 {
     position: absolute;
@@ -149,8 +179,8 @@
     position: relative;
     z-index: 8;
     float: left;
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
     padding: 4px;
     margin-left: -1px;
     margin-top: -1px;
@@ -179,13 +209,13 @@
 }
 .emoijimportemoijpanel  img
 {
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
 }
 .closeli
 {
     position: absolute;
-    margin-left: -15px;
-    margin-top: -1px;
+    margin-left: -16px;
+    margin-top: 1px;
 
 }

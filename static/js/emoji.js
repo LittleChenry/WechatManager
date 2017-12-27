@@ -59,6 +59,8 @@ $(function(){
         dataType: "json",
         success: function (data) {
                $("#emoijul").empty();
+               $("#emoijpanel").removeClass("shoucang");
+                $("#emoijpanel").addClass("guanfang");
                var list=data.list;
                var content="";
                 for(var i=0;i<list.length;i++)
@@ -128,6 +130,8 @@ $(function(){
                var content="";
                 for(var i=0;i<list.length;i++)
                 {
+                 $("#emoijpanelgroup").removeClass("shoucang");
+                  $("#emoijpanelgroup").addClass("guanfang");
                    content=content+'<li><img onclick="sendguanfangemoij(this,event)" src="'+list[i]+'"/></li>';
                 }
                  $("#emoijulgroup").append(content);
@@ -143,19 +147,13 @@ $(function(){
     })
     $("#importemoij").unbind("click").bind("click",function(e){
         $("#importemoijfile").click();
-        e.stopPropagation();
+       // e.stopPropagation();
     })
     $("#emoijimportclose").unbind("click").bind("click",function(){
         $("#emoijimport").hide();
+        $("#importemoijfile").attr("type","file");
     })
     $("#sendinport").unbind("click").bind("click",function(){
-          var value=$("#title").val();
-          if(value=="")
-          {
-              alert("请输入表情包的名称");
-             $("#title").css("background-color","yellow");
-              return;
-          }
           if(groupfiles.length==0)
           {
               alert("没有表情需要导入");
@@ -181,28 +179,28 @@ $(function(){
         }
     });
     })
-    $("#title").bind("change",function(e){
-
-             $.ajax({
-               type: "post",
-               url: "/emoijtitle",
-               dataType: "json",
-               async:false,
-               success: function (data) {
-                    var list=data.titlelist;
-                    for(var i=0;i<list.length;i++ )
-                    {
-                       if( $("#title").val()==list[i])
-                       {
-                           $("#title").css("background-color","yellow");
-                           return;
-                       }
-
-                    }
-                     $("#title").css("background-color","white");
-                }
-            });
-    })
+//    $("#title").bind("change",function(e){
+//
+//             $.ajax({
+//               type: "post",
+//               url: "/emoijtitle",
+//               dataType: "json",
+//               async:false,
+//               success: function (data) {
+//                    var list=data.titlelist;
+//                    for(var i=0;i<list.length;i++ )
+//                    {
+//                       if( $("#title").val()==list[i])
+//                       {
+//                           $("#title").css("background-color","yellow");
+//                           return;
+//                       }
+//
+//                    }
+//                     $("#title").css("background-color","white");
+//                }
+//            });
+//    })
 })
 function changetitle(evt,event)
 {
@@ -224,12 +222,17 @@ function changetitle(evt,event)
                var content="";
                if(id=="guanfang")
                {
+                 $("#emoijpanel").removeClass("shoucang");
+                  $("#emoijpanel").addClass("guanfang");
                  for(var i=0;i<list.length;i++)
                 {
+
                    content=content+'<li><img onclick="sendguanfangemoij(this,event)" src="'+list[i]+'"/></li>';
                 }
                }else
                {
+                 $("#emoijpanel").removeClass("guanfang");
+                  $("#emoijpanel").addClass("shoucang");
                   for(var i=0;i<list.length;i++)
                  {
                    content=content+'<li><img onclick="sendemoij(this,event)" src="'+list[i]+'"/></li>';
@@ -260,12 +263,17 @@ function changetitlegroup(evt,event)
                var content="";
                if(id=="guanfang")
                {
+                $("#emoijpanelgroup").removeClass("shoucang");
+                  $("#emoijpanelgroup").addClass("guanfang");
                  for(var i=0;i<list.length;i++)
                 {
+
                    content=content+'<li><img onclick="sendguanfangemoijgroup(this,event)" src="'+list[i]+'"/></li>';
                 }
                }else
                {
+                 $("#emoijpanelgroup").removeClass("guanfang");
+                  $("#emoijpanelgroup").addClass("shoucang");
                   for(var i=0;i<list.length;i++)
                  {
                    content=content+'<li><img onclick="sendemoijgroup(this,event)" src="'+list[i]+'"/></li>';
@@ -291,6 +299,7 @@ function handleFiles(e)
        })(groupfiles[i]);
         reader.readAsDataURL(groupfiles[i]);
     }
+     $("#importemoijfile").attr("type","txt");
       $("#emoijimport").css('display','block');
 }
 function deleteli(evt)
@@ -345,7 +354,7 @@ function sendemoij(evt,event)
             var pic = $("#mypic").attr("src");
             var filepath = data.success.split("/");
             var length = filepath.length;
-            var message ='<img src="'+ data.success +'" class="emoji-pic" onclick="ShowOptions(this)"><div class="picture-func"><i class="fa fa-search-plus" title="查看" onclick="ShowPic(this)"></i><i class="fa fa-plus" title="添加表情"></i></div>';
+            var message ='<img src="'+ data.success +'" class="emoji-pic" onclick="ShowOptions(this)"><div class="picture-func"><i class="fa fa-search-plus" title="查看" onclick="ShowPic(this)"></i><i class="fa fa-plus" onclick="tianjia(this)" title="添加表情"></i></div>';
             var li = '<li class="message"><img class="pic-right" src="'+ pic +'"/>'
                     + '<span class="message-box-right"><span class="message-user">'
                     + '<p class="NickName-right"><span>'+ sendtime +'</span><span> 我</span></p>'
@@ -354,6 +363,8 @@ function sendemoij(evt,event)
             $("#" + sendid).append(li);
         }
     });
+    $("#emoijdiv").hide();
+   alert("发送成功!");
 }
 function sendguanfangemoij(evt,event)
 {
@@ -447,7 +458,7 @@ function sendemoijgroup(evt,event)
             var pic = $("#mypic").attr("src");
             var filepath = data.success.split("/");
             var length = filepath.length;
-            var message ='<img src="'+ data.success +'" class="emoji-pic" onclick="ShowOptions(this)"><div class="picture-func"><i class="fa fa-search-plus" title="查看" onclick="ShowPic(this)"></i><i class="fa fa-plus" title="添加表情"></i></div>';
+            var message ='<img src="'+ data.success +'" class="emoji-pic" onclick="ShowOptions(this)"><div class="picture-func"><i class="fa fa-search-plus" title="查看" onclick="ShowPic(this)"></i><i class="fa fa-plus" onclick="tianjia(this)" title="添加表情"></i></div>';
             var li = '<li class="message"><img class="pic-right" src="'+ pic +'"/>'
                     + '<span class="message-box-right"><span class="message-user">'
                     + '<p class="NickName-right"><span>'+ sendtime +'</span><span> 我</span></p>'
@@ -517,4 +528,8 @@ function sendguanfangemoijgroup(evt,event)
         }
     });*/
 
+}
+function tianjia()
+{
+   alert("您已经收藏此表情!");
 }
