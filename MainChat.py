@@ -500,5 +500,5 @@ class ChatRun(object):
                 deletebadinfo(key)
                 # 数据库删除
 
-    def removeUser(self,groupid,memberlist):
+
         
