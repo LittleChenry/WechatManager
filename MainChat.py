@@ -500,5 +500,10 @@ class ChatRun(object):
                 deletebadinfo(key)
                 # 数据库删除
 
-
-        
+    def deleteMember(self, groupid, memberid):
+        g = itchat.search_chatrooms(userName=groupid)
+        memberlist = itchat.update_chatroom(groupid, detailedMember=True)['MemberList']
+        for member in memberlist:
+            if member.get('UserName') == memberid:
+                itchat.delete_member_from_chatroom(g, member)
+                break;

@@ -309,7 +309,13 @@ def addemoij():
     with open(basepath+"/static/img/emoij/shoucang/"+datetime.now().date().strftime('%Y%m%d%H%M')+filename[len(filename)-1], 'wb') as f:
          f.write(s)
     return json.dumps({'success': "success"})
-
+@app.route('/removeUser', methods=['POST'])
+def removeMember():
+    global chat
+    gid = request.form.get('gid')
+    uid = request.form.get('uid')
+    chat.deleteMember(gid,uid)
+    return json.dumps({'success':True})
 
 if __name__ == '__main__':
     #app.run(debug=True)
