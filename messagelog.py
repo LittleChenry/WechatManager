@@ -14,7 +14,7 @@ def messagelog(beg,end,group):
         charset="utf8"
     )
     cur2 = conn.cursor()
-    sel="select ID from groups where name='%s'"% group
+    sel="select min(ID) from groups where name='%s'"% group
     cur2.execute(sel)
     groupid=cur2.fetchone()
     if len(end)<13:
