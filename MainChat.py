@@ -16,6 +16,7 @@ import random
 import re
 from addmessage import *
 from readGname import *
+from badinfo import *
 picDir = '/Users/apple/Documents/mavenProject/WechatManager/static/qr/QR.png'
 
 class ChatRun(object):
@@ -464,6 +465,7 @@ class ChatRun(object):
     def addkeyadd(self, *args):
         for key in args:
             self.__keywordAdd.append(key)
+            recordbadinfo(key)
             #加入数据库
 
     # 获取广告关键字
@@ -473,10 +475,13 @@ class ChatRun(object):
     # 读取数据库广告关键字
     def setAddKey(self):
         user = self.getmySelfName()
-
+        keys=readbadinfo()
+        for key in keys:
+            self.__keywordAdd.append(key)
     # 删除关键字
     def deleteAddKey(self,*args):
         for key in args:
             if key in self.__keywordAdd:
                 self.__keywordAdd.remove(key)
+                deletebadinfo(key)
                 # 数据库删除
