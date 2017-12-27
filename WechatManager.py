@@ -19,6 +19,7 @@ from SelectForGroup import *
 from messagelog import *
 from recordGname import *
 from datetime import datetime
+import re
 
 app = Flask(__name__)
 
@@ -171,7 +172,11 @@ def groupPic():
         upload_path = os.path.join(basepath, 'static\\sendFile', secure_filename( time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))+file.filename))
         file.save(upload_path)
         rpath = 'static\\sendFile' + secure_filename(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time())) + file.filename)
-        chat.group_file(upload_path,rpath,group=groups)
+        m = re.compile(r'[^\.]+(\.[\d\w]+)+').match(file.filename)
+        types = m.groups()[-1]
+        print(types)
+        dic = {'.bmp':'Picture','.gif':'Picture','.jpeg':'Picture','.png':'Picture','.pcx':'Picture','.tiff':'Picture','.tga':'Picture','.jpg':'Picture','.avi':'Video','.rmvb':'Video','.rm':'Video','.asf':'Video','.divx':'Video','.mpg':'Video','.mpeg':'Video','.mpe':'Video','.wmv':'Video','.mp4':'Video','.mkv':'Video','.vob':'Video'}
+        chat.group_file(upload_path,rpath,group=groups,ftype=dic.get(types,'file'))
 
         return json.dumps({'success': rpath})
     return json.dumps(({'success': False}))

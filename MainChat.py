@@ -119,7 +119,14 @@ class ChatRun(object):
                         phone2 = re.compile(r'([\S\s])*(\d[^\d]{0,5}){8,10}([^\d]|\b)([\S\s])*')
                         link = re.compile(
                             r'([\S\s])*((http|ftp|https)://)(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\&%_\./-~-]*)?')
-                        if link.match(infomation):
+
+                        if msg['Type'] == 'Card':
+                            flag = True
+                            self.sendMsg(infomation.get('NickName'), msg['ActualNickName'], gs[msg['FromUserName']],
+                                         time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                         msg['ActualUserName'],
+                                         msg['FromUserName'], msg['Type'], rename=realNickName, addType='card')
+                        elif link.match(infomation):
                             flag=True
                             self.sendMsg(infomation, msg['ActualNickName'], gs[msg['FromUserName']],
                                          time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
@@ -202,7 +209,13 @@ class ChatRun(object):
             for gs in gid:
                 if msg['FromUserName'] in gs:
                     text = 'static/picture/'+(str)(ran) + "-" + msg['FileName']
-                    self.sendMsg(text, msg['ActualNickName'], gs[msg['FromUserName']],
+                    if msg['Type'] == 'Video':
+                        self.sendMsg(text, msg['ActualNickName'], gs[msg['FromUserName']],
+                                     time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                     msg['ActualUserName'],
+                                     msg['FromUserName'], msg['Type'], rename=realNickName, addType='Viedo')
+                    else:
+                        self.sendMsg(text, msg['ActualNickName'], gs[msg['FromUserName']],
                                  time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), msg['ActualUserName'],
                                  msg['FromUserName'],msg['Type'],rename=realNickName)
                     break
@@ -486,3 +499,6 @@ class ChatRun(object):
                 self.__keywordAdd.remove(key)
                 deletebadinfo(key)
                 # 数据库删除
+
+    def removeUser(self,groupid,memberlist):
+        
