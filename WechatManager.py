@@ -292,6 +292,18 @@ def addemoij():
          f.write(s)
     return json.dumps({'success': "success"})
 
+@app.route('/addAddkey', method=['POST'])
+def addAddkey():
+    global char
+    key = request.form.get('key')
+    chat.addkeyadd(key)
+
+@app.route('/deleteAddKey', method=['POST'])
+def deleteAddkey():
+    global chat
+    keys = request.form.getlist('keys[]')
+    chat.deleteAddKey(*keys)
+
 if __name__ == '__main__':
     #app.run(debug=True)
     socketio.run(app=app,debug=True)

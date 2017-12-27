@@ -473,3 +473,10 @@ class ChatRun(object):
     # 读取数据库广告关键字
     def setAddKey(self):
         user = self.getmySelfName()
+
+    # 删除关键字
+    def deleteAddKey(self,*args):
+        for key in args:
+            if key in self.__keywordAdd:
+                self.__keywordAdd.remove(key)
+                # 数据库删除
