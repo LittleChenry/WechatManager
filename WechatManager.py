@@ -292,17 +292,19 @@ def addemoij():
          f.write(s)
     return json.dumps({'success': "success"})
 
-@app.route('/addAddkey', method=['POST'])
+@app.route('/addAddkey', methods=['POST'])
 def addAddkey():
     global char
     key = request.form.get('key')
     chat.addkeyadd(key)
+    return json.dumps({"success": True})
 
-@app.route('/deleteAddKey', method=['POST'])
+@app.route('/deleteAddKey', methods=['POST'])
 def deleteAddkey():
     global chat
     keys = request.form.getlist('keys[]')
     chat.deleteAddKey(*keys)
+    return json.dumps({"success": True})
 
 if __name__ == '__main__':
     #app.run(debug=True)

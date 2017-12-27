@@ -6,6 +6,10 @@ body {
 	min-height: 800px;
 }
 
+i {
+    cursor: pointer;
+}
+
 .ScanArea {
 
 }
@@ -136,6 +140,7 @@ body {
 
 .sub-contentrow {
     width: 75%;
+    padding: 20px;
     background-color: #FCFCFC;
     border-left: 1px solid #C1C1C1;
 }
@@ -371,7 +376,7 @@ body {
 .keyword-reply {
     margin: 0px;
     font-size: 12px;
-    padding: 2px 20px;
+    padding: 2px 15px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -467,6 +472,7 @@ body {
     background-color: #F5F5F5;
     color: #444444;
     outline: none;
+    cursor: pointer;
 }
 
 .form-btn:hover {
@@ -520,7 +526,7 @@ body {
 .multisend-contacts {
 	width: 100%;
     top: 0px;
-    bottom: 500px;
+    bottom: 350px;
     position: absolute;
     border-bottom: 1px solid #c1c1c1;
     border-right: 1px solid #c1c1c1;
@@ -534,7 +540,7 @@ body {
     box-sizing: border-box;
     position: absolute;
     bottom: 0px;
-    height: 500px;
+    height: 350px;
     width: 100%;
 }
 
@@ -601,7 +607,7 @@ body {
 	float: left;
     background-color: #2BA245;
     color: white;
-    padding: 5px;
+    padding: 5px 10px;
     margin: 5px;
     font-size: 18px;
     border-radius: 3px;
@@ -620,7 +626,7 @@ body {
 
 .multi-textarea {
     width: 100%;
-    height: 300px;
+    height: 180px;
     background-color: white;
 }
 
@@ -661,7 +667,46 @@ body {
     line-height: 0.5;
 }
 
+.keywords {
+    max-height: 80%;
+    min-height: 100px;
+}
 
+.addkeywords {
+    padding-left: 5px;
+}
+
+.form-text {
+    height: 25px;
+    width: 200px;
+    outline: none;
+    padding: 1px;
+}
+
+.warning-message {
+    position: relative;
+    min-height: 53px;
+    border-bottom: 1px solid #c1c1c1;
+    word-break: break-all;
+}
+
+.warning-name {
+    margin: 0px;
+    padding: 5px 14px;
+}
+
+.warning-content {
+    margin: 0px;
+    padding: 0px 15px 3px 15px;
+    font-size: 14px;
+}
+
+.close{
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    color: black;
+}
 
 
 

@@ -303,6 +303,39 @@ function PageInit() {
 		});
 	});
 
+	$("#deletekewords").unbind("click").bind("click",function(){
+		if ($(this).html() == "删除") {
+			$(this).next().find(".selected-group").each(function(){
+				var del = '<i class="delete-selected-group fa fa-close" title="删除" onclick="deletekeyword(this)"></i>';
+				$(this).append(del);
+			});
+			$(this).html("取消");
+		}else{
+			$(this).next().find(".selected-group").each(function(){
+				$(this).find("i").remove();
+			});
+			$(this).html("删除");
+		}
+	});
+
+	$("#savekeyword").unbind("click").bind("click",function(){
+		var keyword = $("#newkeyword").val();
+		$.ajax({
+			type: "post",
+			url: "/addAddkey",
+			async: false,
+			data:{
+				key:keyword
+			},
+			dataType: "json",
+			success: function (data) {
+				alert("保存成功！");
+				getBasicInfo("/update");
+				$("#newkeyword").val("");
+			}
+		});
+	});
+
 	$("#messages-history").unbind("click").bind("click",function(){
 		var gname = $("#dialog-name").html();
 		window.open("/logg/" + gname);
@@ -328,8 +361,8 @@ function PageInit() {
 function AdjustPage(argument) {
 	windowheight = $(window).height();
 	windowwidth = $(window).width();
-	actualheight = windowheight > 800 ? windowheight : 800;
-	actualwidth = windowwidth > 1300 ? windowwidth : 1300;
+	actualheight = windowheight > 700 ? windowheight : 700;
+	actualwidth = windowwidth > 1200 ? windowwidth : 1200;
 	$(".content").height(actualheight);
 	$(".menu").height(actualheight);
 	$(".menu-content").height(actualheight);
@@ -393,6 +426,38 @@ function MessageSync(UserName) {
 			                        + '<p class="NickName-left"><span>'+ name +'</span><span>'+ sendtime +'</span></p>'
 			                        + '</span><span class="message-content"><i class="angle-left"></i>'
 			                        + '<span class="text-left">'+ message +'</span></span></span></li>';
+			            var addType = msg["addType"];
+			            if (addType != undefined) {
+			            	switch(addType){
+			            		case "phone":
+			            		var type = "电话消息";
+			            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+			            				+ '<p class="warning-content">'+ name + ',' + sendtime + ',' + message + '</p>'
+			            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+		            				break;
+			            		case "link":
+			            		var type = "链接消息";
+			            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+			            				+ '<p class="warning-content">'+ name + ',' + sendtime + ',' + message + '</p>'
+			            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+		            				break;
+			            		case "sharing":
+			            		var type = "分享消息";
+			            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+			            				+ '<p class="warning-content">'+ name + ',' + sendtime + ',' + message + '</p>'
+			            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+		            				break;
+			            		case "keyword":
+			            		var type = "关键词消息：" + msg["addkeyword"];
+			            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+			            				+ '<p class="warning-content">'+ name + ',' + sendtime + ',' + message + '</p>'
+			            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+		            				break;
+	            				default:
+
+			            	}
+			            	$(".warningmessage-content").append(warningmessage);
+			            }
 			    	}
 			    	$("#" + contentID).append(li);
 			    	RefreshDialogList();
@@ -438,6 +503,38 @@ function MessageSync(UserName) {
 		                        + '<p class="NickName-left"><span>'+ name +'</span><span>'+ sendtime +'</span></p>'
 		                        + '</span><span class="message-content"><i class="angle-left"></i>'
 		                        + '<span class="text-left">'+ message +'</span></span></span></li>';
+                    var addType = msg["addType"];
+		            if (addType != null) {
+		            	switch(addType){
+		            		case "phone":
+		            		var type = "电话消息";
+		            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+		            				+ '<p class="warning-content">'+ name + ',' + sendtime + ',' + message + '</p>'
+		            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+	            				break;
+		            		case "link":
+		            		var type = "链接消息";
+		            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+		            				+ '<p class="warning-content">'+ name + ',' + sendtime + ',' + message + '</p>'
+		            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+	            				break;
+		            		case "sharing":
+		            		var type = "分享消息";
+		            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+		            				+ '<p class="warning-content">'+ name + ',' + sendtime + ',' + message + '</p>'
+		            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+	            				break;
+		            		case "keyword":
+		            		var type = "关键词消息：" + msg["addkeyword"];
+		            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+		            				+ '<p class="warning-content">'+ name + ',' + sendtime + ',' + message + '</p>'
+		            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+	            				break;
+            				default:
+            					
+		            	}
+		            	$(".warningmessage-content").append(warningmessage);
+		            }
 		    	}
 		    	var pic = msg["grouppic"];
 		    	var content = "";
@@ -527,8 +624,14 @@ function getBasicInfo() {
 		success: function (data) {
 			UserInfo = data.user;
 			userpho = data.userpic;
+			var addAddkey = data.addKey;
 			$("#mypic").attr("src","data:image/jpg;base64," + userpho);
-			
+			var keywordsarea = $(".keywords");
+			keywordsarea.html("");
+			for (var i = 0; i < addAddkey.length; i++) {
+				var p = '<p class="selected-group"><span>'+ addAddkey[i] +'</span></p>';
+				keywordsarea.append(p);
+			}
 
 			var Allgroups = $(".allgroups-content");
 			var Allcontact = $(".allcontact-content");
@@ -646,4 +749,26 @@ function addemoij(e)
             alert("添加成功!");
         }
     });
+}
+
+function deletekeyword(e) {
+	var keyword = new Array();
+	keyword[0] = $(e).prev().html();
+	$.ajax({
+		type: "post",
+		async: false,
+		url: "/deleteAddKey",
+		data:{
+			keys:keyword
+		},
+		dataType: "json",
+		success: function (data) {
+			alert("删除成功！");
+			$(e).parent().remove();
+		}
+	});
+}
+
+function deletewarning(e) {
+	$(e).parent().remove();
 }

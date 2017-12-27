@@ -94,14 +94,23 @@
                 </div>
                 <div id="func" class="single-row function-menu">
                     <div class="title-content dialog-func-tab">
-                        <a class="tab-a" href="javascript:;" data-content="aite-content"><span class="tab-3 tab-active">@消息列表</span></a>
-                        <a class="tab-a" href="javascript:;" data-content="groupmanage-content"><span class="tab-3">敏感信息列表</span></a>
+                        <a class="tab-a" href="javascript:;" data-content="warningmessage-content"><span class="tab-3 tab-active">广告信息列表</span></a>
+                        <a class="tab-a" href="javascript:;" data-content="aite-content"><span class="tab-3">@消息列表</span></a>
                         <a class="tab-a" href="javascript:;" data-content="detail-content"><span class="tab-3">详细信息</span></a>
                     </div>
-                    <ul class="groups aite-content">
-                        
+                    <ul class="groups warningmessage-content">
+                        <!-- <li class="warning-message">
+                            <p class="warning-name">一乙农业</p>
+                            <p class="warning-content">一乙农业是江苏一乙生态农业科技有限公司的简称。公司坚持走绿色发展、和谐发展、融合发展之路，以为市民提供放心食品</p>
+                            <i class="fa fa-close close" onclick="deletewarning(this)"></i>
+                        </li>
+                        <li class="warning-message">
+                            <p class="warning-name">一乙农业</p>
+                            <p class="warning-content">一乙农业是江苏一乙生态农业科技有限公司的简称。公司坚持走绿色发展、和谐发展、融合发展之路，以为市民提供放心食品</p>
+                            <i class="fa fa-close close" onclick="deletewarning(this)"></i>
+                        </li> -->
                     </ul>
-                    <ul class="groups groupmanage-content hide">
+                    <ul class="groups aite-content hide">
                         
                     </ul>
                     <ul class="groups detail-content hide">
@@ -175,17 +184,17 @@
                 <div class="single-row contact-menu">
                     <ul id="config-lists" class="groups">
                         <li class="single-message active">
-                            <span class="config-name" title="关键词回复" data-content="keywordreply-content">关键词回复</span>
+                            <span class="config-name" title="广告消息" data-content="specialmessage-content">广告消息</span>
                         </li>
                         <li class="single-message">
-                            <span class="config-name" title="敏感消息" data-content="specialmessage-content">敏感消息</span>
+                            <span class="config-name" title="关键词回复" data-content="keywordreply-content">关键词回复</span>
                         </li>
                         <li class="single-message">
                             <span class="config-name" title="消息模板" data-content="messagetemplate-content">消息模板</span>
                         </li>
                     </ul>
                 </div>
-                <div id="keywordreply-content" class="single-row configs">
+                <div id="keywordreply-content" class="single-row configs hide">
                     <div class="single-row sub-mainrow">
                         <ul class="text-groups">
                             <li class="single-list">
@@ -206,25 +215,33 @@
                         sub-contentrow
                     </div>
                 </div>
-                <div id="specialmessage-content" class="single-row configs hide">
+                <div id="specialmessage-content" class="single-row configs">
                     <div class="single-row sub-mainrow">
                         <ul class="text-groups">
                             <li class="single-list">
                                 <p class="keyword-name">文本</p>
-                                <p class="keyword-reply">电话</p>
+                                <p class="keyword-reply">公司;电话;贷款</p>
                             </li>
                             <li class="single-list">
                                 <p class="keyword-name">链接</p>
-                                <p class="keyword-reply">链接白名单</p>
+                                <p class="keyword-reply">http;https</p>
                             </li>
                             <li class="single-list">
-                                <p class="keyword-name">白名单</p>
-                                <p class="keyword-reply">发送者白名单</p>
+                                <p class="keyword-name">电话</p>
+                                <p class="keyword-reply">xxxxxxxxxxx;xxx-xxxxxxxx</p>
                             </li>
                         </ul>
                     </div>
                     <div class="single-row sub-contentrow">
-                        sub-contentrow
+                        <p class="title">文本（关键词检测）</p>
+                        <button id="deletekewords" class="btn abs-right" type="button">删除</button>
+                        <div class="keywords">
+                            
+                        </div>
+                        <div class="addkeywords">
+                            <input id="newkeyword" type="text" class="form-text">
+                            <button id="savekeyword" class="btn" type="button">增加</button>
+                        </div>
                     </div>
                 </div>
                 <div id="messagetemplate-content" class="single-row configs hide">
@@ -242,7 +259,7 @@
                         </ul>
                     </div>
                     <div class="single-row sub-contentrow">
-                        sub-contentrow
+                        
                     </div>
                 </div>
             </div>
