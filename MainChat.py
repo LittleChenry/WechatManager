@@ -143,7 +143,8 @@ class ChatRun(object):
                                     self.sendMsg(infomation, msg['ActualNickName'], gs[msg['FromUserName']],
                                                  time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
                                                  msg['ActualUserName'],
-                                                 msg['FromUserName'], msg['Type'], rename=realNickName, addType='keyword')
+                                                 msg['FromUserName'], msg['Type'], rename=realNickName, addType='keyword', addkeyword=key)
+                                    break;
 
                     if not flag:
                         text = msg['Text']
