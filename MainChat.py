@@ -13,6 +13,7 @@ from PIL import Image
 from io import BytesIO
 from io import StringIO
 import random
+import re
 from addmessage import *
 from readGname import *
 picDir = '/Users/apple/Documents/mavenProject/WechatManager/static/qr/QR.png'
@@ -32,6 +33,9 @@ class ChatRun(object):
 
         # 关键字回复字典
         self.__keyWordReponse = {u'一乙': 'auto', u'test': u'测试成功'}
+
+        # 关键字广告检测
+        self.__keywordAdd=[]
 
         # 待管理的群
         self.__needGroups = []
@@ -94,6 +98,8 @@ class ChatRun(object):
                                  msg['ToUserName'], msg['Type'], url = msg['Url'],rename=self.getmySelfName())
                 else:
                     self.sendMsg(msg['Text'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['FromUserName'],msg['ToUserName'],msg['Type'],rename=self.getmySelfName())
+
+
             self.updateGid()
             gid = self.__gid
             #print 'need:',self.__needGroups, 'gid:', len(gid)
@@ -101,44 +107,74 @@ class ChatRun(object):
 
             for gs in gid:
                 if msg['FromUserName'] in gs:
-                    text = msg['Text']
-                    if msg['Type'] == 'Sharing':
-                        self.sendMsg(msg['Text'], msg['ActualNickName'], self.getGroupNameById(msg['FromUserName']),
-                                     time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
-                                     msg['ActualUserName'],
-                                     msg['FromUserName'], msg['Type'], url=msg['Url'],rename=realNickName)
-                    else:
-                        self.sendMsg(text,msg['ActualNickName'],gs[msg['FromUserName']], time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['ActualUserName'],msg['FromUserName'],msg['Type'],rename=realNickName)
-                    # print msg, 'type:', type(msg),'\n'
-                    if msg['isAt']:
-                        gName = gs[msg['FromUserName']]
-                        self.saveText(text, gName, msg['ActualNickName'])
-                    for key in self.__keyWordReponse:
-                        if text.find(key) > -1:
-                            time.sleep(3)
-                            value = self.__keyWordReponse[key]
-                            if not value == 'auto':
-                                itchat.send('%s @%s ' % (self.__keyWordReponse[key], msg['ActualNickName']),
-                                            msg['FromUserName'])
-                                self.sendMsg(self.__keyWordReponse[key], self.__mySelf['NickName'],
-                                             gs[msg['FromUserName']],
-                                             time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
-                                             self.__mySelf['UserName'], msg['FromUserName'], msg['Type'],
-                                             rename=self.__mySelf['NickName'])
+                    flag = False
+                    if not self.getmySelfID() == msg['FromUserName']:
+                        infomation = msg['Text']
+                        phone1 = re.compile(
+                            r'([\S\s])*((\+86)|(86))?([^\d]{0,5})?(\d[^\d]{0,5}){11}([^\d]|\b)([\S\s])*')
+                        phone2 = re.compile(r'([\S\s])*(\d[^\d]{0,5}){8,10}([^\d]|\b)([\S\s])*')
+                        link = re.compile(
+                            r'([\S\s])*((http|ftp|https)://)(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\&%_\./-~-]*)?')
+                        if link.match(infomation):
+                            flag=True
+                            self.sendMsg(infomation, msg['ActualNickName'], gs[msg['FromUserName']],
+                                         time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                         msg['ActualUserName'],
+                                         msg['FromUserName'], msg['Type'], rename=realNickName,addType='link')
+                        elif phone1.match(infomation) or phone2.match(infomation):
+                            flag = True
+                            self.sendMsg(infomation, msg['ActualNickName'], gs[msg['FromUserName']],
+                                         time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                         msg['ActualUserName'],
+                                         msg['FromUserName'], msg['Type'], rename=realNickName, addType='phone')
+                        elif msg['Type'] == 'Sharing':
+                            flag = True
+                            self.sendMsg(msg['Text'], msg['ActualNickName'], self.getGroupNameById(msg['FromUserName']),
+                                         time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                         msg['ActualUserName'],
+                                         msg['FromUserName'], msg['Type'], url=msg['Url'], rename=realNickName, addType='sharing')
+                        else:
+                            for key in self.__keywordAdd:
+                                if infomation.find(key) > -1:
+                                    flag=True
+                                    self.sendMsg(infomation, msg['ActualNickName'], gs[msg['FromUserName']],
+                                                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                                 msg['ActualUserName'],
+                                                 msg['FromUserName'], msg['Type'], rename=realNickName, addType='keyword')
 
-                            else:
-                                itchat.send(u'收到消息: %s @%s ' % (text, msg['ActualNickName']), msg['FromUserName'])
-                                self.sendMsg(text, self.__mySelf['NickName'],
-                                             gs[msg['FromUserName']],
-                                             time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
-                                             self.__mySelf['UserName'], msg['FromUserName'], msg['Type'],
-                                             rename=self.__mySelf['NickName'])
-                            break
-                        elif msg['isAt']:
-                            time.sleep(3)
-                            itchat.send(self.__atContent, msg['FromUserName'])
-                            break
-                    break
+                    if not flag:
+                        text = msg['Text']
+                        self.sendMsg(text,msg['ActualNickName'],gs[msg['FromUserName']], time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['ActualUserName'],msg['FromUserName'],msg['Type'],rename=realNickName)
+                        # print msg, 'type:', type(msg),'\n'
+                        if msg['isAt']:
+                            gName = gs[msg['FromUserName']]
+                            self.saveText(text, gName, msg['ActualNickName'])
+                        for key in self.__keyWordReponse:
+                            if text.find(key) > -1:
+                                time.sleep(3)
+                                value = self.__keyWordReponse[key]
+                                if not value == 'auto':
+                                    itchat.send('%s @%s ' % (self.__keyWordReponse[key], msg['ActualNickName']),
+                                                msg['FromUserName'])
+                                    self.sendMsg(self.__keyWordReponse[key], self.__mySelf['NickName'],
+                                                 gs[msg['FromUserName']],
+                                                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                                 self.__mySelf['UserName'], msg['FromUserName'], msg['Type'],
+                                                 rename=self.__mySelf['NickName'])
+
+                                else:
+                                    itchat.send(u'收到消息: %s @%s ' % (text, msg['ActualNickName']), msg['FromUserName'])
+                                    self.sendMsg(text, self.__mySelf['NickName'],
+                                                 gs[msg['FromUserName']],
+                                                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                                 self.__mySelf['UserName'], msg['FromUserName'], msg['Type'],
+                                                 rename=self.__mySelf['NickName'])
+                                break
+                            elif msg['isAt']:
+                                time.sleep(3)
+                                itchat.send(self.__atContent, msg['FromUserName'])
+                                break
+                        break
 
         @itchat.msg_register([PICTURE,RECORDING,ATTACHMENT,VIDEO], isGroupChat=True)
         def reply_files(msg):
