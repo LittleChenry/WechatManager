@@ -49,7 +49,6 @@ def background_thread():
                 dic[k] = v;
             dic['grouppic'] = listbase
             dic['pic'] = bytes.decode(img_str)
-            print(dic)
             socketio.emit('msg', dic, json=True,namespace='/test')
 
 
@@ -213,6 +212,20 @@ def addKeyWord():
     chat.addKeyWordResponse({'key': key, 'val': val})
     return json.dumps({'success':True})
 
+@app.route('/addAddkey', methods=['POST'])
+def addAddkey():
+    global char
+    key = request.form.get('key')
+    chat.addkeyadd(key)
+    return json.dumps({"success": True})
+
+@app.route('/deleteAddKey', methods=['POST'])
+def deleteAddkey():
+    global chat
+    keys = request.form.getlist('keys[]')
+    chat.deleteAddKey(*keys)
+    return json.dumps({"success": True})
+
 @app.route('/emoij', methods=["POST"])
 def getemoij():
     list=[]
@@ -245,7 +258,7 @@ def getemoijone():
 @app.route('/impemoij', methods=["POST"])
 def importemoij():
     list = []
-    id=request.form.get("title")
+    id="shoucang"
     lenth = int(request.form.get("length"))
     for i in range(0,lenth):
         file = request.files['importlist'+str(i)]
@@ -292,19 +305,6 @@ def addemoij():
          f.write(s)
     return json.dumps({'success': "success"})
 
-@app.route('/addAddkey', methods=['POST'])
-def addAddkey():
-    global char
-    key = request.form.get('key')
-    chat.addkeyadd(key)
-    return json.dumps({"success": True})
-
-@app.route('/deleteAddKey', methods=['POST'])
-def deleteAddkey():
-    global chat
-    keys = request.form.getlist('keys[]')
-    chat.deleteAddKey(*keys)
-    return json.dumps({"success": True})
 
 if __name__ == '__main__':
     #app.run(debug=True)
