@@ -330,7 +330,9 @@ function PageInit() {
 			dataType: "json",
 			success: function (data) {
 				alert("保存成功！");
-				getBasicInfo("/update");
+				var keywordsarea = $(".keywords");
+				var p = '<p class="selected-group"><span>'+ keyword +'</span></p>';
+				keywordsarea.append(p);
 				$("#newkeyword").val("");
 			}
 		});
