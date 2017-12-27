@@ -434,25 +434,25 @@ function MessageSync(UserName) {
 			            		case "phone":
 			            		var type = "电话消息";
 			            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
-			            				+ '<p class="warning-content">'+ name + ',' + sendtime + ',' + message + '</p>'
+			            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ',' + name + ',' + sendtime + ',' + message + '</p>'
 			            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
 		            				break;
 			            		case "link":
 			            		var type = "链接消息";
 			            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
-			            				+ '<p class="warning-content">'+ name + ',' + sendtime + ',' + message + '</p>'
+			            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ',' + name + ',' + sendtime + ',' + message + '</p>'
 			            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
 		            				break;
 			            		case "sharing":
 			            		var type = "分享消息";
 			            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
-			            				+ '<p class="warning-content">'+ name + ',' + sendtime + ',' + message + '</p>'
+			            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ',' + name + ',' + sendtime + ',' + message + '</p>'
 			            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
 		            				break;
 			            		case "keyword":
 			            		var type = "关键词消息：" + msg["addkeyword"];
 			            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
-			            				+ '<p class="warning-content">'+ name + ',' + sendtime + ',' + message + '</p>'
+			            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ',' + name + ',' + sendtime + ',' + message + '</p>'
 			            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
 		            				break;
 	            				default:
@@ -511,25 +511,25 @@ function MessageSync(UserName) {
 		            		case "phone":
 		            		var type = "电话消息";
 		            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
-		            				+ '<p class="warning-content">'+ name + ',' + sendtime + ',' + message + '</p>'
+		            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ',' + name + ',' + sendtime + ',' + message + '</p>'
 		            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
 	            				break;
 		            		case "link":
 		            		var type = "链接消息";
 		            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
-		            				+ '<p class="warning-content">'+ name + ',' + sendtime + ',' + message + '</p>'
+		            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ',' + name + ',' + sendtime + ',' + message + '</p>'
 		            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
 	            				break;
 		            		case "sharing":
 		            		var type = "分享消息";
 		            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
-		            				+ '<p class="warning-content">'+ name + ',' + sendtime + ',' + message + '</p>'
+		            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ',' + name + ',' + sendtime + ',' + message + '</p>'
 		            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
 	            				break;
 		            		case "keyword":
 		            		var type = "关键词消息：" + msg["addkeyword"];
 		            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
-		            				+ '<p class="warning-content">'+ name + ',' + sendtime + ',' + message + '</p>'
+		            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ',' + name + ',' + sendtime + ',' + message + '</p>'
 		            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
 	            				break;
             				default:

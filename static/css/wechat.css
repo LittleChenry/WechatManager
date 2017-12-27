@@ -2,8 +2,8 @@ body {
 	background-color: #EDEBE9;
 	margin: 0px;
 	font-family: "宋体";
-	min-width: 1300px;
-	min-height: 800px;
+	min-width: 1200px;
+	min-height: 700px;
 }
 
 i {
@@ -707,6 +707,33 @@ i {
     right: 4px;
     color: black;
 }
+
+.highlight {
+    color: red;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
