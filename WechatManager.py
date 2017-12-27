@@ -133,7 +133,7 @@ def updatepage():
         img_str = base64.b64encode(buffer2.getvalue())
     except:
         img_str = ""
-    return json.dumps({'groups': chat.getAllGroup(), 'user': chat.getMyself(), 'userpic': bytes.decode(img_str)})
+    return json.dumps({'groups': chat.getAllGroup(), 'user': chat.getMyself(), 'userpic': bytes.decode(img_str), 'addKey': chat.getAddKey()})
 
 
 @app.route('/test',methods=['POST'])

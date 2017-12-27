@@ -75,6 +75,9 @@ class ChatRun(object):
         # 待管理的群
         self.setNeedGroupByName(readGname(self.__mySelf['NickName']))
 
+        # 广告关键字
+        self.setAddKey()
+
         #gid
         self.updateGid()
         # for gs in self.__groups:
@@ -456,3 +459,17 @@ class ChatRun(object):
                 msg['time'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
                 msg['type'] = ftype
                 addmessage(msg)
+
+    # 增加add关键字
+    def addkeyadd(self, *args):
+        for key in args:
+            self.__keywordAdd.append(key)
+            #加入数据库
+
+    # 获取广告关键字
+    def getAddKey(self):
+        return self.__keywordAdd
+
+    # 读取数据库广告关键字
+    def setAddKey(self):
+        user = self.getmySelfName()
