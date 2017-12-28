@@ -30,6 +30,7 @@ def readbadinfo():
         db=database1.db,
         charset="utf8"
     )
+    badinfo=[]
     try:
         cur1 = conn.cursor()
         ins="select Content from badinfo "

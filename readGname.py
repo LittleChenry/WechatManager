@@ -10,6 +10,7 @@ def readGname(name):
         db=database1.db,
         charset="utf8"
     )
+    groupnames=[]
     try:
         cur1 = conn.cursor()
         sel1 = "select name from groups,members where members.NickName='%s' and groups.manager_ID=members.ID"% name

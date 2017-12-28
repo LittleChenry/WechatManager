@@ -13,6 +13,7 @@ def messagelog(beg,end,group):
         db=database1.db,
         charset="utf8"
     )
+    jsonStr =''
     try:
         cur2 = conn.cursor()
         sel="select min(ID) from groups where name='%s'"% group
@@ -34,6 +35,7 @@ def messagelog(beg,end,group):
             user['url'] = r[4]
             users.append(user)
         jsonStr = json.dumps(users)
+
     except Exception as e:
         pass
     finally:
