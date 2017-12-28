@@ -9,9 +9,6 @@ import base64
 import os
 import itchat.config
 import types
-from PIL import Image
-from io import BytesIO
-from io import StringIO
 import random
 import re
 from addmessage import *
@@ -276,11 +273,11 @@ class ChatRun(object):
         num = 0
         img = itchat.get_head_img(chatroomUserName=gid)
         try:
-            buffer = BytesIO(img)
-            buffer2 = BytesIO()
-            image = Image.open(buffer)
-            image.save(buffer2, format="JPEG")
-            img_str = base64.b64encode(buffer2.getvalue())
+            # buffer = BytesIO(img)
+            # buffer2 = BytesIO()
+            # image = Image.open(buffer)
+            # image.save(buffer2, format="JPEG")
+            img_str = base64.b64encode(img)
             img_str=bytes.decode(img_str)
         except:
             img_str=""
@@ -356,11 +353,11 @@ class ChatRun(object):
         for x in self.__groups:
             img = itchat.get_head_img(chatroomUserName=x['UserName'])
             try:
-                buffer = BytesIO(img)
-                buffer2 = BytesIO()
-                image = Image.open(buffer)
-                image.save(buffer2, format="JPEG")
-                img_str = base64.b64encode(buffer2.getvalue())
+                # buffer = BytesIO(img)
+                # buffer2 = BytesIO()
+                # image = Image.open(buffer)
+                # image.save(buffer2, format="JPEG")
+                img_str = base64.b64encode(img)
                 img_str=bytes.decode(img_str)
             except:
                 img_str=""

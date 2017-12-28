@@ -10,8 +10,6 @@ import base64
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
 import time
-from PIL import Image
-from io import BytesIO
 import os
 from werkzeug.utils import secure_filename
 from addmessage import *
@@ -38,11 +36,11 @@ def background_thread():
             m=chat.realSend()
             addmessage(m)
             try:
-                buffer = BytesIO(chat.getheadpic(m['uid'],m['gid']))
-                buffer2 = BytesIO()
-                image = Image.open(buffer)
-                image.save(buffer2, format="JPEG")
-                img_str = base64.b64encode(buffer2.getvalue())
+                #buffer = BytesIO(chat.getheadpic(m['uid'],m['gid']))
+                # buffer2 = BytesIO()
+                # image = Image.open(buffer)
+                # image.save(buffer2, format="JPEG")
+                img_str = base64.b64encode(chat.getheadpic(m['uid'],m['gid']))
                 img_str= bytes.decode(img_str)
             except:
                 img_str = ""
@@ -128,11 +126,11 @@ def toLogin():
 def updatepage():
     global chat
     try:
-        buffer = BytesIO(chat.getMypic())
-        buffer2 = BytesIO()
-        image = Image.open(buffer)
-        image.save(buffer2, format="JPEG")
-        img_str = base64.b64encode(buffer2.getvalue())
+        #buffer = BytesIO(chat.getMypic())
+        # buffer2 = BytesIO()
+        # image = Image.open(buffer)
+        # image.save(buffer2, format="JPEG")
+        img_str = base64.b64encode(chat.getMypic())
         img_str = bytes.decode(img_str)
     except:
         img_str = ""
