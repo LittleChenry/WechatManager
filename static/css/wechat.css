@@ -744,13 +744,69 @@ i {
     text-align: center;
     font-size: 12px;
     position: relative;
-    margin-bottom: 20px;
+    margin: 20px;
 }
 
 .system-info {
     padding: 4px;
     background-color: #c9c9c9;
     border-radius: 3px;
+}
+
+.template-area {
+    position: absolute;
+    left: 0;
+    bottom: 250px;
+    display: none;
+    width: 419px;
+    background: #fff;
+    border: 1px solid #c1c1c1;
+    border-radius: 2px;
+}
+
+.multitemplate-area {
+    position: absolute;
+    left: 21px;
+    bottom: 286px;
+    display: none;
+    width: 419px;
+    background: #fff;
+    border: 1px solid #c1c1c1;
+    border-radius: 2px;
+}
+
+.template-panel {
+
+}
+
+.template-lists {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+    height: 250px;
+    overflow: auto;
+}
+
+.single-template {
+    position: relative;
+    border-top: 1px solid #EDEAE8;
+    padding: 10px 20px;
+}
+
+.template-close {
+    position: absolute;
+    top: -8px;
+    right: 0px;
+    color: black;
+}
+
+.template-title {
+    margin: 12px;
+    font-weight: 600;
+}
+
+.template-head {
+    position: relative;
 }
 
 

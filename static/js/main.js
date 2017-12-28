@@ -103,6 +103,7 @@ function PageInit() {
 			});
 			$.ajax({
 				type: "post",
+				async: false,
 				url: "/info",
 				data:{
 					groups:groups,
@@ -338,6 +339,31 @@ function PageInit() {
 		});
 	});
 
+	$('#message-text').keydown(function(event){
+		var keynum = (event.keyCode ? event.keyCode : event.which);
+		if(keynum == '13'){
+			$("#send").click();
+			return false;
+		}
+	});
+
+	$("body").bind("click").bind("click",function(){
+		$(".template-area").hide();
+		$(".multitemplate-area").hide();
+	});
+
+	$("#word-template").unbind("click").bind("click",function(e){
+		e.stopPropagation();
+		$("#emoijdiv").hide();
+		$(".template-area").show();
+	});
+
+	$("#multiword-template").unbind("click").bind("click",function(e){
+		e.stopPropagation();
+		$("#emoijdivgroup").hide();
+		$(".multitemplate-area").show();
+	});
+
 	$("#messages-history").unbind("click").bind("click",function(){
 		var gname = $("#dialog-name").html();
 		window.open("/logg/" + gname);
@@ -506,10 +532,7 @@ function MessageSync(UserName) {
 				            }
 				    	}
 			    	}
-
-			    	
 			    	$("#" + contentID).append(li);
-
 			    	RefreshDialogList();
 				}
 				return flag;
@@ -900,5 +923,9 @@ function deletemember(e) {
 			alert("踢除成功！");
 		}
 	});
-	$(this).parent().remove();
+	$(e).parent().remove();
+}
+
+function closethis(e) {
+	$(e).parents().find(".close-area").hide();
 }

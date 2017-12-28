@@ -43,14 +43,19 @@
                     </div>
                     <div class="send-area">
                         <div class="function-area">
-                            <div class="single-fun"><i id="emoij" class="fa fa-smile-o fa-2x"></i></div>
+                            <div class="single-fun">
+                                <i id="emoij" class="fa fa-smile-o fa-2x"></i>
+                            </div>
                             <div class="single-fun">
                                 <i id="choose-file" class="fa fa-folder-o fa-2x"></i>
                                 <input class="hide" id="send-file" type="file">
                             </div>
+                            <div class="single-fun hide">
+                                <i id="word-template" class="fa fa-list-alt fa-2x"></i>
+                            </div>
                             <div class="single-fun">
                                 <i id="importemoij" class="fa fa-sign-in fa-2x"></i>
-                                <input id="importemoijfile" style="display:none" multiple="multiple"  type="file" size="200" accept="image/*" onchange="handleFiles(event)" />
+                                <input id="importemoijfile" style="display:none" multiple="multiple" type="file" size="200" accept="image/*" onchange="handleFiles(event)" />
                             </div>
                             <button id="messages-history" type="button" class="form-btn pull-right">历史消息</button>
                         </div>
@@ -66,10 +71,25 @@
                             <ul id="titleul" class="emoji-title-names">
 
                             </ul>
-                            <a class="close" href="javascript:;" title="关闭"><i id="close" class="fa fa-window-close close"></i></a>
+                            <a class="close" href="javascript:;" title="关闭"><i id="close" class="fa fa-close close"></i></a>
                         </div>
                         <div id="emoijpanel" class="emoijpanel">
                             <ul id="emoijul">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="template-area close-area">
+                        <div class="template-panel">
+                            <div class="template-head">
+                                <p class="template-title">选择消息模板</p>
+                                <a class="template-close" href="javascript:;" title="关闭"><i class="fa fa-close close" onclick="closethis(this)"></i></a>
+                            </div>
+                            <ul class="template-lists">
+                                <li class="single-template">好友的搜索方法为search_friends，有四种搜索方式：</li>
+                                <li class="single-template">1. 仅获取自己的用户信息 </li>
+                                <li class="single-template">2. 获取特定UserName的用户信息</li>
+                                <li class="single-template">3. 获取备注、微信号、昵称中的任何一项等于name键值的用户</li>
+                                <li class="single-template">4. 获取备注、微信号、昵称分别等于相应键值的用户</li>
                             </ul>
                         </div>
                     </div>
@@ -139,6 +159,9 @@
                                     <i id="multichoose-file" class="fa fa-folder-o fa-2x"></i>
                                     <input class="hide" id="multisend-file" type="file">
                                 </div>
+                                <div class="single-fun hide">
+                                    <i id="multiword-template" class="fa fa-list-alt fa-2x"></i>
+                                </div>
                             </div>
                             <div class="multi-textarea">
                                 <textarea id="multimessage-text" value="" class="form-textarea"></textarea>
@@ -148,7 +171,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="emoijdivgroup" class="emoijbox" style="bottom:287px;left:21px;">
+                    <div id="emoijdivgroup" class="emoijbox" style="bottom:286px;left:21px;">
                         <div id="emoijtoolgroup" class="emoijtool">
                             <ul id="titleulgroup" class="emoji-title-names">
 
@@ -157,6 +180,21 @@
                         </div>
                         <div id="emoijpanelgroup" class="emoijpanel">
                             <ul id="emoijulgroup">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="multitemplate-area close-area">
+                        <div class="template-panel">
+                            <div class="template-head">
+                                <p class="template-title">选择消息模板</p>
+                                <a class="template-close" href="javascript:;" title="关闭"><i class="fa fa-close close" onclick="closethis(this)"></i></a>
+                            </div>
+                            <ul class="template-lists">
+                                <li class="single-template">好友的搜索方法为search_friends，有四种搜索方式：</li>
+                                <li class="single-template">1. 仅获取自己的用户信息 </li>
+                                <li class="single-template">2. 获取特定UserName的用户信息</li>
+                                <li class="single-template">3. 获取备注、微信号、昵称中的任何一项等于name键值的用户</li>
+                                <li class="single-template">4. 获取备注、微信号、昵称分别等于相应键值的用户</li>
                             </ul>
                         </div>
                     </div>
