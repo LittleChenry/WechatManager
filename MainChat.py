@@ -263,8 +263,8 @@ class ChatRun(object):
     def getMypic(self):
         return itchat.get_head_img(userName=self.__mySelf['UserName'])
     #获取对话头像
-    def getheadpic(self,ID):
-        return itchat.get_head_img(userName=ID)
+    def getheadpic(self,ID,GID):
+        return itchat.get_head_img(userName=ID,chatroomUserName=GID)
 
     #获取群头像
     def getgrouppic(self,gid):
@@ -273,7 +273,7 @@ class ChatRun(object):
         memberlist = self.getGroupMember(gid)
         num = 0
         for i in memberlist:
-            img = itchat.get_head_img(userName=i["id"])
+            img = itchat.get_head_img(userName=i["id"],chatroomUserName=gid)
             try:
                 buffer = BytesIO(img)
                 buffer2 = BytesIO()
