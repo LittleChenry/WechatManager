@@ -377,6 +377,9 @@ function MessageSync(UserName) {
     socket.on('msg', function (msg) {
     	var dialogs = $("#dialogs");
     	var groupname = msg["gname"] == null ? "" : msg["gname"];
+    	var picsrc = msg["pic"] == "" ? "static/img/nonepic.png" : ("data:image/jpg;base64," + msg["pic"]);
+    	var uid = msg["uid"];
+    	var gid = msg["gid"];
 		if (groupname != "") {
 			var c = "@";
 			var regex = new RegExp(c, 'g');
@@ -405,7 +408,9 @@ function MessageSync(UserName) {
 			    			var message = '<audio src="'+ msg["info"] +'" controls="controls">your browser does not support the audio tag</audio>';
 			    			break;
 			    		case "Sharing":
-			    			var message = '<a class="tab-a" href="'+ msg["url"] +'" target="_blank">链接：'+ msg["info"] +'</a>';
+			    			var u = msg["url"] == "" ? "javascript:;" : msg["url"];
+			    			var info = msg["info"] == "" ? "不支持预览，请在手机上查看。" : msg["info"];
+			    			var message = '<a class="tab-a" href="'+ u +'" target="_blank">链接：'+ info +'</a>';
 			    			break;
 			    		case "Card":
 			    			var message = '名片：' + msg["info"];
@@ -426,13 +431,13 @@ function MessageSync(UserName) {
 			    		var li = '<li class="system-message"><span class="system-info">'+ message +'</span></li>';
 			    	}else{
 			    		if (name == UserName) {
-			    			var li = '<li class="message"><img class="pic-right" src="data:image/jpg;base64,'+ msg["pic"] +'"/>'
+			    			var li = '<li class="message"><img class="pic-right" src="'+ picsrc +'"/>'
 				                     	+ '<span class="message-box-right"><span class="message-user">'
 				                        + '<p class="NickName-right"><span>'+ sendtime +'</span><span>我</span></p>'
 				                        + '</span><span class="message-content"><i class="angle-right"></i>'
 				                        + '<span class="text-right">'+ message +'</span></span></span></li>';
 				    	}else{
-				    		var li = '<li class="message unread"><img class="pic-left" src="data:image/jpg;base64,'+ msg["pic"] +'"/>'
+				    		var li = '<li class="message unread"><img class="pic-left" src="'+ picsrc +'"/>'
 				                     	+ '<span class="message-box-left"><span class="message-user">'
 				                        + '<p class="NickName-left"><span>'+ name +'</span><span>'+ sendtime +'</span></p>'
 				                        + '</span><span class="message-content"><i class="angle-left"></i>'
@@ -526,7 +531,9 @@ function MessageSync(UserName) {
 		    			var message = '<audio src="'+ msg["info"] +'" controls="controls">your browser does not support the audio tag</audio>';
 		    			break;
 		    		case "Sharing":
-		    			var message = '<a class="tab-a" href="'+ msg["url"] +'" target="_blank">链接：'+ msg["info"] +'</a>';
+		    			var u = msg["url"] == "" ? "javascript:;" : msg["url"];
+		    			var info = msg["info"] == "" ? "不支持预览，请在手机上查看。" : msg["info"];
+		    			var message = '<a class="tab-a" href="'+ u +'" target="_blank">链接：'+ info +'</a>';
 		    			break;
 		    		case "Card":
 		    			var message = '名片：' + msg["info"];
@@ -546,13 +553,13 @@ function MessageSync(UserName) {
 		    		var li = '<li class="system-message"><span class="system-info">'+ message +'</span></li>';
 		    	}else{
 		    		if (name == UserName) {
-		    			var li = '<li class="message"><img class="pic-right" src="data:image/jpg;base64,'+ msg["pic"] +'"/>'
+		    			var li = '<li class="message"><img class="pic-right" src="'+ picsrc +'"/>'
 			                     	+ '<span class="message-box-right"><span class="message-user">'
 			                        + '<p class="NickName-right"><span>'+ sendtime +'</span><span>我</span></p>'
 			                        + '</span><span class="message-content"><i class="angle-right"></i>'
 			                        + '<span class="text-right">'+ message +'</span></span></span></li>';
 			    	}else{
-			    		var li = '<li class="message unread"><img class="pic-left" src="data:image/jpg;base64,'+ msg["pic"] +'"/>'
+			    		var li = '<li class="message unread"><img class="pic-left" src="'+ picsrc +'"/>'
 			                     	+ '<span class="message-box-left"><span class="message-user">'
 			                        + '<p class="NickName-left"><span>'+ name +'</span><span>'+ sendtime +'</span></p>'
 			                        + '</span><span class="message-content"><i class="angle-left"></i>'
