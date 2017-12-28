@@ -274,21 +274,17 @@ class ChatRun(object):
         # img = itchat.get_head_img(x['UserName'])
         memberlist = self.getGroupMember(gid)
         num = 0
-        for i in memberlist:
-            img = itchat.get_head_img(userName=i["id"],chatroomUserName=gid)
-            try:
-                buffer = BytesIO(img)
-                buffer2 = BytesIO()
-                image = Image.open(buffer)
-                image.save(buffer2, format="JPEG")
-                img_str = base64.b64encode(buffer2.getvalue())
-                list2.append(bytes.decode(img_str))
-                num += 1
-            except:
-                num = num
-            if num >= 9:
-                return list2
-        return list2
+        img = itchat.get_head_img(chatroomUserName=gid)
+        try:
+            buffer = BytesIO(img)
+            buffer2 = BytesIO()
+            image = Image.open(buffer)
+            image.save(buffer2, format="JPEG")
+            img_str = base64.b64encode(buffer2.getvalue())
+            img_str=bytes.decode(img_str)
+        except:
+            img_str=""
+        return img_str
 
 
     # 跟新需要管理的群的GroupId
@@ -358,29 +354,17 @@ class ChatRun(object):
         self.updateGroup()
         list = []
         for x in self.__groups:
-            # #img = itchat.get_head_img(x['UserName'])
-            # list2 = []
-            # # img = itchat.get_head_img(x['UserName'])
-            # memberlist = self.getGroupMember(x['UserName'])
-            # num = 0
-            # for i in memberlist:
-            #     img = itchat.get_head_img(userName=i["id"])
-            #     if type(img) == types.StringType:
-            #         buffer = StringIO.StringIO(img)
-            #         buffer2 = StringIO.StringIO()
-            #         try:
-            #             image = Image.open(buffer)
-            #             image.save(buffer2, format="JPEG")
-            #             img_str = base64.b64encode(buffer2.getvalue())
-            #             list2.append(img_str)
-            #             num += 1
-            #         except:
-            #             num = num
-            #     else:
-            #         num = num
-            #     if num >= 8:
-            #         break
-            list.append({'name': x['NickName'], 'id': x['UserName'], 'need': x['UserName'] in self.__needGroups,'grouppic':[]})
+            img = itchat.get_head_img(chatroomUserName=x['UserName'])
+            try:
+                buffer = BytesIO(img)
+                buffer2 = BytesIO()
+                image = Image.open(buffer)
+                image.save(buffer2, format="JPEG")
+                img_str = base64.b64encode(buffer2.getvalue())
+                img_str=bytes.decode(img_str)
+            except:
+                img_str=""
+            list.append({'name': x['NickName'], 'id': x['UserName'], 'need': x['UserName'] in self.__needGroups,'grouppic':img_str})
         return list
 
     # 获取指定群所有成员
