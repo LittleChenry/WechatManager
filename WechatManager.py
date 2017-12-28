@@ -20,6 +20,7 @@ from messagelog import *
 from recordGname import *
 from datetime import datetime
 import re
+import types
 
 app = Flask(__name__)
 
@@ -37,11 +38,13 @@ def background_thread():
             m=chat.realSend()
             addmessage(m)
             try:
+                print(type(chat.getheadpic(m['uid'])))
                 buffer = BytesIO(chat.getheadpic(m['uid']))
                 buffer2 = BytesIO()
                 image = Image.open(buffer)
                 image.save(buffer2, format="JPEG")
                 img_str = base64.b64encode(buffer2.getvalue())
+                img_str= bytes.decode(img_str)
             except:
                 img_str = ""
             listbase= chat.getgrouppic(m['gid'])
@@ -49,7 +52,7 @@ def background_thread():
             for k, v in m.items():
                 dic[k] = v;
             dic['grouppic'] = listbase
-            dic['pic'] = bytes.decode(img_str)
+            dic['pic'] = img_str
             socketio.emit('msg', dic, json=True,namespace='/test')
 
 
@@ -126,14 +129,16 @@ def toLogin():
 def updatepage():
     global chat
     try:
+        print(type(chat.getMypic()))
         buffer = BytesIO(chat.getMypic())
         buffer2 = BytesIO()
         image = Image.open(buffer)
         image.save(buffer2, format="JPEG")
         img_str = base64.b64encode(buffer2.getvalue())
+        img_str = bytes.decode(img_str)
     except:
         img_str = ""
-    return json.dumps({'groups': chat.getAllGroup(), 'user': chat.getMyself(), 'userpic': bytes.decode(img_str), 'addKey': chat.getAddKey()})
+    return json.dumps({'groups': chat.getAllGroup(), 'user': chat.getMyself(), 'userpic': img_str, 'addKey': chat.getAddKey()})
 
 
 @app.route('/test',methods=['POST'])
