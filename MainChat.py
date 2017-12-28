@@ -284,7 +284,7 @@ class ChatRun(object):
                 num += 1
             except:
                 num = num
-            if num >= 8:
+            if num >= 9:
                 return list2
         return list2
 
