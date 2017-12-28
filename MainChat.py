@@ -33,7 +33,7 @@ class ChatRun(object):
         self.__atContent = ''
 
         # 关键字回复字典
-        self.__keyWordReponse = {u'一乙': 'auto', u'test': u'测试成功'}
+        self.__keyWordReponse = {}
 
         # 关键字广告检测
         self.__keywordAdd=[]
@@ -71,7 +71,7 @@ class ChatRun(object):
         self.__atContent = ''
 
         # 关键字回复字典
-        self.__keyWordReponse = {u'一乙': 'auto', u'test': u'测试成功'}
+        self.__keyWordReponse = {}
 
         # 待管理的群
         self.setNeedGroupByName(readGname(self.__mySelf['NickName']))
