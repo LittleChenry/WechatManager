@@ -155,6 +155,10 @@ i {
     border-bottom: 1px solid #c1c1c1;
 }
 
+.system-message {
+
+}
+
 .messages-title {
 	height: 53px;
     width: 100%;
@@ -398,6 +402,7 @@ i {
 .message-pic {
 	float: left;
     width: 13px;
+    height: 13px;
     margin: 1px;
 }
 
@@ -410,6 +415,21 @@ i {
     text-overflow: ellipsis;
 }
 
+.unreadtotal {
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    margin-top: 15px;
+    margin-left: -7px;
+    width: 18px;
+    height: 16px;
+    padding-top: 2px;
+    text-align: center;
+    border-radius: 18px;
+    background-color: red;
+    position: absolute;
+}
+
 .unreadnum {
     float: right;
     font-size: 12px;
@@ -417,10 +437,11 @@ i {
     color: white;
     margin-top: 20px;
     margin-right: 5px;
-    width: 14px;
-    height: 14px;
+    width: 18px;
+    height: 16px;
+    padding-top: 2px;
     text-align: center;
-    border-radius: 14px;
+    border-radius: 18px;
     background-color: red;
 }
 
@@ -712,7 +733,25 @@ i {
     color: red;
 }
 
+.kickdiv {
+    background-color: beige;
+    position: absolute;
+    padding: 10px;
+    border-radius: 5px;
+}
 
+.system-message {
+    text-align: center;
+    font-size: 12px;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.system-info {
+    padding: 4px;
+    background-color: #c9c9c9;
+    border-radius: 3px;
+}
 
 
 

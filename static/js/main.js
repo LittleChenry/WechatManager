@@ -407,6 +407,12 @@ function MessageSync(UserName) {
 			    		case "Sharing":
 			    			var message = '<a class="tab-a" href="'+ msg["url"] +'" target="_blank">链接：'+ msg["info"] +'</a>';
 			    			break;
+			    		case "Card":
+			    			var message = '名片：' + msg["info"];
+			    			break;
+			    		case "Note":
+			    			var message = msg["info"];
+			    			break;
 		    			case "Attachment":
 		    				var filepath = msg["info"].split("\\");
 		    				var length = filepath.length;
@@ -416,52 +422,89 @@ function MessageSync(UserName) {
 							var message = "不支持预览，请在手机上查看。";
 			    	}
 			    	
-			    	if (name == UserName) {
-			    		var li = '<li class="message"><img class="pic-right" src="data:image/jpg;base64,'+ msg["pic"] +'"/>'
-			                     	+ '<span class="message-box-right"><span class="message-user">'
-			                        + '<p class="NickName-right"><span>'+ sendtime +'</span><span>我</span></p>'
-			                        + '</span><span class="message-content"><i class="angle-right"></i>'
-			                        + '<span class="text-right">'+ message +'</span></span></span></li>';
+			    	if (msg.type == "Note") {
+			    		var li = '<li class="system-message"><span class="system-info">'+ message +'</span></li>';
 			    	}else{
-			    		var li = '<li class="message unread"><img class="pic-left" src="data:image/jpg;base64,'+ msg["pic"] +'"/>'
-			                     	+ '<span class="message-box-left"><span class="message-user">'
-			                        + '<p class="NickName-left"><span>'+ name +'</span><span>'+ sendtime +'</span></p>'
-			                        + '</span><span class="message-content"><i class="angle-left"></i>'
-			                        + '<span class="text-left">'+ message +'</span></span></span></li>';
-			            var addType = msg["addType"];
-			            if (addType != undefined) {
-			            	switch(addType){
-			            		case "phone":
-			            		var type = "电话消息";
-			            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
-			            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ',' + name + ',' + sendtime + ',' + message + '</p>'
-			            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
-		            				break;
-			            		case "link":
-			            		var type = "链接消息";
-			            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
-			            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ',' + name + ',' + sendtime + ',' + message + '</p>'
-			            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
-		            				break;
-			            		case "sharing":
-			            		var type = "分享消息";
-			            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
-			            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ',' + name + ',' + sendtime + ',' + message + '</p>'
-			            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
-		            				break;
-			            		case "keyword":
-			            		var type = "关键词消息：" + msg["addkeyword"];
-			            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
-			            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ',' + name + ',' + sendtime + ',' + message + '</p>'
-			            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
-		            				break;
-	            				default:
-
-			            	}
-			            	$(".warningmessage-content").append(warningmessage);
-			            }
+			    		if (name == UserName) {
+			    			var li = '<li class="message"><img class="pic-right" src="data:image/jpg;base64,'+ msg["pic"] +'"/>'
+				                     	+ '<span class="message-box-right"><span class="message-user">'
+				                        + '<p class="NickName-right"><span>'+ sendtime +'</span><span>我</span></p>'
+				                        + '</span><span class="message-content"><i class="angle-right"></i>'
+				                        + '<span class="text-right">'+ message +'</span></span></span></li>';
+				    	}else{
+				    		var li = '<li class="message unread"><img class="pic-left" src="data:image/jpg;base64,'+ msg["pic"] +'"/>'
+				                     	+ '<span class="message-box-left"><span class="message-user">'
+				                        + '<p class="NickName-left"><span>'+ name +'</span><span>'+ sendtime +'</span></p>'
+				                        + '</span><span class="message-content"><i class="angle-left"></i>'
+				                        + '<span class="text-left">'+ message +'</span></span></span></li>';
+				            var addType = msg["addType"];
+				            if (addType != undefined) {
+				            	switch(addType){
+				            		case "phone":
+				            			var type = "电话消息";
+				            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+				            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ','
+				            				//+ '<a class="kickmember" href="javascript:;" onclick="kick(this)">'+ name
+				            				+ name
+				            				+ '<input type="hidden" value="'+ uid +'"><input type="hidden" value="'+ gid +'"></a>' + ',' + sendtime + ',' + message + '</p>'
+				            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+			            				break;
+				            		case "link":
+				            			var type = "链接消息";
+				            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+				            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ','
+				            				//+ '<a class="kickmember" href="javascript:;" onclick="kick(this)">'+ name
+				            				+ name
+				            				+ '<input type="hidden" value="'+ uid +'"><input type="hidden" value="'+ gid +'"></a>' + ',' + sendtime + ',' + message + '</p>'
+				            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+			            				break;
+				            		case "sharing":
+				            			var type = "分享消息";
+				            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+				            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ','
+				            				//+ '<a class="kickmember" href="javascript:;" onclick="kick(this)">'+ name
+				            				+ name
+				            				+ '<input type="hidden" value="'+ uid +'"><input type="hidden" value="'+ gid +'"></a>' + ',' + sendtime + ',' + message + '</p>'
+				            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+			            				break;
+				            		case "keyword":
+				            		var type = "关键词消息：" + msg["addkeyword"];
+				            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+				            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ','
+				            				//+ '<a class="kickmember" href="javascript:;" onclick="kick(this)">'+ name
+				            				+ name
+				            				+ '<input type="hidden" value="'+ uid +'"><input type="hidden" value="'+ gid +'"></a>' + ',' + sendtime + ',' + message + '</p>'
+				            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+			            				break;
+				            		case "card":
+				            			var type = "名片消息：";
+				            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+				            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ','
+				            				//+ '<a class="kickmember" href="javascript:;" onclick="kick(this)">'+ name
+				            				+ name
+				            				+ '<input type="hidden" value="'+ uid +'"><input type="hidden" value="'+ gid +'"></a>' + ',' + sendtime + ',' + message + '</p>'
+				            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+			            				break;
+				            		case "Viedo":
+				            			var type = "视频消息：";
+				            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+				            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ','
+				            				//+ '<a class="kickmember" href="javascript:;" onclick="kick(this)">'+ name
+				            				+ name
+				            				+ '<input type="hidden" value="'+ uid +'"><input type="hidden" value="'+ gid +'"></a>' + ',' + sendtime + ',' + '视频' + '</p>'
+				            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+			            				break;
+		            				default:
+		            					
+				            	}
+				            	$(".warningmessage-content").append(warningmessage);
+				            }
+				    	}
 			    	}
+
+			    	
 			    	$("#" + contentID).append(li);
+
 			    	RefreshDialogList();
 				}
 				return flag;
@@ -485,6 +528,12 @@ function MessageSync(UserName) {
 		    		case "Sharing":
 		    			var message = '<a class="tab-a" href="'+ msg["url"] +'" target="_blank">链接：'+ msg["info"] +'</a>';
 		    			break;
+		    		case "Card":
+		    			var message = '名片：' + msg["info"];
+		    			break;
+		    		case "Note":
+		    			var message = msg["info"];
+		    			break;
 	    			case "Attachment":
 	    				var filepath = msg["info"].split("\\");
 	    				var length = filepath.length;
@@ -493,50 +542,84 @@ function MessageSync(UserName) {
 					default:
 						var message = "不支持预览，请在手机上查看。";
 		    	}
-		    	if (name == UserName) {
-		    		var li = '<li class="message"><img class="pic-right" src="data:image/jpg;base64,'+ msg["pic"] +'"/>'
-		                     	+ '<span class="message-box-right"><span class="message-user">'
-		                        + '<p class="NickName-right"><span>'+ sendtime +'</span><span>我</span></p>'
-		                        + '</span><span class="message-content"><i class="angle-right"></i>'
-		                        + '<span class="text-right">'+ message +'</span></span></span></li>';
+		    	if (msg.type == "Note") {
+		    		var li = '<li class="system-message"><span class="system-info">'+ message +'</span></li>';
 		    	}else{
-		    		var li = '<li class="message unread"><img class="pic-left" src="data:image/jpg;base64,'+ msg["pic"] +'"/>'
-		                     	+ '<span class="message-box-left"><span class="message-user">'
-		                        + '<p class="NickName-left"><span>'+ name +'</span><span>'+ sendtime +'</span></p>'
-		                        + '</span><span class="message-content"><i class="angle-left"></i>'
-		                        + '<span class="text-left">'+ message +'</span></span></span></li>';
-                    var addType = msg["addType"];
-		            if (addType != null) {
-		            	switch(addType){
-		            		case "phone":
-		            		var type = "电话消息";
-		            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
-		            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ',' + name + ',' + sendtime + ',' + message + '</p>'
-		            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
-	            				break;
-		            		case "link":
-		            		var type = "链接消息";
-		            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
-		            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ',' + name + ',' + sendtime + ',' + message + '</p>'
-		            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
-	            				break;
-		            		case "sharing":
-		            		var type = "分享消息";
-		            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
-		            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ',' + name + ',' + sendtime + ',' + message + '</p>'
-		            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
-	            				break;
-		            		case "keyword":
-		            		var type = "关键词消息：" + msg["addkeyword"];
-		            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
-		            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ',' + name + ',' + sendtime + ',' + message + '</p>'
-		            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
-	            				break;
-            				default:
-            					
-		            	}
-		            	$(".warningmessage-content").append(warningmessage);
-		            }
+		    		if (name == UserName) {
+		    			var li = '<li class="message"><img class="pic-right" src="data:image/jpg;base64,'+ msg["pic"] +'"/>'
+			                     	+ '<span class="message-box-right"><span class="message-user">'
+			                        + '<p class="NickName-right"><span>'+ sendtime +'</span><span>我</span></p>'
+			                        + '</span><span class="message-content"><i class="angle-right"></i>'
+			                        + '<span class="text-right">'+ message +'</span></span></span></li>';
+			    	}else{
+			    		var li = '<li class="message unread"><img class="pic-left" src="data:image/jpg;base64,'+ msg["pic"] +'"/>'
+			                     	+ '<span class="message-box-left"><span class="message-user">'
+			                        + '<p class="NickName-left"><span>'+ name +'</span><span>'+ sendtime +'</span></p>'
+			                        + '</span><span class="message-content"><i class="angle-left"></i>'
+			                        + '<span class="text-left">'+ message +'</span></span></span></li>';
+			            var addType = msg["addType"];
+			            if (addType != undefined) {
+			            	switch(addType){
+			            		case "phone":
+			            			var type = "电话消息";
+			            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+			            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ','
+			            				//+ '<a class="kickmember" href="javascript:;" onclick="kick(this)">'+ name
+			            				+ name
+			            				+ '<input type="hidden" value="'+ uid +'"><input type="hidden" value="'+ gid +'"></a>' + ',' + sendtime + ',' + message + '</p>'
+			            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+		            				break;
+			            		case "link":
+			            			var type = "链接消息";
+			            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+			            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ','
+			            				//+ '<a class="kickmember" href="javascript:;" onclick="kick(this)">'+ name
+			            				+ name
+			            				+ '<input type="hidden" value="'+ uid +'"><input type="hidden" value="'+ gid +'"></a>' + ',' + sendtime + ',' + message + '</p>'
+			            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+		            				break;
+			            		case "sharing":
+			            			var type = "分享消息";
+			            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+			            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ','
+			            				//+ '<a class="kickmember" href="javascript:;" onclick="kick(this)">'+ name
+			            				+ name
+			            				+ '<input type="hidden" value="'+ uid +'"><input type="hidden" value="'+ gid +'"></a>' + ',' + sendtime + ',' + message + '</p>'
+			            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+		            				break;
+			            		case "keyword":
+			            		var type = "关键词消息：" + msg["addkeyword"];
+			            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+			            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ','
+			            				//+ '<a class="kickmember" href="javascript:;" onclick="kick(this)">'+ name
+			            				+ name
+			            				+ '<input type="hidden" value="'+ uid +'"><input type="hidden" value="'+ gid +'"></a>' + ',' + sendtime + ',' + message + '</p>'
+			            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+		            				break;
+			            		case "card":
+			            			var type = "名片消息：";
+			            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+			            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ','
+			            				//+ '<a class="kickmember" href="javascript:;" onclick="kick(this)">'+ name
+			            				+ name
+			            				+ '<input type="hidden" value="'+ uid +'"><input type="hidden" value="'+ gid +'"></a>' + ',' + sendtime + ',' + message + '</p>'
+			            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+		            				break;
+			            		case "Viedo":
+			            			var type = "视频消息：";
+			            			var warningmessage = '<li class="warning-message"><p class="warning-name">'+ type +'</p>'
+			            				+ '<p class="warning-content">'+ '来自：' + '<span class="highlight">'+ groupname +'</span>' + ','
+			            				//+ '<a class="kickmember" href="javascript:;" onclick="kick(this)">'+ name
+			            				+ name
+			            				+ '<input type="hidden" value="'+ uid +'"><input type="hidden" value="'+ gid +'"></a>' + ',' + sendtime + ',' + '视频' + '</p>'
+			            				+ '<i class="fa fa-close close" onclick="deletewarning(this)"></i></li>';
+		            				break;
+	            				default:
+	            					
+			            	}
+			            	$(".warningmessage-content").append(warningmessage);
+			            }
+			    	}
 		    	}
 		    	var pic = msg["grouppic"];
 		    	var content = "";
@@ -584,13 +667,14 @@ function MessageSync(UserName) {
     })//div.scrollTop = div.scrollHeight;
 }
 
-function RefreshDialogList() {
+function RefreshDialogList() {//
 	var GroupList = $("#groups-ul");
+	var total = 0;
 	GroupList.find("li").each(function(index,e){
 		if ($(this).find(".unreadnum").length > 0) {
 			$(this).find(".unreadnum").remove();
 		}
-		if ($(this).hasClass("active")) {
+		if ($(this).hasClass("active") && !($(".dialog-content").is(":hidden"))) {
 			var ulid = $(this).find(".group-name").attr("data-content");
 			$("#dialogs").scrollTop($("#dialogs")[0].scrollHeight);
 			$("#" + ulid).find("li").each(function(index,e){
@@ -609,11 +693,23 @@ function RefreshDialogList() {
 				return count;
 			});
 			if (count > 0) {
-				var span = '<span class="unreadnum">'+ count +'</span>';
+				total += count;
+				var showcount = count > 99 ? "…" : count;
+				var span = '<span class="unreadnum">'+ showcount +'</span>';
 				$(this).append(span);
 			}
 		}
+		return total;
 	});
+	if ($("#at").find(".unreadtotal").length > 0) {
+		$("#at").find(".unreadtotal").remove();
+	}
+	if (total > 0) {
+		var showtotal = total > 99 ? "…" : total;
+		var totalspan = '<span class="unreadtotal">'+ showtotal +'</span>';
+		$("#at").append(totalspan);
+	}
+
 }
 
 function getBasicInfo() {
@@ -773,4 +869,38 @@ function deletekeyword(e) {
 
 function deletewarning(e) {
 	$(e).parent().remove();
+}
+
+function kick(e,uid,gid) {
+	var kickspan = '<div class="kickdiv">踢除此人？<button class="btn" type="button" onclick="deletemember(this)">确定</button></div>';
+	$(e).parent().append(kickspan);
+	var top = $(e).offset().top + 15;
+	var left = $(e).offset().left;
+	$(e).parent().find(".kickdiv").offset({top : top, left: left});
+}
+
+function deletemember(e) {
+	var uid,gid;
+	$(e).parent().parent().find("input").each(function(index,e){
+		if (index == 0) {
+			uid = $(this).val();
+		}
+		if (index == 1) {
+			gid = $(this).val();
+		}
+	});
+	$.ajax({
+		type: "post",
+		async: true,
+		url: "/removeUser",
+		data:{
+			uid : uid,
+			gid : gid
+		},
+		dataType: "json",
+		success: function (data) {
+			alert("踢除成功！");
+		}
+	});
+	$(this).parent().remove();
 }
