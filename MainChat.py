@@ -140,7 +140,9 @@ class ChatRun(object):
                                          msg['FromUserName'], msg['Type'], rename=realNickName, addType='phone')
                         elif msg['Type'] == 'Sharing':
                             flag = True
-                            self.sendMsg(msg['Text'], msg['ActualNickName'], self.getGroupNameById(msg['FromUserName']),
+                            if infomation == '':
+                                infomation = u'不支持预览，请在手机上查看。'
+                            self.sendMsg(infomation, msg['ActualNickName'], self.getGroupNameById(msg['FromUserName']),
                                          time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
                                          msg['ActualUserName'],
                                          msg['FromUserName'], msg['Type'], url=msg['Url'], rename=realNickName, addType='sharing')
