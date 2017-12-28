@@ -36,9 +36,9 @@ def background_thread():
         if chat.hasNewMsg():
             m=chat.realSend()
             addmessage(m)
-            buffer = BytesIO(chat.getheadpic(m['uid']))
-            buffer2 = BytesIO()
             try:
+                buffer = BytesIO(chat.getheadpic(m['uid']))
+                buffer2 = BytesIO()
                 image = Image.open(buffer)
                 image.save(buffer2, format="JPEG")
                 img_str = base64.b64encode(buffer2.getvalue())
@@ -125,9 +125,9 @@ def toLogin():
 @app.route('/update', methods=['POST'])
 def updatepage():
     global chat
-    buffer = BytesIO(chat.getMypic())
-    buffer2 = BytesIO()
     try:
+        buffer = BytesIO(chat.getMypic())
+        buffer2 = BytesIO()
         image = Image.open(buffer)
         image.save(buffer2, format="JPEG")
         img_str = base64.b64encode(buffer2.getvalue())
