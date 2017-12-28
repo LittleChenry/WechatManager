@@ -395,6 +395,7 @@ function AdjustPage(argument) {
 	$(".menu").height(actualheight);
 	$(".menu-content").height(actualheight);
 	$(".menu-content").width(actualwidth - 60);
+	$(".scroll-content").height(actualheight - 53);
 }
 
 function MessageSync(UserName) {
@@ -422,7 +423,7 @@ function MessageSync(UserName) {
 			    	var sendtime = " " + msg["time"].split(" ")[1] + " ";
 			    	switch(msg["type"]){
 			    		case "Text":
-			    			var message = msg["info"];
+			    			var message = msg["info"].replace("\n", "<br>");
 			    			break;
 			    		case "Video":
 			    			var message = '<video class="message-video" src="'+ msg["info"] +'" controls="controls">your browser does not support the video tag</video>';
@@ -542,7 +543,7 @@ function MessageSync(UserName) {
 		    	var sendtime = " " + msg.time.split(" ")[1];
 		    	switch(msg.type){
 		    		case "Text":
-		    			var message = msg["info"];
+		    			var message = msg["info"].replace("\n", "<br>");
 		    			break;
 		    		case "Video":
 		    			var message = '<video class="message-video" src="'+ msg["info"] +'" controls="controls">your browser does not support the video tag</video>';
@@ -750,26 +751,46 @@ function getBasicInfo() {
 			userpho = data.userpic;
 			var addAddkey = data.addKey;
 			$("#mypic").attr("src","data:image/jpg;base64," + userpho);
+			//关键词
 			var keywordsarea = $(".keywords");
 			keywordsarea.html("");
 			for (var i = 0; i < addAddkey.length; i++) {
 				var p = '<p class="selected-group"><span>'+ addAddkey[i] +'</span></p>';
 				keywordsarea.append(p);
 			}
+			//模板
+			//var templates = data.template;
+			//var templates = ["好友的搜索方法为search_friends，有四种搜索方式：","1. 仅获取自己的用户信息","2. 获取特定UserName的用户信息"];
+			var templates = [];
+			var templatearea = $(".template-lists");
+			templatearea.each(function(){
+				$(this).html("");
+				for (var i = 0; i < templates.length; i++) {
+					var li = '<li class="single-template" onclick="choosetemplate(this)">'+ templates[i] +'</li>';
+					$(this).append(li);
+				}
+			});
+			var templatemanagelist = $("#template-manage-list");
+			templatemanagelist.html("");
+			for (var i = 0; i < templates.length; i++) {
+				var li = '<li class="single-allsee-list"><span class="templatemessage-content">'+ templates[i] +'</span></li>';
+				templatemanagelist.append(li);
+			}
 
+			//群组
 			var Allgroups = $(".allgroups-content");
 			var Allcontact = $(".allcontact-content");
 			var Manager = $(".manager-content");
+			var StaticGroups = $("#static-groups");
 			Allgroups.html("");
 			Allcontact.html("");
 			Manager.html("");
+			StaticGroups.html("");
 			$(".multisend-contacts").find(".selected-group").each(function(){
 				$(this).remove();
 			});
-			
 			var c = "@";
 			var regex = new RegExp(c, 'g');
-
 			for (var i = 0; i < data.groups.length; i++) {
 				var result = data.groups[i].id.match(regex);
 				var count = !result ? 0 : result.length;
@@ -784,6 +805,7 @@ function getBasicInfo() {
 					var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ grouppic +'</span>'
 		                          + '<span class="group-name" title="'+ data.groups[i].name +'" data-content="'+ groupid +'">'+ data.groups[i].name +'</span></li>';
 					Manager.append(groupli);
+					StaticGroups.append(groupli);
 					var groupp = '<p class="selected-group"><span title="'+ data.groups[i].name +'">'+ data.groups[i].name +' </span><i class="delete-selected-group fa fa-close" title="删除"></i></p>';
 					$(".multisend-contacts").append(groupp);
 				}
@@ -928,4 +950,9 @@ function deletemember(e) {
 
 function closethis(e) {
 	$(e).parents().find(".close-area").hide();
+}
+
+function choosetemplate(e){
+	var content = $(e).html();
+	$(e).parent().parent().parent().prev().prev().find("textarea").val(content);
 }

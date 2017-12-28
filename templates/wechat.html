@@ -85,17 +85,16 @@
                                 <a class="template-close" href="javascript:;" title="关闭"><i class="fa fa-close close" onclick="closethis(this)"></i></a>
                             </div>
                             <ul class="template-lists">
-                                <li class="single-template">好友的搜索方法为search_friends，有四种搜索方式：</li>
-                                <li class="single-template">1. 仅获取自己的用户信息 </li>
-                                <li class="single-template">2. 获取特定UserName的用户信息</li>
-                                <li class="single-template">3. 获取备注、微信号、昵称中的任何一项等于name键值的用户</li>
-                                <li class="single-template">4. 获取备注、微信号、昵称分别等于相应键值的用户</li>
+                                
                             </ul>
                         </div>
                     </div>
                     <div id="emoijimport" class="emoijimportbox">
                         <div id="emoijimporttool" class="emoijimporttool">
-                            <span style="float:left;margin-top:2%"> 导入表情预览</span><a class="close" href="javascript:;" title="关闭"><i id="emoijimportclose" class="fa fa-window-close close"></i></a>
+                            <span>导入表情预览</span>
+                            <a class="close" href="javascript:;" title="关闭">
+                                <i id="emoijimportclose" class="fa fa-close close"></i>
+                            </a>
                         </div>
                         <form id="moment-pane-upload-form" enctype="multipart/form-data">
                         </form>
@@ -114,15 +113,18 @@
                         <a class="tab-a" href="javascript:;" data-content="aite-content"><span class="tab-3">@消息列表</span></a>
                         <a class="tab-a" href="javascript:;" data-content="detail-content"><span class="tab-3">详细信息</span></a>
                     </div>
-                    <ul class="groups warningmessage-content">
+                    <div class="scroll-content">
+                        <ul class="groups warningmessage-content">
+                            
+                        </ul>
+                        <ul class="groups aite-content hide">
+                            
+                        </ul>
+                        <ul class="groups detail-content hide">
+                            
+                        </ul>
                         
-                    </ul>
-                    <ul class="groups aite-content hide">
-                        
-                    </ul>
-                    <ul class="groups detail-content hide">
-                        
-                    </ul>
+                    </div>
                 </div>
             </div>
             <div class="sub-menu contact-content">
@@ -275,20 +277,17 @@
                 </div>
                 <div id="messagetemplate-content" class="single-row configs hide">
                     <div class="single-row sub-mainrow">
-                        <ul class="text-groups">
-                            <li class="single-list">
-                                <span class="templatemessage-content">一乙农业</span>
-                            </li>
-                            <li class="single-list">
-                                <span class="templatemessage-content">一乙酒业</span>
-                            </li>
-                            <li class="single-list">
-                                <span class="templatemessage-content">一乙茶业</span>
-                            </li>
+                        <ul id="template-manage-list" class="text-groups">
+
                         </ul>
                     </div>
-                    <div class="single-row sub-contentrow">
+                    <div class="single-row sub-contentrow hide">
+                        <p class="title">消息模板</p>
                         
+                        <div class="addtemplates">
+                            <textarea id="newtemplate" type="text" class="form-textarea white-background"></textarea>
+                            <button id="savetemplate" class="btn" type="button">保存</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -301,20 +300,9 @@
                     </ul>
                 </div>
                 <div id="activity-content" class="single-row configs">
-                    <div class="single-row sub-mainrow">
-                        <ul class="text-groups">
-                            <li class="single-message active" data-aite="2">
-                                <span class="group-pic">
-                                    <img class="single-pic" src="static/img/weixin.jpg">
-                                </span>
-                                <span class="group-name" title="微信群管理内部讨论群" data-content="">微信群管理内部讨论群</span>
-                            </li>
-                            <li class="single-message" data-aite="2">
-                                <span class="group-pic">
-                                    <img class="single-pic" src="static/img/weixin.jpg">
-                                </span>
-                                <span class="group-name" title="微信群管理内部讨论群" data-content="">测试1群</span>
-                            </li>
+                    <div class="single-row sub-mainrow hide">
+                        <ul id="static-groups" class="text-groups">
+
                         </ul>
                     </div>
                     <div class="single-row sub-contentrow">

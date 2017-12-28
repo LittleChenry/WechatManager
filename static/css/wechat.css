@@ -667,25 +667,20 @@ i {
 }
 
 .templatemessage-content {
-    margin: 0px;
-    padding: 17px 20px;
-    position: absolute;
-    width: 90%;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    
 }
 
 .sendinfo {
     font-weight: 600;
     margin-bottom: 0px;
+    line-height: 1;
 }
 
 .sendmessage {
     margin: 0px;
     padding-left: 20px;
     font-size: 14px;
-    line-height: 0.5;
+    line-height: 1;
 }
 
 .keywords {
@@ -783,7 +778,8 @@ i {
     list-style-type: none;
     padding: 0px;
     margin: 0px;
-    height: 250px;
+    min-height: 150px;
+    max-height: 300px;
     overflow: auto;
 }
 
@@ -809,6 +805,29 @@ i {
     position: relative;
 }
 
+.scroll-content {
+    overflow-y: auto;
+}
+
+.addtemplates {
+    height: 100px;
+    text-align: center;
+    line-height: 2;
+}
+
+.white-background {
+    background-color: white;
+    border: 1px solid #C1C1C1;
+}
+
+.single-allsee-list {
+    position: relative;
+    min-height: 36px;
+    width: 100%;
+    padding: 10px 14px;
+    border-bottom: 1px solid #c1c1c1;
+    box-sizing: border-box;
+}
 
 
 

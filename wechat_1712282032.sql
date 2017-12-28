@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost_3306
-Source Server Version : 50720
-Source Host           : localhost:3306
+Source Server         : yiyi
+Source Server Version : 50638
+Source Host           : 139.224.94.195:3300
 Source Database       : wechat
 
 Target Server Type    : MYSQL
-Target Server Version : 50720
+Target Server Version : 50638
 File Encoding         : 65001
 
-Date: 2017-12-26 15:23:52
+Date: 2017-12-28 20:31:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,10 +20,10 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `badinfo`;
 CREATE TABLE `badinfo` (
-  `ID` int(10) NOT NULL,
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Content` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for expression
@@ -45,7 +45,7 @@ CREATE TABLE `groups` (
   `Remark` varchar(255) DEFAULT NULL,
   `Manager_ID` int(10) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for keywords
@@ -83,7 +83,7 @@ CREATE TABLE `members` (
   `JionTime` datetime DEFAULT NULL,
   `City` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for message
@@ -92,13 +92,13 @@ DROP TABLE IF EXISTS `message`;
 CREATE TABLE `message` (
   `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `url` text,
   `Time` datetime DEFAULT NULL,
   `Group_ID` int(10) DEFAULT NULL,
   `Member_ID` int(10) DEFAULT NULL,
   `Type` varchar(50) DEFAULT NULL,
-  `url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=306 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=251 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for reply
