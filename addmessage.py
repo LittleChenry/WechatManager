@@ -14,29 +14,36 @@ def addmessage(dic):
     cur1 = conn.cursor()
     cur2 = conn.cursor()
     cur3 = conn.cursor()
-    sel="select id from members where nickname='%s'" % dic['rename']
-    cur1.execute(sel)
-    memberid =cur1.fetchone()
-    sel1 = "select min(id) from groups where name='%s'" % dic['gname']
-    cur2.execute(sel1)
-    groupid = cur2.fetchone()
-    if dic['type']=='Sharing':
-        url=dic['url']
-    else:
-        url=''
-    if groupid[0]==None:
+    try:
+        sel="select id from members where nickname='%s'" % dic['rename']
+        cur1.execute(sel)
+        memberid =cur1.fetchone()
+        sel1 = "select min(id) from groups where name='%s'" % dic['gname']
+        cur2.execute(sel1)
+        groupid = cur2.fetchone()
+        if dic['type']=='Sharing':
+            url=dic['url']
+        else:
+            url=''
+        if groupid[0]==None:
+            pass
+        else:
+            if memberid == None:
+                inse = "insert into members (nickname,group_id)values('%s','%d')" % (dic['rename'], int(groupid[0]))
+                cur1.execute(inse)
+                sel = "select id from members where nickname='%s'" % dic['rename']
+                cur1.execute(sel)
+                memberid = cur1.fetchone()
+            # str="insert into message (Content,group_id,member_id,time,Type,url) values('%s','%d','%d','%s','%s','%s')"%(dic['info'], int(groupid[0]) ,int(memberid[0]), dic['time'],dic['type'],url)
+            # cur3.execute(str)
+            print(dic['info'], int(groupid[0]), int(memberid[0]), dic['time'], dic['type'], url)
+            str = "insert into message (Content,group_id,member_id,time,Type,url) values(%s,%s,%s,%s,%s,%s)"
+            cur3.execute(str, (dic['info'], int(groupid[0]), int(memberid[0]), dic['time'], dic['type'], url))
+            conn.commit()
+    except Exception as e:
         pass
-    else:
-        if memberid == None:
-            inse = "insert into members (nickname,group_id)values('%s','%d')" % (dic['rename'], int(groupid[0]))
-            cur1.execute(inse)
-            sel = "select id from members where nickname='%s'" % dic['rename']
-            cur1.execute(sel)
-            memberid = cur1.fetchone()
-        str="insert into message (Content,group_id,member_id,time,Type,url) values('%s','%d','%d','%s','%s','%s')"%(dic['info'], int(groupid[0]) ,int(memberid[0]), dic['time'],dic['type'],url)
-        cur3.execute(str)
-    cur1.close()
-    cur2.close()
-    cur3.close()
-    conn.commit()
-    conn.close()
+    finally:
+        cur1.close()
+        cur2.close()
+        cur3.close()
+        conn.close()

@@ -10,12 +10,16 @@ def recordbadinfo(word):
         db=database1.db,
         charset="utf8"
     )
-    cur1 = conn.cursor()
-    ins="insert into badinfo (Content) values('%s')" % (word)
-    cur1.execute(ins)
-    cur1.close()
-    conn.commit()
-    conn.close()
+    try:
+        cur1 = conn.cursor()
+        ins="insert into badinfo (Content) values('%s')" % (word)
+        cur1.execute(ins)
+        conn.commit()
+    except Exception as e:
+        pass
+    finally:
+        cur1.close()
+        conn.close()
 
 def readbadinfo():
     conn = mysql.connector.connect(
@@ -26,18 +30,22 @@ def readbadinfo():
         db=database1.db,
         charset="utf8"
     )
-    cur1 = conn.cursor()
-    ins="select Content from badinfo "
-    cur1.execute(ins)
-    results = cur1.fetchall()
-    badinfo = []
-    for r in results:
-        badin = r[0]
-        badinfo.append(badin)
-    return badinfo
-    cur1.close()
-    conn.commit()
-    conn.close()
+    try:
+        cur1 = conn.cursor()
+        ins="select Content from badinfo "
+        cur1.execute(ins)
+        results = cur1.fetchall()
+        badinfo = []
+        for r in results:
+            badin = r[0]
+            badinfo.append(badin)
+        conn.commit()
+    except Exception as e:
+        pass
+    finally:
+        cur1.close()
+        conn.close()
+        return badinfo
 
 def deletebadinfo(words):
     conn = mysql.connector.connect(
@@ -48,10 +56,13 @@ def deletebadinfo(words):
         db=database1.db,
         charset="utf8"
     )
-    cur1 = conn.cursor()
-    ins="delete from badinfo where content='%s'"%words
-    cur1.execute(ins)
-
-    cur1.close()
-    conn.commit()
-    conn.close()
+    try:
+        cur1 = conn.cursor()
+        ins="delete from badinfo where content='%s'"%words
+        cur1.execute(ins)
+        conn.commit()
+    except Exception as e:
+        pass
+    finally:
+        cur1.close()
+        conn.close()
