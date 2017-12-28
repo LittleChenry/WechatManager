@@ -109,10 +109,15 @@
                                         var message = '<audio src="../'+ data[i].content +'" controls="controls">your browser does not support the audio tag</audio>';
                                         break;
                                     case "Sharing":
-                                        var message = '<a class="tab-a" href="'+ data[i].url +'" target="_blank">链接：'+ data[i].content +'</a>';
+                                        var u = data[i].url == "" ? "javascript:;" : data[i].url;
+                                        var info = data[i].content == "" ? "不支持预览，请在手机上查看。" : data[i].content;
+                                        var message = '<a class="tab-a" href="'+ u +'" target="_blank">链接：'+ info +'</a>';
                                         break;
                                     case "Card":
                                         var message = '名片：' + data[i].content;
+                                        break;
+                                    case "Note":
+                                        var message = data[i].content;
                                         break;
                                     case "Attachment":
                                         var filepath = data[i].content.split("\\");
