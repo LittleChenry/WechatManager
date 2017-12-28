@@ -38,7 +38,6 @@ def background_thread():
             m=chat.realSend()
             addmessage(m)
             try:
-                print(type(chat.getheadpic(m['uid'],m['gid'])))
                 buffer = BytesIO(chat.getheadpic(m['uid'],m['gid']))
                 buffer2 = BytesIO()
                 image = Image.open(buffer)
@@ -129,7 +128,6 @@ def toLogin():
 def updatepage():
     global chat
     try:
-        print(type(chat.getMypic()))
         buffer = BytesIO(chat.getMypic())
         buffer2 = BytesIO()
         image = Image.open(buffer)

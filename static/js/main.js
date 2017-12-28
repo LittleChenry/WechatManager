@@ -628,12 +628,8 @@ function MessageSync(UserName) {
 			            }
 			    	}
 		    	}
-		    	var pic = msg["grouppic"];
-		    	var content = "";
-		    	for(var i = 0; i < pic.length; i++) {
-	                 content = content + '<img class="message-pic" src="data:image/jpg;base64,'+ pic[i] +'"/>';
-				}
-				var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ content +'</span>'
+		    	var grouppic = '<img class="message-pic" src="data:image/jpg;base64,'+ msg["grouppic"] +'"/>'
+				var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ grouppic +'</span>'
 	                          + '<span class="group-name" title="'+ groupname +'" data-content="'+ groupid +'">'+ groupname +'</span></li>';
 				var dialogul = '<ul id="'+ groupid +'" class="conversation-area">'+ li +'</ul>';
 				GroupList.append(groupli);
@@ -756,18 +752,13 @@ function getBasicInfo() {
 				var count = !result ? 0 : result.length;
 		    	var groupid = data.groups[i].id.substring(count , data.groups[i].id.length);
 		    	var need = (data.groups[i].need == true) ? 'fa fa-check-square' : 'fa fa-square-o';
-				var pic = data.groups[i].grouppic;
-		    	var content = "";
-		    	for(var j = 0; j < pic.length; j++) {
-	                 content = content + '<img class="message-pic" src="data:image/jpg;base64,'+ pic[j] +'"/>';
-				}
-				content = content == "" ? '<img class="single-pic" src="static/img/weixin.jpg"/>' : content;
-				var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ content +'</span>'
+		    	var grouppic = '<img class="message-pic" src="data:image/jpg;base64,'+ data.groups[i].grouppic +'"/>';
+				var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ grouppic +'</span>'
 	                          + '<span class="group-name" title="'+ data.groups[i].name +'" data-content="'+ groupid +'">'+ data.groups[i].name +'</span>'
 	                          + '<span class="choosebox pull-right"><i class="'+ need +'"></i></span></li>';
 				Allgroups.append(groupli);
 				if (need == 'fa fa-check-square') {
-					var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ content +'</span>'
+					var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ grouppic +'</span>'
 		                          + '<span class="group-name" title="'+ data.groups[i].name +'" data-content="'+ groupid +'">'+ data.groups[i].name +'</span></li>';
 					Manager.append(groupli);
 					var groupp = '<p class="selected-group"><span title="'+ data.groups[i].name +'">'+ data.groups[i].name +' </span><i class="delete-selected-group fa fa-close" title="删除"></i></p>';
