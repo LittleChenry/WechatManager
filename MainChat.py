@@ -494,3 +494,21 @@ class ChatRun(object):
         #     if member.get('UserName') == memberid:
         #         itchat.delete_member_from_chatroom(g, member)
         #         break;
+
+    #注销登录
+    def logout(self):
+         itchat.logout()
+         self.__friends = []
+         self.__mySelf = {}
+         self.__groups = []
+         self.__atContent = ''
+         self.__keyWordReponse = {}
+         self.__keywordAdd = []
+         self.__needGroups = []
+         self.__gid = []
+         self.__fileQr = None
+         self.__QR = ''
+         self.__QrTrue = False
+         self.__successLogin = False
+         self.__newMsgCount = 0
+         self.__newMsgList = []

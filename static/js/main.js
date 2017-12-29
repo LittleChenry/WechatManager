@@ -3,6 +3,20 @@ $(document).ready(function () {
 	var UserInfo = getBasicInfo();
 	MessageSync(UserInfo.NickName);
 	PageInit();
+	$("#mypic").unbind("click").bind("click",function(){
+         $.ajax({
+            type: "post",
+            url: "/logout",
+            async: false,
+            dataType: "json",
+            success: function (data) {
+              if (data.success) {
+                    alert("注销成功!")
+                    window.location.href="RELOGIN";
+                }
+            }
+        });
+	})
 })
 
 window.onresize = function() {

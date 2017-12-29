@@ -310,6 +310,7 @@ def addemoij():
     with open(basepath+"/static/img/emoij/shoucang/"+datetime.now().date().strftime('%Y%m%d%H%M')+filename[len(filename)-1], 'wb') as f:
          f.write(s)
     return json.dumps({'success': "success"})
+
 @app.route('/removeUser', methods=['POST'])
 def removeMember():
     global chat
@@ -317,6 +318,16 @@ def removeMember():
     uid = request.form.get('uid')
     chat.deleteMember(gid,uid)
     return json.dumps({'success':True})
+
+@app.route('/logout', methods=['POST'])
+def logoutcommand():
+    global chat
+    chat.logout()
+    return json.dumps({'success': True})
+
+@app.route('/RELOGIN')
+def tologinpage():
+    return render_template('login.html',async_mode=socketio.async_mode)
 
 if __name__ == '__main__':
     #app.run(debug=True)

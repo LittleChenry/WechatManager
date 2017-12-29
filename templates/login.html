@@ -25,6 +25,13 @@
        socket.on('confirminfo', function (msg){
           $("#confirm").html("请在手机上确认登录");
        })
+       socket.on('logining', function (msg){
+            $("#confirm").html("登录过程中.....");
+       })
+       socket.on('loginsuccess', function (msg){
+            $("#qr").attr("src","data:image/jpg;base64,"+msg.pic);
+            $("#confirm").html("用户"+msg.nickname+"正在登录.....");
+       })
         $.ajax({
             type: "post",
             url: "/getQR",
