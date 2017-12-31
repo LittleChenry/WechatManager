@@ -106,12 +106,17 @@ def testtemplate():
 
 @app.route('/getQR', methods=["POST"])
 def getQR():
-    global chat
-    t = threading.Thread(target=lambda: chat.run(), name="chat")
-    t.start()
-    while not chat.loginSuccess():
-        pass
-    return json.dumps({'success': True})
+    exit_code = os.system('ping www.baidu.com')
+    print(exit_code)
+    if exit_code:
+        return json.dumps({'success': 'nonet'})
+    else:
+        global chat
+        t = threading.Thread(target=lambda: chat.run(), name="chat")
+        t.start()
+        while not chat.loginSuccess():
+            pass
+        return json.dumps({'success': True})
 
 @app.route('/getGroupSelect', methods=["POST"])
 def getGroupSelect():
