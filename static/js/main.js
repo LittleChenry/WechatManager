@@ -398,6 +398,37 @@ function PageInit() {
 		var picwidth = $(this).parents(".showfunc").next().find("img").width();
 		$(this).parents(".showfunc").next().find("img").width(picwidth - 50);
 	});
+	$("#savetemplate").unbind("click").bind("click",function(){
+		var template = $("#newtemplate").val();
+		$.ajax({
+			type: "post",
+			url: "/addtemplate",
+			async: false,
+			data:{
+				template:template
+			},
+			dataType: "json",
+			success: function (data) {
+			    alert("添加成功!");
+			    var templates = data.group;
+				var templatearea = $(".template-lists");
+			    templatearea.each(function(){
+				$(this).html("");
+               for (var i = 0; i < templates.length; i++) {
+                    var li = '<li class="single-template" onclick="choosetemplate(this)">'+ templates[i] +'</li>';
+                    $(this).append(li);
+                    }
+                });
+                var templatemanagelist = $("#template-manage-list");
+                templatemanagelist.html("");
+                for (var i = 0; i < templates.length; i++) {
+                    var li = '<li class="single-allsee-list"><span class="templatemessage-content">'+ templates[i] +'</span><i onclick="deletetemplate(this)" class="fa fa-window-close closeli"></i></li>';
+                    templatemanagelist.append(li);
+                }
+			}
+		});
+	});
+
 }
 
 function AdjustPage(argument) {
@@ -773,9 +804,7 @@ function getBasicInfo() {
 				keywordsarea.append(p);
 			}
 			//模板
-			//var templates = data.template;
-			//var templates = ["好友的搜索方法为search_friends，有四种搜索方式：","1. 仅获取自己的用户信息","2. 获取特定UserName的用户信息"];
-			var templates = [];
+			var templates = data.templategroup;
 			var templatearea = $(".template-lists");
 			templatearea.each(function(){
 				$(this).html("");

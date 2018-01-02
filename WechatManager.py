@@ -19,6 +19,7 @@ from recordGname import *
 from datetime import datetime
 import re
 import types
+from template import *
 
 app = Flask(__name__)
 
@@ -139,7 +140,7 @@ def updatepage():
         img_str = bytes.decode(img_str)
     except:
         img_str = ""
-    return json.dumps({'groups': chat.getAllGroup(), 'user': chat.getMyself(), 'userpic': img_str, 'addKey': chat.getAddKey()})
+    return json.dumps({'groups': chat.getAllGroup(), 'user': chat.getMyself(), 'userpic': img_str, 'addKey': chat.getAddKey(),'templategroup':readtemplate(chat.getmySelfName())})
 
 
 @app.route('/test',methods=['POST'])
@@ -333,6 +334,14 @@ def logoutcommand():
 @app.route('/RELOGIN')
 def tologinpage():
     return render_template('login.html',async_mode=socketio.async_mode)
+
+@app.route('/addtemplate',methods=['POST'])
+def addtemplate():
+    global chat
+    template = request.form.get('template')
+    recordtemplate(template,chat.getmySelfName())
+    templategroup=readtemplate(chat.getmySelfName())
+    return json.dumps({'group': templategroup})
 
 if __name__ == '__main__':
     #app.run(debug=True)
