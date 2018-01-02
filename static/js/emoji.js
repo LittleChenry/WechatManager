@@ -177,6 +177,7 @@ $(function(){
             contentType: false,
             success: function (data) {
                 alert("导入成功");
+                $("#importemoijfile").attr("type","file");
                 $("#emoijimport").css("display",'none');
             }
         });
@@ -210,7 +211,7 @@ function changetitle(evt,event){
                     $("#emoijpanel").removeClass("guanfang");
                     $("#emoijpanel").addClass("shoucang");
                     for(var i=0;i<list.length;i++){
-                        content=content+'<li><img onclick="sendemoij(this,event)" src="'+list[i]+'"/></li>';
+                        content=content+'<li><img onclick="sendemoij(this,event)" src="'+list[i]+'"/><i onclick="deleteemoij(this,event)" class="fa fa-window-close closeli"></i></li>';
                     }
                 }
                     $("#emoijul").append(content)
@@ -246,7 +247,7 @@ function changetitlegroup(evt,event){
                     $("#emoijpanelgroup").removeClass("guanfang");
                     $("#emoijpanelgroup").addClass("shoucang");
                     for(var i=0;i<list.length;i++){
-                        content=content+'<li><img onclick="sendemoijgroup(this,event)" src="'+list[i]+'"/></li>';
+                        content=content+'<li><img onclick="sendemoijgroup(this,event)" src="'+list[i]+'"/><i onclick="deleteemoij(this,event)" class="fa fa-window-close closeli"></i></li>';
                     }
                 }
                 $("#emoijulgroup").append(content);
@@ -422,4 +423,26 @@ function sendguanfangemoijgroup(evt,event){
 
 function tianjia(){
     alert("您已经收藏此表情!");
+}
+function deleteemoij(evt,event)
+{
+    event.stopPropagation();
+    var $emoij=$(evt).prev();
+    var src=$emoij.attr("src");
+    $.ajax({
+        type: "post",
+        url: "/deleteemoij",
+        data:{
+            message:src
+        },
+        dataType: "json",
+        success: function (data) {
+          if(data.success)
+          {
+              $(evt).parent().remove();
+          }
+
+        }
+    });
+
 }
