@@ -998,6 +998,7 @@ function closethis(e) {
 
 function choosetemplate(e){
 	var content = $(e).html();
+	content=content.replace(/<br>/g,'\r\n');
 	$(e).parent().parent().parent().prev().prev().find("textarea").val(content);
 }
 function deletetemplate(e){
