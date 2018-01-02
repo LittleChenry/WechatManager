@@ -339,6 +339,7 @@ def tologinpage():
 def addtemplate():
     global chat
     template = request.form.get('template')
+    template = template.replace('\n', '<br/>')
     recordtemplate(template,chat.getmySelfName())
     templategroup=readtemplate(chat.getmySelfName())
     return json.dumps({'group': templategroup})
@@ -347,6 +348,7 @@ def addtemplate():
 def deltemplate():
     global chat
     template = request.form.get('template')
+    template = template.replace('<br>', '<br/>')
     deletetemplate(template,chat.getmySelfName())
     templategroup=readtemplate(chat.getmySelfName())
     return json.dumps({'group': templategroup})
