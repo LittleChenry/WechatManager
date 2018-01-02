@@ -1,3 +1,5 @@
+namespace = '/test';
+var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
 $(document).ready(function () {
 	AdjustPage();
 	var UserInfo = getBasicInfo();
@@ -10,13 +12,13 @@ $(document).ready(function () {
             async: false,
             dataType: "json",
             success: function (data) {
-              if (data.success) {
-                    alert("注销成功!")
-                    window.location.href="RELOGIN";
-                }
             }
         });
 	})
+   socket.on('logout', function (msg) {
+        alert("正在注销.....")
+        window.location.href="RELOGIN";
+   });
 })
 
 window.onresize = function() {
@@ -410,6 +412,7 @@ function PageInit() {
 			dataType: "json",
 			success: function (data) {
 			    alert("添加成功!");
+			    $("#newtemplate").val("");
 			    var templates = data.group;
 				var templatearea = $(".template-lists");
 			    templatearea.each(function(){
@@ -422,7 +425,7 @@ function PageInit() {
                 var templatemanagelist = $("#template-manage-list");
                 templatemanagelist.html("");
                 for (var i = 0; i < templates.length; i++) {
-                    var li = '<li class="single-allsee-list"><span class="templatemessage-content">'+ templates[i] +'</span><i onclick="deletetemplate(this)" class="fa fa-window-close closeli"></i></li>';
+                    var li = '<li class="single-allsee-list"><span class="templatemessage-content">'+ templates[i] +'</span><i onclick="deletetemplate(this)" class="fa fa-window-close closetemplate"></i></li>';
                     templatemanagelist.append(li);
                 }
 			}
@@ -444,8 +447,6 @@ function AdjustPage(argument) {
 }
 
 function MessageSync(UserName) {
-	namespace = '/test';
-    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
     socket.on('msg', function (msg) {
     	var dialogs = $("#dialogs");
     	var groupname = msg["gname"] == null ? "" : msg["gname"];
@@ -816,7 +817,7 @@ function getBasicInfo() {
 			var templatemanagelist = $("#template-manage-list");
 			templatemanagelist.html("");
 			for (var i = 0; i < templates.length; i++) {
-				var li = '<li class="single-allsee-list"><span class="templatemessage-content">'+ templates[i] +'</span></li>';
+				var li = '<li class="single-allsee-list"><span class="templatemessage-content">'+ templates[i] +'</span><i onclick="deletetemplate(this)" class="fa fa-window-close closetemplate"></i></li>';
 				templatemanagelist.append(li);
 			}
 
@@ -998,4 +999,34 @@ function closethis(e) {
 function choosetemplate(e){
 	var content = $(e).html();
 	$(e).parent().parent().parent().prev().prev().find("textarea").val(content);
+}
+function deletetemplate(e){
+    var template=$(e).prev().html();
+   $.ajax({
+        type: "post",
+        url: "/deltemplate",
+        async: false,
+        data:{
+            template:template
+        },
+        dataType: "json",
+        success: function (data) {
+            alert("删除成功!");
+            var templates = data.group;
+            var templatearea = $(".template-lists");
+            templatearea.each(function(){
+            $(this).html("");
+           for (var i = 0; i < templates.length; i++) {
+                var li = '<li class="single-template" onclick="choosetemplate(this)">'+ templates[i] +'</li>';
+                $(this).append(li);
+                }
+            });
+            var templatemanagelist = $("#template-manage-list");
+            templatemanagelist.html("");
+            for (var i = 0; i < templates.length; i++) {
+                var li = '<li class="single-allsee-list"><span class="templatemessage-content">'+ templates[i] +'</span><i onclick="deletetemplate(this)" class="fa fa-window-close closetemplate"></i></li>';
+                templatemanagelist.append(li);
+            }
+        }
+		});
 }
