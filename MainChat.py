@@ -88,10 +88,12 @@ class ChatRun(object):
         def reply_group(msg):
             memberList = itchat.update_chatroom(msg['FromUserName'], detailedMember=True)
             realNickName=""
-            for member in memberList['MemberList']:
+            print("memberList: ", memberList.get('MemberList',[]))
+            for member in memberList.get('MemberList',[]):
                 if msg['ActualUserName'] == member.get('UserName'):
                     realNickName = member.get('NickName')
                     break
+            print("realName:", realNickName)
             if self.getmySelfID() == msg['FromUserName']:
                 if msg['Type'] == 'Sharing':
                     self.sendMsg(msg['Text'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),
@@ -191,7 +193,7 @@ class ChatRun(object):
         def reply_files(msg):
             memberList = itchat.update_chatroom(msg['FromUserName'], detailedMember=True)
             realNickName = ""
-            for member in memberList['MemberList']:
+            for member in memberList.get('MemberList', []):
                 if msg['ActualUserName'] == member.get('UserName'):
                     realNickName = member.get('NickName')
                     break
