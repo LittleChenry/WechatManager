@@ -499,7 +499,7 @@ class ChatRun(object):
 
     #注销登录
     def logout(self):
-         itchat.logout()
+         itchat.logout(self.socketio)
          self.__friends = []
          self.__mySelf = {}
          self.__groups = []

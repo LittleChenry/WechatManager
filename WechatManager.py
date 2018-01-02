@@ -343,6 +343,14 @@ def addtemplate():
     templategroup=readtemplate(chat.getmySelfName())
     return json.dumps({'group': templategroup})
 
+@app.route('/deltemplate',methods=['POST'])
+def deltemplate():
+    global chat
+    template = request.form.get('template')
+    deletetemplate(template,chat.getmySelfName())
+    templategroup=readtemplate(chat.getmySelfName())
+    return json.dumps({'group': templategroup})
+
 if __name__ == '__main__':
     #app.run(debug=True)
     socketio.run(app=app,debug=True)
