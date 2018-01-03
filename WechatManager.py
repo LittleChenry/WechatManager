@@ -108,15 +108,12 @@ def testtemplate():
 @app.route('/getQR', methods=["POST"])
 def getQR():
     exit_code = os.system('ping www.baidu.com')
-    print(exit_code)
     if exit_code:
         return json.dumps({'success': 'nonet'})
     else:
         global chat
         t = threading.Thread(target=lambda: chat.run(), name="chat")
         t.start()
-        while not chat.loginSuccess():
-            pass
         return json.dumps({'success': True})
 
 @app.route('/getGroupSelect', methods=["POST"])
@@ -130,17 +127,21 @@ def toLogin():
 
 @app.route('/update', methods=['POST'])
 def updatepage():
+    exit_code = os.system('ping www.baidu.com')
     global chat
-    try:
-        #buffer = BytesIO(chat.getMypic())
-        # buffer2 = BytesIO()
-        # image = Image.open(buffer)
-        # image.save(buffer2, format="JPEG")
-        img_str = base64.b64encode(chat.getMypic())
-        img_str = bytes.decode(img_str)
-    except:
-        img_str = ""
-    return json.dumps({'groups': chat.getAllGroup(), 'user': chat.getMyself(), 'userpic': img_str, 'addKey': chat.getAddKey(),'templategroup':readtemplate(chat.getmySelfName())})
+    if exit_code:
+         return json.dumps({'refresh': 'false'})
+    else:
+        try:
+            #buffer = BytesIO(chat.getMypic())
+            # buffer2 = BytesIO()
+            # image = Image.open(buffer)
+            # image.save(buffer2, format="JPEG")
+            img_str = base64.b64encode(chat.getMypic())
+            img_str = bytes.decode(img_str)
+        except:
+            img_str = ""
+        return json.dumps({'groups': chat.getAllGroup(), 'user': chat.getMyself(), 'userpic': img_str, 'addKey': chat.getAddKey(),'templategroup':readtemplate(chat.getmySelfName()),'refresh': 'true'})
 
 
 @app.route('/test',methods=['POST'])

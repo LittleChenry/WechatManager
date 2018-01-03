@@ -793,86 +793,93 @@ function getBasicInfo() {
 		async: false,
 		dataType: "json",
 		success: function (data) {
-			UserInfo = data.user;
-			userpho = data.userpic;
-			var addAddkey = data.addKey;
-			$("#mypic").attr("src","data:image/jpg;base64," + userpho);
-			//关键词
-			var keywordsarea = $(".keywords");
-			keywordsarea.html("");
-			for (var i = 0; i < addAddkey.length; i++) {
-				var p = '<p class="selected-group"><span>'+ addAddkey[i] +'</span></p>';
-				keywordsarea.append(p);
-			}
-			//模板
-			var templates = data.templategroup;
-			var templatearea = $(".template-lists");
-			templatearea.each(function(){
-				$(this).html("");
-				for (var i = 0; i < templates.length; i++) {
-					var li = '<li class="single-template" onclick="choosetemplate(this)">'+ templates[i] +'</li>';
-					$(this).append(li);
-				}
-			});
-			var templatemanagelist = $("#template-manage-list");
-			templatemanagelist.html("");
-			for (var i = 0; i < templates.length; i++) {
-				var li = '<li class="single-allsee-list"><span class="templatemessage-content">'+ templates[i] +'</span><i onclick="deletetemplate(this)" class="fa fa-window-close closetemplate"></i></li>';
-				templatemanagelist.append(li);
-			}
+		if(data.refresh=="true")
+		{
+            UserInfo = data.user;
+                userpho = data.userpic;
+                var addAddkey = data.addKey;
+                $("#mypic").attr("src","data:image/jpg;base64," + userpho);
+                //关键词
+                var keywordsarea = $(".keywords");
+                keywordsarea.html("");
+                for (var i = 0; i < addAddkey.length; i++) {
+                    var p = '<p class="selected-group"><span>'+ addAddkey[i] +'</span></p>';
+                    keywordsarea.append(p);
+                }
+                //模板
+                var templates = data.templategroup;
+                var templatearea = $(".template-lists");
+                templatearea.each(function(){
+                    $(this).html("");
+                    for (var i = 0; i < templates.length; i++) {
+                        var li = '<li class="single-template" onclick="choosetemplate(this)">'+ templates[i] +'</li>';
+                        $(this).append(li);
+                    }
+                });
+                var templatemanagelist = $("#template-manage-list");
+                templatemanagelist.html("");
+                for (var i = 0; i < templates.length; i++) {
+                    var li = '<li class="single-allsee-list"><span class="templatemessage-content">'+ templates[i] +'</span><i onclick="deletetemplate(this)" class="fa fa-window-close closetemplate"></i></li>';
+                    templatemanagelist.append(li);
+                }
 
-			//群组
-			var Allgroups = $(".allgroups-content");
-			var Allcontact = $(".allcontact-content");
-			var Manager = $(".manager-content");
-			var StaticGroups = $("#static-groups");
-			Allgroups.html("");
-			Allcontact.html("");
-			Manager.html("");
-			StaticGroups.html("");
-			$(".multisend-contacts").find(".selected-group").each(function(){
-				$(this).remove();
-			});
-			var c = "@";
-			var regex = new RegExp(c, 'g');
-			for (var i = 0; i < data.groups.length; i++) {
-				var result = data.groups[i].id.match(regex);
-				var count = !result ? 0 : result.length;
-		    	var groupid = data.groups[i].id.substring(count , data.groups[i].id.length);
-		    	var need = (data.groups[i].need == true) ? 'fa fa-check-square' : 'fa fa-square-o';
-		    	var grouppic = '<img class="message-pic" src="data:image/jpg;base64,'+ data.groups[i].grouppic +'"/>';
-				var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ grouppic +'</span>'
-	                          + '<span class="group-name" title="'+ data.groups[i].name +'" data-content="'+ groupid +'">'+ data.groups[i].name +'</span>'
-	                          + '<span class="choosebox pull-right"><i class="'+ need +'"></i></span></li>';
-				Allgroups.append(groupli);
-				if (need == 'fa fa-check-square') {
-					var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ grouppic +'</span>'
-		                          + '<span class="group-name" title="'+ data.groups[i].name +'" data-content="'+ groupid +'">'+ data.groups[i].name +'</span></li>';
-					Manager.append(groupli);
-					StaticGroups.append(groupli);
-					var groupp = '<p class="selected-group"><span title="'+ data.groups[i].name +'">'+ data.groups[i].name +' </span><i class="delete-selected-group fa fa-close" title="删除"></i></p>';
-					$(".multisend-contacts").append(groupp);
-				}
-			}
-			DeleteSelectedGroup();
-			$(".choosebox").unbind("click").bind("click",function(){
-				var name = $(this).prev().attr("title");
-    			if ($(this).find("i").hasClass("fa-check-square")) {
-    				$(this).find("i").removeClass("fa-check-square");
-    				$(this).find("i").addClass("fa-square-o");
-    				$(".multisend-contacts").find(".selected-group").each(function(){
-    					if ($(this).find("span").attr("title") == name) {
-    						$(this).remove();
-    					}
-    				});
-    			}else{
-    				$(this).find("i").removeClass("fa-square-o");
-    				$(this).find("i").addClass("fa-check-square");
-    				var groupp = '<p class="selected-group"><span title="'+ name +'">'+ name +' </span><i class="fa fa-close" title="删除"></i></p>';
-					$(".multisend-contacts").append(groupp);
-    			}
-    			DeleteSelectedGroup();
-			});
+                //群组
+                var Allgroups = $(".allgroups-content");
+                var Allcontact = $(".allcontact-content");
+                var Manager = $(".manager-content");
+                var StaticGroups = $("#static-groups");
+                Allgroups.html("");
+                Allcontact.html("");
+                Manager.html("");
+                StaticGroups.html("");
+                $(".multisend-contacts").find(".selected-group").each(function(){
+                    $(this).remove();
+                });
+                var c = "@";
+                var regex = new RegExp(c, 'g');
+                for (var i = 0; i < data.groups.length; i++) {
+                    var result = data.groups[i].id.match(regex);
+                    var count = !result ? 0 : result.length;
+                    var groupid = data.groups[i].id.substring(count , data.groups[i].id.length);
+                    var need = (data.groups[i].need == true) ? 'fa fa-check-square' : 'fa fa-square-o';
+                    var grouppic = '<img class="message-pic" src="data:image/jpg;base64,'+ data.groups[i].grouppic +'"/>';
+                    var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ grouppic +'</span>'
+                                  + '<span class="group-name" title="'+ data.groups[i].name +'" data-content="'+ groupid +'">'+ data.groups[i].name +'</span>'
+                                  + '<span class="choosebox pull-right"><i class="'+ need +'"></i></span></li>';
+                    Allgroups.append(groupli);
+                    if (need == 'fa fa-check-square') {
+                        var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ grouppic +'</span>'
+                                      + '<span class="group-name" title="'+ data.groups[i].name +'" data-content="'+ groupid +'">'+ data.groups[i].name +'</span></li>';
+                        Manager.append(groupli);
+                        StaticGroups.append(groupli);
+                        var groupp = '<p class="selected-group"><span title="'+ data.groups[i].name +'">'+ data.groups[i].name +' </span><i class="delete-selected-group fa fa-close" title="删除"></i></p>';
+                        $(".multisend-contacts").append(groupp);
+                    }
+                }
+                DeleteSelectedGroup();
+                $(".choosebox").unbind("click").bind("click",function(){
+                    var name = $(this).prev().attr("title");
+                    if ($(this).find("i").hasClass("fa-check-square")) {
+                        $(this).find("i").removeClass("fa-check-square");
+                        $(this).find("i").addClass("fa-square-o");
+                        $(".multisend-contacts").find(".selected-group").each(function(){
+                            if ($(this).find("span").attr("title") == name) {
+                                $(this).remove();
+                            }
+                        });
+                    }else{
+                        $(this).find("i").removeClass("fa-square-o");
+                        $(this).find("i").addClass("fa-check-square");
+                        var groupp = '<p class="selected-group"><span title="'+ name +'">'+ name +' </span><i class="fa fa-close" title="删除"></i></p>';
+                        $(".multisend-contacts").append(groupp);
+                    }
+                    DeleteSelectedGroup();
+                });
+		}else
+		{
+          alert("正在注销.....")
+          window.location.href="RELOGIN";
+		}
         }
 	});
 	return UserInfo;
