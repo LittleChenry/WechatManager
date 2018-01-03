@@ -21,6 +21,15 @@
        var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
        socket.on('qrinfo', function (msg){
            $("#qr").attr("src","data:image/jpg;base64,"+msg);
+            $.ajax({
+            type: "post",
+            url: "/setQR",
+            data:{qr:msg},
+            async: true,
+            dataType: "json",
+            success: function (data) {
+            }
+        });
        })
        socket.on('confirminfo', function (msg){
           $("#confirm").html("请在手机上确认登录");

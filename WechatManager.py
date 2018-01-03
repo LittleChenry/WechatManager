@@ -30,6 +30,9 @@ socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 thread_lock = Lock()
 chat = ChatRun(socketio)
+loginstate=False
+qrcode=None
+
 def background_thread():
     global chat
     while True:
@@ -112,9 +115,17 @@ def getQR():
         return json.dumps({'success': 'nonet'})
     else:
         global chat
-        t = threading.Thread(target=lambda: chat.run(), name="chat")
-        t.start()
-        return json.dumps({'success': True})
+        global loginstate
+        global qrcode
+        global socketio
+        if not loginstate:
+            t = threading.Thread(target=lambda: chat.run(), name="chat")
+            t.start()
+            loginstate=True
+            return json.dumps({'success': True})
+        else:
+            socketio.emit('qrinfo', qrcode, namespace='/login')
+            return json.dumps({'success': True})
 
 @app.route('/getGroupSelect', methods=["POST"])
 def getGroupSelect():
@@ -329,7 +340,9 @@ def removeMember():
 @app.route('/logout', methods=['POST'])
 def logoutcommand():
     global chat
+    global loginstate
     chat.logout()
+    loginstate = False
     return json.dumps({'success': True})
 
 @app.route('/RELOGIN')
@@ -359,6 +372,14 @@ def deleteemoij():
     global chat
     str = request.form.get('message')
     os.remove(basepath+"/"+str)
+    return json.dumps({'success': True})
+
+@app.route('/setQR',methods=['POST'])
+def setqr():
+    global chat
+    global qrcode
+    qr = request.form.get('qr')
+    qrcode=qr
     return json.dumps({'success': True})
 
 if __name__ == '__main__':
