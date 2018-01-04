@@ -20,7 +20,7 @@ from datetime import datetime
 import re
 import types
 from template import *
-
+from memberActivite import *
 app = Flask(__name__)
 
 basepath = os.path.dirname(__file__)
@@ -178,6 +178,12 @@ def groupInfor():
         group = None
     chat.group_information(str, group)
     return json.dumps({'success':True})
+
+@app.route('/activite', methods=['POST'])
+def activite():
+    gname = request.form.get('gname')
+    activite=getactivite(gname)
+    return json.dumps(activite)
 
 @app.route('/msglogging', methods=['POST'])
 def msglogging1():
