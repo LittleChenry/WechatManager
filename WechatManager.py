@@ -127,7 +127,8 @@ def getQR():
             if not loginedstate:
                 return json.dumps({'success': True})
             else:
-                return json.dumps({'success': 'logined'})
+                chat.logout()
+                return json.dumps({'success': 'drop'})
         else:
             if not loginedstate:
                 socketio.emit('qrinfo', qrcode, namespace='/login')
