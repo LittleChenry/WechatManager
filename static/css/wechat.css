@@ -829,6 +829,9 @@ i {
     box-sizing: border-box;
 }
 
+.sortedth {
+    cursor: pointer;
+}
 
 
 
@@ -850,6 +853,31 @@ i {
 
 
 
+
+.table thead th {
+    background-color: rgb(9, 187, 7);
+    color: #fff;
+    border-bottom-width: 0;
+}
+
+.table td {
+    color: #000;
+    text-align: center;
+    max-width: 230px;
+}
+
+.table tr, .table th {
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(9, 187, 7);
+}
+
+.table td, .table th {
+    padding: 5px 15px;
+    font-size: 14px;
+    font-family: Verdana;
+    font-weight: bold;
+}
 
 /*滚动样式*/
 ::-webkit-scrollbar

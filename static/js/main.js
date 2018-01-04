@@ -6,25 +6,25 @@ $(document).ready(function () {
 	MessageSync(UserInfo.NickName);
 	PageInit();
 	$("#mypic").unbind("click").bind("click",function(){
-         $.ajax({
-            type: "post",
-            url: "/logout",
-            async: false,
-            dataType: "json",
-            success: function (data) {
-            }
-        });
+		$.ajax({
+			type: "post",
+			url: "/logout",
+			async: false,
+			dataType: "json",
+			success: function (data) {
+			}
+		});
 	})
-   socket.on('logout', function (msg) {
+   	socket.on('logout', function (msg) {
         window.location.href="RELOGIN";
-         $.ajax({
-            type: "post",
-            url: "/cancellogin2",
-            async: true,
-            dataType: "json",
-            success: function (data) {
-            }
-        });
+		$.ajax({
+			type: "post",
+			url: "/cancellogin2",
+			async: true,
+			dataType: "json",
+			success: function (data) {
+			}
+		});
    });
 })
 
@@ -439,6 +439,44 @@ function PageInit() {
 		});
 	});
 
+
+	$("#static-groups").find("li").each(function(){
+		$(this).unbind("click").bind("click",function(){
+			$("#static-groups").find("li").each(function(){
+				if ($(this).hasClass("active")) {
+					$(this).removeClass("active");
+				}
+			});
+			$(this).addClass("active");
+			var gname = $(this).find(".group-name").attr("title");
+			$.ajax({
+				type: "post",
+				url: "/activite",
+				async: true,
+				data:{
+					gname:gname
+				},
+				dataType: "json",
+				success: function (data) {
+					var StatisticsTable = $("#statistics-table");
+					StatisticsTable.html("");
+					var table = '<thead><tr><th>用户昵称</th><th><span class="sortedth">周活跃度</span></th>'
+								+ '<th><span class="sortedth">月活跃度</span></th>'
+								+ '<th><span class="sortedth">历史活跃度</span></th></tr></thead><tbody>';
+					for (var i = 0; i < data.length; i++) {
+						var tr = '<tr><td>'+ data[i].name +'</td><td>'+ data[i].weekcount +'</td><td>'+ data[i].monthcount +'</td><td>'+ data[i].allcount +'</td></tr>';
+						table += tr;
+					}
+					table += '</tbody>';
+					StatisticsTable.append(table);
+					SortTable(StatisticsTable);
+					PagingTable(StatisticsTable);
+				}
+			});
+		});
+	});
+
+
 }
 
 function AdjustPage(argument) {
@@ -800,9 +838,8 @@ function getBasicInfo() {
 		async: false,
 		dataType: "json",
 		success: function (data) {
-		if(data.refresh=="true")
-		{
-            UserInfo = data.user;
+			if(data.refresh=="true") {
+	            UserInfo = data.user;
                 userpho = data.userpic;
                 var addAddkey = data.addKey;
                 $("#mypic").attr("src","data:image/jpg;base64," + userpho);
@@ -882,19 +919,18 @@ function getBasicInfo() {
                     }
                     DeleteSelectedGroup();
                 });
-		}else
-		{
-          window.location.href="RELOGIN";
-          $.ajax({
-            type: "post",
-            url: "/cancellogin",
-            async: true,
-            dataType: "json",
-            success: function (data) {
-            }
-        });
+			}else{
+				window.location.href="RELOGIN";
+				$.ajax({
+					type: "post",
+					url: "/cancellogin",
+					async: true,
+					dataType: "json",
+					success: function (data) {
+					}
+				});
+			}
 		}
-        }
 	});
 	return UserInfo;
 }
@@ -940,21 +976,20 @@ function DeleteSelectedGroup() {
 	});
 }
 
-function addemoij(e)
-{
-  var $e=$(e);
-  var src=$e.parent().prev().attr("src");
-  $.ajax({
-        type: "post",
-        url: "/addemoij",
-        data:{
-            message:src
-        },
-        dataType: "json",
-        success: function (data) {
-            alert("添加成功!");
-        }
-    });
+function addemoij(e) {
+	var $e=$(e);
+	var src=$e.parent().prev().attr("src");
+	$.ajax({
+		type: "post",
+		url: "/addemoij",
+		data:{
+		    message:src
+		},
+		dataType: "json",
+		success: function (data) {
+		    alert("添加成功!");
+		}
+	});
 }
 
 function deletekeyword(e) {
@@ -1022,9 +1057,10 @@ function choosetemplate(e){
 	content=content.replace(/<br>/g,'\r\n');
 	$(e).parent().parent().parent().prev().prev().find("textarea").val(content);
 }
+
 function deletetemplate(e){
     var template=$(e).prev().html();
-   $.ajax({
+   	$.ajax({
         type: "post",
         url: "/deltemplate",
         async: false,
@@ -1046,9 +1082,66 @@ function deletetemplate(e){
             var templatemanagelist = $("#template-manage-list");
             templatemanagelist.html("");
             for (var i = 0; i < templates.length; i++) {
-                var li = '<li class="single-allsee-list"><span class="templatemessage-content">'+ templates[i] +'</span><i onclick="deletetemplate(this)" class="fa fa-window-close closetemplate"></i></li>';
+                var li = '<li class="single-allsee-list"><span class="templatemessage-content">'+ templates[i] +'</span><i onclick="deletetemplate(this)" class="fa fa-close closetemplate"></i></li>';
                 templatemanagelist.append(li);
             }
         }
-		});
+	});
+}
+
+function SortTable(e) {
+	var tableObject = e;
+    var tbHead = tableObject.children('thead');
+    var tbHeadTh = tbHead.find('tr th');
+    var tbBody = tableObject.children('tbody');
+    var tbBodyTr = tbBody.find('tr');
+    tbHeadTh.each(function () {
+        var clickIndex = tbHeadTh.index($(this));
+        if (clickIndex > 0) {
+        	$(this).unbind("click").bind("click",{clickIndex:clickIndex},function(e){
+        		tbHeadTh.each(function () {
+        			if ($(this).find("i").length > 0) {
+        				$(this).find("i").remove();
+        			}
+        		});
+        		var icon = '<i class="fa fa-sort-numeric-desc"></i>';
+        		$(this).append(icon);
+	        	var trsValue = new Array();
+		        var trsHtml = new Array();
+			    var count = 0;
+			    var row = e.data.clickIndex;
+				tbBodyTr.each(function(index,e) {
+					var trValue = parseInt($(this).find('td').eq(row).html());
+					var trHtml = $(this).html();
+					trsValue[count] = trValue;
+					trsHtml[count ++] = trHtml;
+				});
+				for (var i = 0; i < trsValue.length; i++) {
+					for (var j = 0; j < trsValue.length - 1 - i; j++) {
+						if(trsValue[j] < trsValue[j + 1]){
+			                var temp = trsValue[j];
+			                var temphtml = trsHtml[j];
+			                trsValue[j] = trsValue[j + 1];
+			                trsHtml[j] = trsHtml[j + 1];
+			                trsValue[j + 1] = temp;
+			                trsHtml[j + 1] = temphtml;
+			            }
+					}
+				}
+		        tbBody.html("");
+		        for (var i = 0; i < trsHtml.length; i++) {
+		        	var tr = '<tr>'+ trsHtml[i] +'</tr>';
+		        	tbBody.append(tr);
+		        }
+	        });
+	        if (clickIndex == 1) {
+	        	$(this).click();
+	        }
+        }
+    });
+    
+}
+
+function PagingTable(e) {
+
 }
