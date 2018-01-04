@@ -128,6 +128,8 @@ def getQR():
                 return json.dumps({'success': True})
             else:
                 chat.logout()
+                loginstate = False
+                loginedstate = False
                 return json.dumps({'success': 'drop'})
         else:
             if not loginedstate:
