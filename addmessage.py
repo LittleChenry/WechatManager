@@ -18,7 +18,7 @@ def addmessage(dic):
         sel="select id from members where nickname='%s'" % dic['rename']
         cur1.execute(sel)
         memberid =cur1.fetchone()
-        sel1 = "select min(id) from groups where name='%s'" % dic['gname']
+        sel1 = "select ID from groups where name='%s'" % dic['gname']
         cur2.execute(sel1)
         groupid = cur2.fetchone()
         if dic['type']=='Sharing':
@@ -29,11 +29,13 @@ def addmessage(dic):
             pass
         else:
             if memberid == None:
-                inse = "insert into members (nickname,group_id)values('%s','%d')" % (dic['rename'], int(groupid[0]))
+                inse = "insert into members (nickname)values('%s')" % (dic['rename'])
                 cur1.execute(inse)
                 sel = "select id from members where nickname='%s'" % dic['rename']
                 cur1.execute(sel)
                 memberid = cur1.fetchone()
+                inser="insert into group2member (group_ID,member_ID)values('%s','%s')" % (groupid[0],memberid[0])
+                cur1.execute(inser)
             # str="insert into message (Content,group_id,member_id,time,Type,url) values('%s','%d','%d','%s','%s','%s')"%(dic['info'], int(groupid[0]) ,int(memberid[0]), dic['time'],dic['type'],url)
             # cur3.execute(str)
             print(dic['info'], int(groupid[0]), int(memberid[0]), dic['time'], dic['type'], url)
@@ -41,6 +43,7 @@ def addmessage(dic):
             cur3.execute(str, (dic['info'], int(groupid[0]), int(memberid[0]), dic['time'], dic['type'], url))
             conn.commit()
     except Exception as e:
+        print('error')
         pass
     finally:
         cur1.close()
