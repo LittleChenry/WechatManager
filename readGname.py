@@ -13,7 +13,7 @@ def readGname(name):
     groupnames=[]
     try:
         cur1 = conn.cursor()
-        sel1 = "select name from groups,members where members.NickName='%s' and groups.manager_ID=members.ID"% name
+        sel1 = "select groups.name from groups,manager,group2manager where manager.Name='%s' and group2manager.manager_ID=manager.ID and groups.ID=group2manager.group_ID"% name
         cur1.execute(sel1)
         results = cur1.fetchall()
         groupnames=[]

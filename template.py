@@ -12,7 +12,7 @@ def recordtemplate(word,name):
     )
     try:
         cur1 = conn.cursor()
-        sel="select ID from members where NickName='%s'" % name
+        sel="select ID from manager where Name='%s'" % name
         cur1.execute(sel)
         memberid = cur1.fetchone()
         ins="insert into template (message,manager_ID) values('%s','%s')" % (word,int(memberid[0]))
@@ -36,7 +36,7 @@ def readtemplate(name):
     template=[]
     try:
         cur1 = conn.cursor()
-        sel = "select ID from members where NickName='%s'" % name
+        sel = "select ID from manager where Name='%s'" % name
         cur1.execute(sel)
         memberid = cur1.fetchone()
         ins="select message from template where manager_ID='%s' "% int(memberid[0])
@@ -65,7 +65,7 @@ def deletetemplate(words,name):
     )
     try:
         cur1 = conn.cursor()
-        sel = "select ID from members where NickName='%s'" % name
+        sel = "select ID from manager where Name='%s'" % name
         cur1.execute(sel)
         memberid = cur1.fetchone()
         ins="delete from template where message='%s' and manager_ID ='%s'"% (words,int(memberid[0]))
