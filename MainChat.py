@@ -202,8 +202,15 @@ class ChatRun(object):
             upload_path = os.path.join(basepath, 'static/picture',(str)(ran)+"-"+msg['FileName'])
             print(upload_path)
             msg['Text'](upload_path)
+            fsize = os.path.getsize(upload_path)
             if self.getmySelfID() == msg['FromUserName']:
-                self.sendMsg('static/picture/'+(str)(ran) + "-" + msg['FileName'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['FromUserName'],msg['ToUserName'],msg['Type'],rename=self.getmySelfName())
+                if not fsize==0:
+                    self.sendMsg('static/picture/'+(str)(ran) + "-" + msg['FileName'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['FromUserName'],msg['ToUserName'],msg['Type'],rename=self.getmySelfName())
+                else:
+                    self.sendMsg('static/img/nonepic.jpg', self.getmySelfName(),
+                                 self.getGroupNameById(msg['ToUserName']),
+                                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), msg['FromUserName'],
+                                 msg['ToUserName'], msg['Type'], rename=self.getmySelfName())
             self.updateGid()
             gid = self.__gid
 
@@ -216,9 +223,14 @@ class ChatRun(object):
                                      msg['ActualUserName'],
                                      msg['FromUserName'], msg['Type'], rename=realNickName, addType='Viedo')
                     else:
-                        self.sendMsg(text, msg['ActualNickName'], gs[msg['FromUserName']],
-                                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), msg['ActualUserName'],
-                                 msg['FromUserName'],msg['Type'],rename=realNickName)
+                        if not fsize == 0:
+                            self.sendMsg(text, msg['ActualNickName'], gs[msg['FromUserName']],
+                                     time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), msg['ActualUserName'],
+                                     msg['FromUserName'],msg['Type'],rename=realNickName)
+                        else:
+                            self.sendMsg('static/img/nonepic.jpg', msg['ActualNickName'], gs[msg['FromUserName']],
+                                     time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), msg['ActualUserName'],
+                                     msg['FromUserName'],msg['Type'],rename=realNickName)
                     break
 
         #其他处理
