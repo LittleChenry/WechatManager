@@ -31,6 +31,7 @@ thread = None
 thread_lock = Lock()
 chat = ChatRun(socketio)
 loginstate=False
+loginedstate=False
 qrcode=None
 
 def background_thread():
@@ -118,14 +119,21 @@ def getQR():
         global loginstate
         global qrcode
         global socketio
+        global loginedstate
         if not loginstate:
             t = threading.Thread(target=lambda: chat.run(), name="chat")
             t.start()
-            loginstate=True
-            return json.dumps({'success': True})
+            loginstate = True
+            if not loginedstate:
+                return json.dumps({'success': True})
+            else:
+                return json.dumps({'success': 'logined'})
         else:
-            socketio.emit('qrinfo', qrcode, namespace='/login')
-            return json.dumps({'success': True})
+            if not loginedstate:
+                socketio.emit('qrinfo', qrcode, namespace='/login')
+                return json.dumps({'success': True})
+            else:
+                return json.dumps({'success': 'logined'})
 
 @app.route('/getGroupSelect', methods=["POST"])
 def getGroupSelect():
@@ -341,8 +349,10 @@ def removeMember():
 def logoutcommand():
     global chat
     global loginstate
+    global loginedstate
     chat.logout()
     loginstate = False
+    loginedstate=False
     return json.dumps({'success': True})
 
 @app.route('/RELOGIN')
@@ -380,6 +390,31 @@ def setqr():
     global qrcode
     qr = request.form.get('qr')
     qrcode=qr
+    return json.dumps({'success': True})
+
+@app.route('/setloginedstate',methods=['POST'])
+def setloginedstate():
+    global chat
+    global loginedstate
+    loginedstate = True
+    return json.dumps({'success': True})
+
+@app.route('/cancellogin',methods=['POST'])
+def cancellogin():
+    global chat
+    global loginstate
+    loginstate = False
+    chat.logout2()
+    return json.dumps({'success': True})
+
+@app.route('/cancellogin2',methods=['POST'])
+def cancellogin2():
+    global chat
+    global loginstate
+    global loginedstate
+    loginedstate=False
+    loginstate = False
+    chat.logout2()
     return json.dumps({'success': True})
 
 if __name__ == '__main__':

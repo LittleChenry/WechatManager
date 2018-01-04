@@ -301,10 +301,14 @@ class ChatRun(object):
     # 跟新需要管理的群的GroupId
     def updateGid(self):
         self.__gid = []
+        self.updateGroup()
         for group in self.__groups:
             if group['UserName'] in self.__needGroups:
                 self.__gid.append({group['UserName']: group['NickName']})
 
+    def updateGroup(self):
+        self.__groups = []
+        self.__groups = itchat.get_chatrooms(update=True)
 
     # 根据NickName获取群ID
     def getGroupIdByName(self,name):
@@ -526,3 +530,20 @@ class ChatRun(object):
          self.__successLogin = False
          self.__newMsgCount = 0
          self.__newMsgList = []
+
+    #注销chat
+    def logout2(self):
+        self.__friends = []
+        self.__mySelf = {}
+        self.__groups = []
+        self.__atContent = ''
+        self.__keyWordReponse = {}
+        self.__keywordAdd = []
+        self.__needGroups = []
+        self.__gid = []
+        self.__fileQr = None
+        self.__QR = ''
+        self.__QrTrue = False
+        self.__successLogin = False
+        self.__newMsgCount = 0
+        self.__newMsgList = []

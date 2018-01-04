@@ -16,8 +16,15 @@ $(document).ready(function () {
         });
 	})
    socket.on('logout', function (msg) {
-        alert("正在注销.....")
         window.location.href="RELOGIN";
+         $.ajax({
+            type: "post",
+            url: "/cancellogin2",
+            async: true,
+            dataType: "json",
+            success: function (data) {
+            }
+        });
    });
 })
 
@@ -877,8 +884,15 @@ function getBasicInfo() {
                 });
 		}else
 		{
-          alert("正在注销.....")
           window.location.href="RELOGIN";
+          $.ajax({
+            type: "post",
+            url: "/cancellogin",
+            async: true,
+            dataType: "json",
+            success: function (data) {
+            }
+        });
 		}
         }
 	});

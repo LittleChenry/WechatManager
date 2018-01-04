@@ -43,6 +43,14 @@
             setTimeout(function(){
                  window.location.href="ToIndex";
               },5000);
+            $.ajax({
+            type: "post",
+            url: "/setloginedstate",
+            async: true,
+            dataType: "json",
+            success: function (data) {
+            }
+        });
        })
         $.ajax({
             type: "post",
@@ -50,11 +58,13 @@
             async: true,
             dataType: "json",
             success: function (data) {
-                if (data.success==true) {
-                }else
-                {
-                 $("#qr").hide();
+                if (data.success=='nonet') {
+                $("#qr").hide();
                  $("#confirm").html("网络不通，请查看网络环境");
+                }
+               if(data.success=='logined')
+                {
+                   window.location.href="ToIndex";
                 }
             }
         });
