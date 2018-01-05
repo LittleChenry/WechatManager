@@ -274,6 +274,7 @@ function PageInit() {
 	});
 
 	$("#setdefaultgroups").unbind("click").bind("click",function(){
+		$("#modal-loading").show();
 		var groups = new Array();
 		var groupnames = new Array();
 		var count = 0;
@@ -300,8 +301,9 @@ function PageInit() {
 			},
 			dataType: "json",
 			success: function (data) {
-				alert("设置成功！");
-				getBasicInfo("/update");
+				getBasicInfo();
+				PageInit();
+				$("#modal-loading").hide();
 			}
 		});
 	});
@@ -322,6 +324,7 @@ function PageInit() {
 	});
 
 	$("#savekeyword").unbind("click").bind("click",function(){
+		$("#modal-loading").show();
 		var keyword = $("#newkeyword").val();
 		$.ajax({
 			type: "post",
@@ -332,11 +335,11 @@ function PageInit() {
 			},
 			dataType: "json",
 			success: function (data) {
-				alert("保存成功！");
 				var keywordsarea = $(".keywords");
 				var p = '<p class="selected-group"><span>'+ keyword +'</span></p>';
 				keywordsarea.append(p);
 				$("#newkeyword").val("");
+				$("#modal-loading").hide();
 			}
 		});
 	});
@@ -371,7 +374,7 @@ function PageInit() {
 		window.open("/logg/" + gname);
 	});
 
-	$(".modal").unbind("click").bind("click",function(){
+	$("#modal-pic").unbind("click").bind("click",function(){
 		$(this).hide();
 	});
 
@@ -387,6 +390,7 @@ function PageInit() {
 		$(this).parents(".showfunc").next().find("img").width(picwidth - 50);
 	});
 	$("#savetemplate").unbind("click").bind("click",function(){
+		$("#modal-loading").show();
 		var template = $("#newtemplate").val();
 		$.ajax({
 			type: "post",
@@ -397,13 +401,12 @@ function PageInit() {
 			},
 			dataType: "json",
 			success: function (data) {
-			    alert("添加成功!");
 			    $("#newtemplate").val("");
 			    var templates = data.group;
 				var templatearea = $(".template-lists");
 			    templatearea.each(function(){
 				$(this).html("");
-               for (var i = 0; i < templates.length; i++) {
+               	for (var i = 0; i < templates.length; i++) {
                     var li = '<li class="single-template" onclick="choosetemplate(this)">'+ templates[i] +'</li>';
                     $(this).append(li);
                     }
@@ -411,9 +414,10 @@ function PageInit() {
                 var templatemanagelist = $("#template-manage-list");
                 templatemanagelist.html("");
                 for (var i = 0; i < templates.length; i++) {
-                    var li = '<li class="single-allsee-list"><span class="templatemessage-content">'+ templates[i] +'</span><i onclick="deletetemplate(this)" class="fa fa-window-close closetemplate"></i></li>';
+                    var li = '<li class="single-allsee-list"><span class="templatemessage-content">'+ templates[i] +'</span><i onclick="deletetemplate(this)" class="fa fa-close closetemplate"></i></li>';
                     templatemanagelist.append(li);
                 }
+                $("#modal-loading").hide();
 			}
 		});
 	});
@@ -477,6 +481,19 @@ function PageInit() {
 		});
    	});
 
+   	socket.on('nonetlog', function (msg) {
+        window.location.href="RELOGIN";
+		$.ajax({
+			type: "post",
+			url: "/cancellogin",
+			async: true,
+			dataType: "json",
+			success: function (data) {
+			}
+		});
+   	});
+
+
    	$(".menu-content").show();
    	$(".menu").show();
 
@@ -492,6 +509,8 @@ function AdjustPage(argument) {
 	$(".menu-content").height(actualheight);
 	$(".menu-content").width(actualwidth - 60);
 	$(".scroll-content").height(actualheight - 53);
+	$(".loadarea").height(actualheight);
+	$(".loadarea").width(actualwidth - 60);
 }
 
 function MessageSync(UserName) {
@@ -866,7 +885,7 @@ function getBasicInfo() {
                 var templatemanagelist = $("#template-manage-list");
                 templatemanagelist.html("");
                 for (var i = 0; i < templates.length; i++) {
-                    var li = '<li class="single-allsee-list"><span class="templatemessage-content">'+ templates[i] +'</span><i onclick="deletetemplate(this)" class="fa fa-window-close closetemplate"></i></li>';
+                    var li = '<li class="single-allsee-list"><span class="templatemessage-content">'+ templates[i] +'</span><i onclick="deletetemplate(this)" class="fa fa-close closetemplate"></i></li>';
                     templatemanagelist.append(li);
                 }
 
@@ -948,9 +967,9 @@ function ShowOptions(e) {
 
 function ShowPic(e) {
 	var src = $(e).parent().prev().attr("src");
-	$(".modal").find("img").attr("src",src);
-	$(".modal").find("img").css("width","800px");
-	$(".modal").show();
+	$("#modal-pic").find("img").attr("src",src);
+	$("#modal-pic").find("img").css("width","800px");
+	$("#modal-pic").show();
 	
 }
 
@@ -1062,6 +1081,7 @@ function choosetemplate(e){
 }
 
 function deletetemplate(e){
+	$("#modal-loading").show();
     var template=$(e).prev().html();
    	$.ajax({
         type: "post",
@@ -1072,12 +1092,11 @@ function deletetemplate(e){
         },
         dataType: "json",
         success: function (data) {
-            alert("删除成功!");
             var templates = data.group;
             var templatearea = $(".template-lists");
             templatearea.each(function(){
             $(this).html("");
-           for (var i = 0; i < templates.length; i++) {
+           	for (var i = 0; i < templates.length; i++) {
                 var li = '<li class="single-template" onclick="choosetemplate(this)">'+ templates[i] +'</li>';
                 $(this).append(li);
                 }
@@ -1088,6 +1107,7 @@ function deletetemplate(e){
                 var li = '<li class="single-allsee-list"><span class="templatemessage-content">'+ templates[i] +'</span><i onclick="deletetemplate(this)" class="fa fa-close closetemplate"></i></li>';
                 templatemanagelist.append(li);
             }
+        	$("#modal-loading").hide();
         }
 	});
 }
