@@ -480,20 +480,6 @@ function PageInit() {
 			}
 		});
    	});
-
-   	socket.on('nonetlog', function (msg) {
-        window.location.href="RELOGIN";
-		$.ajax({
-			type: "post",
-			url: "/cancellogin",
-			async: true,
-			dataType: "json",
-			success: function (data) {
-			}
-		});
-   	});
-
-
    	$(".menu-content").show();
    	$(".menu").show();
 
