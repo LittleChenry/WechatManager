@@ -16,7 +16,6 @@ from addmessage import *
 from SelectForGroup import *
 from messagelog import *
 from recordGname import *
-from datetime import datetime
 import re
 import types
 from template import *
@@ -306,10 +305,10 @@ def importemoij():
         # print(id);
         filename = file.filename.split('.')[0] + '_new.' + file.filename.split('.')[-1]
         if os.path.exists(basepath+"/static/img/emoij/"+id):
-              file.save(basepath+"/static/img/emoij/"+id+"/"+datetime.now().date().strftime('%Y%m%d%H%M')+filename)
+              file.save(basepath+"/static/img/emoij/"+id+"/"+ time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))+filename)
         else:
             os.makedirs(basepath+"/static/img/emoij/"+id)
-            file.save(basepath+"/static/img/emoij/" + id + "/" + datetime.now().date().strftime('%Y%m%d%H%M') + filename)
+            file.save(basepath+"/static/img/emoij/" + id + "/" + time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time())) + filename)
     return "success"
 
 @app.route('/sendemoij', methods=['POST'])
@@ -342,7 +341,7 @@ def addemoij():
     filename=str.split("/");
     with open(basepath+"/"+str,'rb') as f:
          s=f.read()
-    with open(basepath+"/static/img/emoij/shoucang/"+datetime.now().date().strftime('%Y%m%d%H%M')+filename[len(filename)-1], 'wb') as f:
+    with open(basepath+"/static/img/emoij/shoucang/"+ time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))+filename[len(filename)-1], 'wb') as f:
          f.write(s)
     return json.dumps({'success': "success"})
 
