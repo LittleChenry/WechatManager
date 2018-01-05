@@ -5,27 +5,6 @@ $(document).ready(function () {
 	var UserInfo = getBasicInfo();
 	MessageSync(UserInfo.NickName);
 	PageInit();
-	$("#mypic").unbind("click").bind("click",function(){
-		$.ajax({
-			type: "post",
-			url: "/logout",
-			async: false,
-			dataType: "json",
-			success: function (data) {
-			}
-		});
-	})
-   	socket.on('logout', function (msg) {
-        window.location.href="RELOGIN";
-		$.ajax({
-			type: "post",
-			url: "/cancellogin2",
-			async: true,
-			dataType: "json",
-			success: function (data) {
-			}
-		});
-   });
 })
 
 window.onresize = function() {
@@ -470,12 +449,36 @@ function PageInit() {
 					table += '</tbody>';
 					StatisticsTable.append(table);
 					SortTable(StatisticsTable);
-					PagingTable(StatisticsTable);
 				}
 			});
 		});
 	});
 
+	$("#mypic").unbind("click").bind("click",function(){
+		$.ajax({
+			type: "post",
+			url: "/logout",
+			async: false,
+			dataType: "json",
+			success: function (data) {
+			}
+		});
+	})
+
+   	socket.on('logout', function (msg) {
+        window.location.href="RELOGIN";
+		$.ajax({
+			type: "post",
+			url: "/cancellogin2",
+			async: true,
+			dataType: "json",
+			success: function (data) {
+			}
+		});
+   	});
+
+   	$(".menu-content").show();
+   	$(".menu").show();
 
 }
 
@@ -1128,11 +1131,12 @@ function SortTable(e) {
 			            }
 					}
 				}
-		        tbBody.html("");
-		        for (var i = 0; i < trsHtml.length; i++) {
-		        	var tr = '<tr>'+ trsHtml[i] +'</tr>';
-		        	tbBody.append(tr);
-		        }
+		        var singlenum = 6;
+		        PagingTable(tableObject,trsHtml,singlenum);
+		        $("#changepagenum").unbind("click").bind("click",{table:tableObject,trsHtml:trsHtml},function(e){
+		        	var singlenum = $("#singlenum").val();
+		        	PagingTable(e.data.table,e.data.trsHtml,singlenum);
+		        });
 	        });
 	        if (clickIndex == 1) {
 	        	$(this).click();
@@ -1142,6 +1146,87 @@ function SortTable(e) {
     
 }
 
-function PagingTable(e) {
+function PagingTable(table,trsHtml,singlenum) {
+	table.next().remove();
+    table.children('tbody').html("");
+    var pagesnum = Math.ceil(trsHtml.length / singlenum);
+    for (var i = 0; i < trsHtml.length; i++) {
+    	var page = parseInt(i / singlenum) + 1;
+    	var pageclass =  "page_" + page;
+    	if (i < singlenum) {
+    		var tr = '<tr class="'+ pageclass +'">'+ trsHtml[i] +'</tr>';
+    	}else{
+    		var tr = '<tr class="hide '+ pageclass +'">'+ trsHtml[i] +'</tr>';
+    	}
+    	table.children('tbody').append(tr);
+    }
+    var paging = '<div class="paging-area"><span class="page-span first"><i class="fa fa-angle-double-left"></i></span>'
+                 +'<span class="page-span prev"><i class="fa fa-angle-left"></i></span>'
+                 +'<span class="page-num">';
+    for (var i = 1; i <= pagesnum; i++) {
+    	if (i == 1) {
+    		var p = '<span class="page-span current">1</span>';
+    	}else{
+    		var p = '<span class="page-span">'+ i +'</span>';
+    	}
+    	paging += p;
+    }
+    var p = '</span><span class="page-span next"><i class="fa fa-angle-right"></i></span>'
+            +'<span class="page-span last"><i class="fa fa-angle-double-right"></i></span><span>共'+ trsHtml.length +'条，每页</span>'
+            +'<input id="singlenum" class="form-num" type="text" value="'+ singlenum +'">'
+            +'<span>条</span><button id="changepagenum" class="form-btn" type="button">确定</button></div>';
+    paging += p;
+    table.parent().append(paging);
 
+    $(".page-num").find(".page-span").each(function(){
+    	$(this).unbind("click").bind("click",function(){
+    		var currentnum = parseInt($(this).text());
+    		$(this).parent().find(".page-span").each(function(){
+    			if ($(this).hasClass("current")) {
+    				$(this).removeClass("current");
+    			}
+    		});
+    		$(this).addClass("current");
+    		$(this).parents(".paging-area").prev().find("tbody").find("tr").each(function(){
+    			if ($(this).hasClass("page_" + currentnum)) {
+    				if ($(this).hasClass("hide")) {
+    					$(this).removeClass("hide");
+    				}
+    			}else{
+    				if (!($(this).hasClass("hide"))) {
+    					$(this).addClass("hide");
+    				}
+    			}
+    		});
+    	});
+    });
+    $(".first").unbind("click").bind("click",function(){
+    	$(this).next().next().find(".page-span").first().click();
+    });
+
+    $(".prev").unbind("click").bind("click",function(){
+    	$(this).next().find(".page-span").each(function(){
+			if ($(this).hasClass("current")) {
+				if ($(this).prev().length > 0) {
+					$(this).prev().click();
+					return false;
+				}
+			}
+		});
+    });
+
+    $(".next").unbind("click").bind("click",function(){
+    	$(this).prev().find(".page-span").each(function(){
+			if ($(this).hasClass("current")) {
+				if ($(this).next().length > 0) {
+					$(this).next().click();
+					return false;
+				}
+			}
+		});
+    });
+
+    $(".last").unbind("click").bind("click",function(){
+    	$(this).prev().prev().find(".page-span").last().click();
+    });
 }
