@@ -26,6 +26,7 @@ i {
 
 .QRArea {
 	width: 400px;
+    height: 400px;
     margin: 0px auto;
     box-shadow: 0px 0px 4px 4px #5d5959;
 }

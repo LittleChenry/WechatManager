@@ -522,7 +522,7 @@ function MessageSync(UserName) {
 			    	var sendtime = " " + msg["time"].split(" ")[1] + " ";
 			    	switch(msg["type"]){
 			    		case "Text":
-			    			var message = msg["info"].replace("\n", "<br>");
+			    			var message = msg["info"].replace(/\n/g, "<br>");
 			    			break;
 			    		case "Video":
 			    			var message = '<video class="message-video" src="'+ msg["info"] +'" controls="controls">your browser does not support the video tag</video>';
@@ -642,7 +642,7 @@ function MessageSync(UserName) {
 		    	var sendtime = " " + msg.time.split(" ")[1];
 		    	switch(msg.type){
 		    		case "Text":
-		    			var message = msg["info"].replace("\n", "<br>");
+		    			var message = msg["info"].replace(/\n/g, "<br>");
 		    			break;
 		    		case "Video":
 		    			var message = '<video class="message-video" src="'+ msg["info"] +'" controls="controls">your browser does not support the video tag</video>';
