@@ -45,6 +45,7 @@ def recordGname(gname,manager):
             cur1.execute(ins)
         conn.commit()
     except Exception as e:
+        print(e)
         pass
     finally:
         cur1.close()
