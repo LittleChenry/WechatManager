@@ -1,7 +1,7 @@
 #-*- coding: utf-8 -*-
 import mysql.connector
 import database1
-import time
+
 def addmessage(dic):
     conn = mysql.connector.connect(
         host=database1.host,
@@ -21,8 +21,6 @@ def addmessage(dic):
         sel1 = "select ID from groups where name='%s'" % dic['gname']
         cur2.execute(sel1)
         groupid = cur2.fetchone()
-        distinct=time.mktime(time.strptime(dic['time'], '%Y-%m-%d %H:%M:%S'))
-        distinct =int(int(distinct)/100)
         if dic['type']=='Sharing':
             url=dic['url']
         else:
@@ -41,11 +39,11 @@ def addmessage(dic):
             # str="insert into message (Content,group_id,member_id,time,Type,url) values('%s','%d','%d','%s','%s','%s')"%(dic['info'], int(groupid[0]) ,int(memberid[0]), dic['time'],dic['type'],url)
             # cur3.execute(str)
             print(dic['info'], int(groupid[0]), int(memberid[0]), dic['time'], dic['type'], url)
-            str = "insert into message (Content,group_id,member_id,time,Type,url,Distincts) values(%s,%s,%s,%s,%s,%s,%s)"
-            cur3.execute(str, (dic['info'], int(groupid[0]), int(memberid[0]), dic['time'], dic['type'], url,distinct))
+            str = "insert into message (Content,group_id,member_id,time,Type,url) values(%s,%s,%s,%s,%s,%s)"
+            cur3.execute(str, (dic['info'], int(groupid[0]), int(memberid[0]), dic['time'], dic['type'], url))
             conn.commit()
     except Exception as e:
-        print('addmessageerror')
+        print('error')
         pass
     finally:
         cur1.close()
