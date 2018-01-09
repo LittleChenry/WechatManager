@@ -1137,7 +1137,7 @@ function SortTable(e) {
 			            }
 					}
 				}
-		        var singlenum = 6;
+		        var singlenum = 10;
 		        PagingTable(tableObject,trsHtml,singlenum);
 		        $("#changepagenum").unbind("click").bind("click",{table:tableObject,trsHtml:trsHtml},function(e){
 		        	var singlenum = $("#singlenum").val();
@@ -1153,7 +1153,7 @@ function SortTable(e) {
 }
 
 function PagingTable(table,trsHtml,singlenum) {
-	table.next().remove();
+	//table.next().remove();
     table.children('tbody').html("");
     var pagesnum = Math.ceil(trsHtml.length / singlenum);
     for (var i = 0; i < trsHtml.length; i++) {
@@ -1166,23 +1166,31 @@ function PagingTable(table,trsHtml,singlenum) {
     	}
     	table.children('tbody').append(tr);
     }
-    var paging = '<div class="paging-area"><span class="page-span first"><i class="fa fa-angle-double-left"></i></span>'
-                 +'<span class="page-span prev"><i class="fa fa-angle-left"></i></span>'
-                 +'<span class="page-num">';
+    if (table.next().length == 0) {
+    	var paging = '<div class="paging-area"><span class="page-span first"><i class="fa fa-angle-double-left"></i></span>'
+	                 +'<span class="page-span prev"><i class="fa fa-angle-left"></i></span><span class="page-num">'
+	                 +'</span><span class="page-span next"><i class="fa fa-angle-right"></i></span>'
+            		 +'<span class="page-span last"><i class="fa fa-angle-double-right"></i></span><span>共'+ trsHtml.length +'条，每页</span>'
+	            	 +'<input id="singlenum" class="form-num" type="text" value="'+ singlenum +'">'
+	            	 +'<span>条</span><button id="changepagenum" class="form-btn" type="button">确定</button></div>';
+	    table.parent().append(paging);
+    }
+    var pages = '';
+    var changepageitem = '<span>共'+ trsHtml.length +'条，每页</span><input id="singlenum" class="form-num" type="text" value="'+ singlenum +'"><span>条</span>';
+    $(".page-num").html("");
+    $("#changepagenum").prev().prev().prev().remove();
+    $("#changepagenum").prev().prev().remove();
+    $("#changepagenum").prev().remove();
+    $("#changepagenum").before(changepageitem);
     for (var i = 1; i <= pagesnum; i++) {
     	if (i == 1) {
     		var p = '<span class="page-span current">1</span>';
     	}else{
     		var p = '<span class="page-span">'+ i +'</span>';
     	}
-    	paging += p;
+    	pages += p;
     }
-    var p = '</span><span class="page-span next"><i class="fa fa-angle-right"></i></span>'
-            +'<span class="page-span last"><i class="fa fa-angle-double-right"></i></span><span>共'+ trsHtml.length +'条，每页</span>'
-            +'<input id="singlenum" class="form-num" type="text" value="'+ singlenum +'">'
-            +'<span>条</span><button id="changepagenum" class="form-btn" type="button">确定</button></div>';
-    paging += p;
-    table.parent().append(paging);
+    $(".page-num").append(pages);
 
     $(".page-num").find(".page-span").each(function(){
     	$(this).unbind("click").bind("click",function(){
