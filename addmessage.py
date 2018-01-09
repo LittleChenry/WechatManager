@@ -25,7 +25,7 @@ def addmessage(dic):
             url=dic['url']
         else:
             url=''
-        if groupid[0]==None:
+        if groupid==None:
             pass
         else:
             if memberid == None:
@@ -40,10 +40,10 @@ def addmessage(dic):
             # cur3.execute(str)
             print(dic['info'], int(groupid[0]), int(memberid[0]), dic['time'], dic['type'], url)
             str = "insert into message (Content,group_id,member_id,time,Type,url) values(%s,%s,%s,%s,%s,%s)"
-            cur3.execute(str, (dic['info'], int(groupid[0]), int(memberid[0]), dic['time'], dic['type'], url))
+            cur3.execute(str, (dic['info'], groupid[0], memberid[0], dic['time'], dic['type'], url))
             conn.commit()
     except Exception as e:
-        print('error')
+        print(e)
         pass
     finally:
         cur1.close()
