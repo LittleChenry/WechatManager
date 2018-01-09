@@ -97,10 +97,10 @@ class ChatRun(object):
             if self.getmySelfID() == msg['FromUserName']:
                 if msg['Type'] == 'Sharing':
                     self.sendMsg(msg['Text'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),
-                                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), self.getmySelfID(),
+                                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(msg['CreateTime'])), self.getmySelfID(),
                                  msg['ToUserName'], msg['Type'], url = msg['Url'],rename=self.getmySelfName())
                 else:
-                    self.sendMsg(msg['Text'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['FromUserName'],msg['ToUserName'],msg['Type'],rename=self.getmySelfName())
+                    self.sendMsg(msg['Text'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(msg['CreateTime'])), msg['FromUserName'],msg['ToUserName'],msg['Type'],rename=self.getmySelfName())
 
 
             self.updateGid()
@@ -122,19 +122,19 @@ class ChatRun(object):
                         if msg['Type'] == 'Card':
                             flag = True
                             self.sendMsg(infomation.get('NickName'), msg['ActualNickName'], gs[msg['FromUserName']],
-                                         time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                         time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(msg['CreateTime'])),
                                          msg['ActualUserName'],
                                          msg['FromUserName'], msg['Type'], rename=realNickName, addType='card')
                         elif link.match(infomation):
                             flag=True
                             self.sendMsg(infomation, msg['ActualNickName'], gs[msg['FromUserName']],
-                                         time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                         time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(msg['CreateTime'])),
                                          msg['ActualUserName'],
                                          msg['FromUserName'], msg['Type'], rename=realNickName,addType='link')
                         elif phone1.match(infomation) or phone2.match(infomation):
                             flag = True
                             self.sendMsg(infomation, msg['ActualNickName'], gs[msg['FromUserName']],
-                                         time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                         time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(msg['CreateTime'])),
                                          msg['ActualUserName'],
                                          msg['FromUserName'], msg['Type'], rename=realNickName, addType='phone')
                         elif msg['Type'] == 'Sharing':
@@ -142,7 +142,7 @@ class ChatRun(object):
                             if infomation == '':
                                 infomation = u'不支持预览，请在手机上查看。'
                             self.sendMsg(infomation, msg['ActualNickName'], self.getGroupNameById(msg['FromUserName']),
-                                         time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                         time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(msg['CreateTime'])),
                                          msg['ActualUserName'],
                                          msg['FromUserName'], msg['Type'], url=msg['Url'], rename=realNickName, addType='sharing')
                         else:
@@ -150,14 +150,14 @@ class ChatRun(object):
                                 if infomation.find(key) > -1:
                                     flag=True
                                     self.sendMsg(infomation, msg['ActualNickName'], gs[msg['FromUserName']],
-                                                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(msg['CreateTime'])),
                                                  msg['ActualUserName'],
                                                  msg['FromUserName'], msg['Type'], rename=realNickName, addType='keyword', addkeyword=key)
                                     break;
 
                     if not flag:
                         text = msg['Text']
-                        self.sendMsg(text,msg['ActualNickName'],gs[msg['FromUserName']], time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['ActualUserName'],msg['FromUserName'],msg['Type'],rename=realNickName)
+                        self.sendMsg(text,msg['ActualNickName'],gs[msg['FromUserName']], time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(msg['CreateTime'])), msg['ActualUserName'],msg['FromUserName'],msg['Type'],rename=realNickName)
                         # print msg, 'type:', type(msg),'\n'
                         if msg['isAt']:
                             gName = gs[msg['FromUserName']]
@@ -171,7 +171,7 @@ class ChatRun(object):
                                                 msg['FromUserName'])
                                     self.sendMsg(self.__keyWordReponse[key], self.__mySelf['NickName'],
                                                  gs[msg['FromUserName']],
-                                                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(msg['CreateTime'])),
                                                  self.__mySelf['UserName'], msg['FromUserName'], msg['Type'],
                                                  rename=self.__mySelf['NickName'])
 
@@ -179,7 +179,7 @@ class ChatRun(object):
                                     itchat.send(u'收到消息: %s @%s ' % (text, msg['ActualNickName']), msg['FromUserName'])
                                     self.sendMsg(text, self.__mySelf['NickName'],
                                                  gs[msg['FromUserName']],
-                                                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(msg['CreateTime'])),
                                                  self.__mySelf['UserName'], msg['FromUserName'], msg['Type'],
                                                  rename=self.__mySelf['NickName'])
                                 break
@@ -205,11 +205,11 @@ class ChatRun(object):
             fsize = os.path.getsize(upload_path)
             if self.getmySelfID() == msg['FromUserName']:
                 if not fsize==0:
-                    self.sendMsg('static/picture/'+(str)(ran) + "-" + msg['FileName'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), msg['FromUserName'],msg['ToUserName'],msg['Type'],rename=self.getmySelfName())
+                    self.sendMsg('static/picture/'+(str)(ran) + "-" + msg['FileName'], self.getmySelfName(), self.getGroupNameById(msg['ToUserName']),time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(msg['CreateTime'])), msg['FromUserName'],msg['ToUserName'],msg['Type'],rename=self.getmySelfName())
                 else:
                     self.sendMsg('static/img/nonepic.jpg', self.getmySelfName(),
                                  self.getGroupNameById(msg['ToUserName']),
-                                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), msg['FromUserName'],
+                                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(msg['CreateTime'])), msg['FromUserName'],
                                  msg['ToUserName'], msg['Type'], rename=self.getmySelfName())
             self.updateGid()
             gid = self.__gid
@@ -219,17 +219,17 @@ class ChatRun(object):
                     text = 'static/picture/'+(str)(ran) + "-" + msg['FileName']
                     if msg['Type'] == 'Video':
                         self.sendMsg(text, msg['ActualNickName'], gs[msg['FromUserName']],
-                                     time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                     time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(msg['CreateTime'])),
                                      msg['ActualUserName'],
                                      msg['FromUserName'], msg['Type'], rename=realNickName, addType='Viedo')
                     else:
                         if not fsize == 0:
                             self.sendMsg(text, msg['ActualNickName'], gs[msg['FromUserName']],
-                                     time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), msg['ActualUserName'],
+                                         time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(msg['CreateTime'])), msg['ActualUserName'],
                                      msg['FromUserName'],msg['Type'],rename=realNickName)
                         else:
                             self.sendMsg('static/img/nonepic.jpg', msg['ActualNickName'], gs[msg['FromUserName']],
-                                     time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), msg['ActualUserName'],
+                                         time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(msg['CreateTime'])), msg['ActualUserName'],
                                      msg['FromUserName'],msg['Type'],rename=realNickName)
                     break
 

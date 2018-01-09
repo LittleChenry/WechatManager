@@ -19,7 +19,7 @@ def getactivite(gname):
         list2 = []
         list3 = []
 
-        sel1="select member_ID from message,groups where group_ID=groups.ID and groups.name='%s'" % gname
+        sel1="select distinct member_ID,content,time,group_ID from message,groups where group_ID=groups.ID and groups.name='%s'" % gname
         cur1.execute(sel1)
         results = cur1.fetchall()
         for r in results:
@@ -29,7 +29,7 @@ def getactivite(gname):
 
         DayAgo = (datetime.datetime.now() - datetime.timedelta(days=7))#minutes=10
         DayAgo = DayAgo.strftime("%Y-%m-%d %H:%M:%S")
-        sel1 = "select member_ID from message,groups where group_ID=groups.ID and groups.name='%s' and message.Time >= '%s'" % (gname,DayAgo)
+        sel1 = "select distinct member_ID,content,time,group_ID from message,groups where group_ID=groups.ID and groups.name='%s' and message.Time >= '%s'" % (gname,DayAgo)
         cur1.execute(sel1)
         results = cur1.fetchall()
         for r in results:
@@ -37,8 +37,8 @@ def getactivite(gname):
         l2 = {}.fromkeys(list2).keys()
 
         DayAgo = (datetime.datetime.now() - datetime.timedelta(days=30))#minutes=15
-        DayAgo = DayAgo.strftime("%Y-%m-%d %H:%M:%S")
-        sel1 = "select member_ID from message,groups where group_ID=groups.ID and groups.name='%s' and message.Time >= '%s'" % (
+        DayAgo = DayAgo.strftime("%Y-%m-%d %H:%M:%S") 
+        sel1 = "select distinct member_ID,content,time,group_ID from message,groups where group_ID=groups.ID and groups.name='%s' and message.Time >= '%s'" % (
         gname, DayAgo)
         cur1.execute(sel1)
         results = cur1.fetchall()
