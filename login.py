@@ -88,7 +88,6 @@ def login(self,socketio,enableCmdQR=False, picDir=None, qrCallback=None,
             os.remove(picDir or config.DEFAULT_QR)
         logger.info('Login successfully as %s' % self.storageClass.nickName)
         picimg_str = base64.b64encode(self.get_head_img(userName=self.storageClass.userName))
-        socketio.emit('loginsuccess',{'nickname': self.storageClass.nickName, 'pic': bytes.decode(picimg_str)}, json=True, namespace='/login')
     self.start_receiving(socketio,exitCallback)
     self.isLogging = False
 

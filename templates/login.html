@@ -41,16 +41,14 @@
        socket.on('loginsuccess', function (msg){
             $("#qr").attr("src","data:image/jpg;base64,"+msg.pic);
             $("#confirm").html("用户"+msg.nickname+"正在登录.....");
-            setTimeout(function(){
-                 window.location.href="ToIndex";
-              },5000);
-            $.ajax({
+             $.ajax({
             type: "post",
             url: "/setloginedstate",
             async: true,
             dataType: "json",
             success: function (data) {
             }
+            window.location.href="ToIndex";
         });
        })
         $.ajax({

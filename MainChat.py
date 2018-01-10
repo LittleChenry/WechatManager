@@ -235,7 +235,7 @@ class ChatRun(object):
 
         #其他处理
         self.__successLogin = True
-
+        self.socketio.emit('loginsuccess', {'nickname': self.__mySelf['NickName'], 'pic': bytes.decode(base64.b64encode(self.getMypic()))},json=True, namespace='/login')
         itchat.run()
     # 保存群中@自己的文本
     # @param text 待保存的文本
