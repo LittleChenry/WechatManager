@@ -493,7 +493,7 @@ class ChatRun(object):
         keys=readbadinfo()
         for key in keys:
             self.__keywordAdd.append(key)
-    # 删除关键字
+    # 删除关键字getMypic
     def deleteAddKey(self,*args):
         for key in args:
             if key in self.__keywordAdd:
