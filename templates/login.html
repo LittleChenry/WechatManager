@@ -18,11 +18,11 @@
     <script src="static/js/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="static/js/socket.io.min.js"></script>
     <script>
-       namespace = '/login';
-       var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
-       socket.on('qrinfo', function (msg){
-           $("#qr").attr("src","data:image/jpg;base64,"+msg);
-            $.ajax({
+    namespace = '/login';
+    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+    socket.on('qrinfo', function (msg){
+        $("#qr").attr("src","data:image/jpg;base64," + msg);
+        $.ajax({
             type: "post",
             url: "/setQR",
             data:{qr:msg},
@@ -31,46 +31,49 @@
             success: function (data) {
             }
         });
-       })
-       socket.on('confirminfo', function (msg){
-          $("#confirm").html("请在手机上确认登录");
-       })
-       socket.on('logining', function (msg){
-            $("#confirm").html("登录过程中.....");
-       })
-       socket.on('loginsuccess', function (msg){
-            $("#qr").attr("src","data:image/jpg;base64,"+msg.pic);
-            $("#confirm").html("用户"+msg.nickname+"正在登录.....");
-             $.ajax({
+    })
+    
+    socket.on('confirminfo', function (msg){
+        $("#confirm").html("请在手机上确认登录");
+    })
+
+    socket.on('logining', function (msg){
+        $("#confirm").html("登录过程中.....");
+    })
+
+    socket.on('loginsuccess', function (msg){
+        $("#qr").attr("src","data:image/jpg;base64,"+msg.pic);
+        $("#confirm").html("用户"+msg.nickname+"正在登录.....");
+        $.ajax({
             type: "post",
             url: "/setloginedstate",
             async: true,
             dataType: "json",
             success: function (data) {
             }
-             });
-            window.location.href="ToIndex";
-         })
-        $.ajax({
-            type: "post",
-            url: "/getQR",
-            async: true,
-            dataType: "json",
-            success: function (data) {
-                if (data.success=='nonet') {
-                $("#qr").hide();
-                 $("#confirm").html("网络不通，请查看网络环境");
-                }
-               if(data.success=='logined')
-                {
-                   window.location.href="ToIndex";
-                }
-                if(data.success=='drop')
-                {
-                   window.location.href="RELOGIN";
-                }
-            }
+            
         });
+        window.location.href="ToIndex";
+    })
+
+    $.ajax({
+        type: "post",
+        url: "/getQR",
+        async: true,
+        dataType: "json",
+        success: function (data) {
+            if (data.success=='nonet') {
+                $("#qr").hide();
+                $("#confirm").html("网络不通，请查看网络环境");
+            }
+            if(data.success=='logined') {
+                window.location.href="ToIndex";
+            }
+            if(data.success=='drop') {
+                window.location.href="RELOGIN";
+            }
+        }
+    });
     </script>
 </body>
 

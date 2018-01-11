@@ -177,6 +177,20 @@ i {
     border-left: 1px solid #c1c1c1;
 }
 
+.search-top {
+    height: 53px;
+    width: 100%;
+    top: 0px;
+    line-height: 2.62;
+    font-size: 15px;
+    font-weight: 600;
+    box-sizing: border-box;
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-right: 10px;
+    border-bottom: 1px solid #c1c1c1;
+}
+
 .messages-content {
 	position: absolute;
 	width: 100%;
@@ -547,15 +561,23 @@ i {
     margin: 10px;
 }
 
-.multisend-contacts {
-	width: 100%;
+.multi-allgroups {
     top: 0px;
     bottom: 350px;
     position: absolute;
+    width: 100%;
     border-bottom: 1px solid #c1c1c1;
     border-right: 1px solid #c1c1c1;
     border-left: 1px solid #c1c1c1;
     box-sizing: border-box;
+}
+
+.allgroups-contacts {
+    padding: 20px;
+}
+
+.setting-allgroups {
+    padding: 0px;
 }
 
 .multisend-area {
@@ -617,10 +639,6 @@ i {
     margin-top: 17px;
     margin-right: 10px;
     position: relative;
-}
-
-.multisend-contacts {
-	padding: 20px;
 }
 
 .multisend-area {
@@ -781,9 +799,10 @@ i {
     list-style-type: none;
     padding: 0px;
     margin: 0px;
-    min-height: 150px;
+    min-height: 40px;
     max-height: 300px;
     overflow: auto;
+    border-top: 1px solid #c1c1c1;
 }
 
 .single-template {
@@ -886,6 +905,39 @@ i {
     vertical-align: middle;
 }
 
+.search-text {
+    border-radius: 0;
+    box-shadow: none;
+    border-color: #d2d6de;
+    width: 85%;
+    padding: 4px 5px;
+    color: #555;
+    background-color: #E5E3E2;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+#none-dialog {
+    text-align: center;
+    padding: 10px;
+}
+
+.col-average {
+    table-layout: fixed;
+}
+
+.table-title {
+    text-align: center;
+    font-size: 18px;
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -935,6 +987,9 @@ i {
     font-size: 14px;
     font-family: Verdana;
     font-weight: bold;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 /*滚动样式*/

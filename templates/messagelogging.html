@@ -98,7 +98,7 @@
                                 var type = data[i].type;
                                 switch(type){
                                     case "Text":
-                                        var message = data[i].content.replace("\n", "<br>");
+                                        var message = data[i].content.replace(/\n/g, "<br>");
                                         break;
                                     case "Video":
                                         var message = '<video class="message-video" src="../'+ data[i].content +'" controls="controls">your browser does not support the video tag</video>';

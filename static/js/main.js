@@ -256,18 +256,6 @@ function PageInit() {
 				contentType: false,
           		processData: false,
 				success: function (data) {
-					/*var today = new Date();
-					var sendtime = today.toLocaleTimeString();
-					var pic = $("#mypic").attr("src");
-					var filepath = data.success.split("\\");
-    				var length = filepath.length;
-					var message = '<span>'+ filepath[length - 1] +'</span><a href="'+ data.success +'" download><i class="fa fa-download fa-fw"></i></a>';
-					var li = '<li class="message"><img class="pic-right" src="'+ pic +'"/>'
-	                     	+ '<span class="message-box-right"><span class="message-user">'
-	                        + '<p class="NickName-right"><span>'+ sendtime +'</span><span> 我</span></p>'
-	                        + '</span><span class="message-content"><i class="angle-right"></i>'
-	                        + '<span class="text-right">'+ message +'</span></span></span></li>';
-                    $("#" + sendid).append(li);*/
 		        }
 	        });
 		});
@@ -278,7 +266,7 @@ function PageInit() {
 		var groups = new Array();
 		var groupnames = new Array();
 		var count = 0;
-		$("#multigroups-ul").find("li").each(function(index, e){
+		$("#allgroups-ul").find("li").each(function(index, e){
 			if ($(this).find("i").hasClass("fa-check-square")) {
 				var aitecount = parseInt($(this).attr("data-aite"));
 				var aites = "";
@@ -287,7 +275,6 @@ function PageInit() {
 				}
 				sendid = $(this).find(".group-name").attr("data-content");
 				groups[count] = aites + $(this).find(".group-name").attr("data-content");
-				//alert(groups[count]);
 				groupnames[count++] = $(this).find(".group-name").attr("title");
 			}
 			return count;
@@ -425,6 +412,22 @@ function PageInit() {
 
 	$("#static-groups").find("li").each(function(){
 		$(this).unbind("click").bind("click",function(){
+			var gname = $(this).find(".group-name").attr("title");
+			$("#statistics-groupname").html(gname);
+
+			if ($("#statistics-groupname").next().length > 0) {
+				$("#statistics-groupname").next().remove();
+			}
+			var button = '<div><button type="button" class="form-btn pull-right" onclick="getHistoryMessage(this)">历史消息</button></div>';
+			$("#statistics-groupname").after(button);
+
+			var StatisticsTable = $("#statistics-table");
+			StatisticsTable.html("");
+			var table = '<thead><tr><th>用户昵称</th><th><span class="sortedth">周活跃度</span></th>'
+						+ '<th><span class="sortedth">月活跃度</span></th>'
+						+ '<th><span class="sortedth">历史活跃度</span></th></tr></thead><tbody>'
+						+ '<tr><td colspan="4" style="text-align:center;font-size:30px;"><i class="fa fa-spinner fa-spin fa-fw"></i></td></tr></tbody>';
+			StatisticsTable.append(table);
 			$("#static-groups").find("li").each(function(){
 				if ($(this).hasClass("active")) {
 					$(this).removeClass("active");
@@ -447,7 +450,7 @@ function PageInit() {
 								+ '<th><span class="sortedth">月活跃度</span></th>'
 								+ '<th><span class="sortedth">历史活跃度</span></th></tr></thead><tbody>';
 					for (var i = 0; i < data.length; i++) {
-						var tr = '<tr><td>'+ data[i].name +'</td><td>'+ data[i].weekcount +'</td><td>'+ data[i].monthcount +'</td><td>'+ data[i].allcount +'</td></tr>';
+						var tr = '<tr><td title="'+ data[i].name +'">'+ data[i].name +'</td><td>'+ data[i].weekcount +'</td><td>'+ data[i].monthcount +'</td><td>'+ data[i].allcount +'</td></tr>';
 						table += tr;
 					}
 					table += '</tbody>';
@@ -456,6 +459,25 @@ function PageInit() {
 				}
 			});
 		});
+	});
+
+	$(".search-text").bind("input propertychange",function(){
+		var searchstr = $(this).val();
+		if (searchstr != "") {
+			$(this).parent().next().find("li").each(function(){
+				var gname = $(this).find(".group-name").attr("title");
+				if (gname.search(searchstr) >= 0) {
+					$(this).show();
+				}else{
+					$(this).hide();
+				}
+			});
+		}else{
+			$(this).parent().next().find("li").each(function(){
+				$(this).show();
+			});
+		}
+		
 	});
 
 	$("#mypic").unbind("click").bind("click",function(){
@@ -514,6 +536,7 @@ function MessageSync(UserName) {
 	    	var groupid = msg["gid"].substring(count , msg["gid"].length);
 	    	var GroupList = $("#groups-ul");
 	    	var flag = 0;
+	    	$("#none-dialog").hide();
 			GroupList.find("li").each(function(index,e){
 				contentID = $(this).find(".group-name").attr("data-content");
 				if (groupid == contentID) {
@@ -755,11 +778,13 @@ function MessageSync(UserName) {
 				var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ grouppic +'</span>'
 	                          + '<span class="group-name" title="'+ groupname +'" data-content="'+ groupid +'">'+ groupname +'</span></li>';
 				var dialogul = '<ul id="'+ groupid +'" class="conversation-area">'+ li +'</ul>';
+				
 				GroupList.append(groupli);
 				dialogs.append(dialogul);
 
 				GroupList.find("li").each(function(index,e){
 					$(this).unbind("click").bind("click",function(){
+						$(".contact-menu").css({'border-right':'0px'});
 						$("#contact").show();
 						$("#func").show();
 						$("#dialog-name").html($(this).find(".group-name").attr("title"));
@@ -863,8 +888,13 @@ function getBasicInfo() {
                 var templatearea = $(".template-lists");
                 templatearea.each(function(){
                     $(this).html("");
-                    for (var i = 0; i < templates.length; i++) {
-                        var li = '<li class="single-template" onclick="choosetemplate(this)">'+ templates[i] +'</li>';
+                    if (templates.length > 0) {
+                    	for (var i = 0; i < templates.length; i++) {
+	                        var li = '<li class="single-template" onclick="choosetemplate(this)">'+ templates[i] +'</li>';
+	                        $(this).append(li);
+	                    }
+                    }else{
+                    	var li = '<li class="single-template">'+ '暂无消息模板' +'</li>';
                         $(this).append(li);
                     }
                 });
@@ -878,43 +908,46 @@ function getBasicInfo() {
                 //群组
                 var Allgroups = $(".allgroups-content");
                 var Allcontact = $(".allcontact-content");
-                var Manager = $(".manager-content");
+                //var Manager = $(".manager-content");
                 var StaticGroups = $("#static-groups");
                 Allgroups.html("");
                 Allcontact.html("");
-                Manager.html("");
+                //Manager.html("");
                 StaticGroups.html("");
-                $(".multisend-contacts").find(".selected-group").each(function(){
+                $(".allgroups-contacts").find(".selected-group").each(function(){
                     $(this).remove();
                 });
                 var c = "@";
                 var regex = new RegExp(c, 'g');
                 for (var i = 0; i < data.groups.length; i++) {
-                    var result = data.groups[i].id.match(regex);
-                    var count = !result ? 0 : result.length;
-                    var groupid = data.groups[i].id.substring(count , data.groups[i].id.length);
-                    var need = (data.groups[i].need == true) ? 'fa fa-check-square' : 'fa fa-square-o';
-                    var grouppic = '<img class="message-pic" src="data:image/jpg;base64,'+ data.groups[i].grouppic +'"/>';
-                    var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ grouppic +'</span>'
-                                  + '<span class="group-name" title="'+ data.groups[i].name +'" data-content="'+ groupid +'">'+ data.groups[i].name +'</span>'
-                                  + '<span class="choosebox pull-right"><i class="'+ need +'"></i></span></li>';
-                    Allgroups.append(groupli);
-                    if (need == 'fa fa-check-square') {
-                        var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ grouppic +'</span>'
-                                      + '<span class="group-name" title="'+ data.groups[i].name +'" data-content="'+ groupid +'">'+ data.groups[i].name +'</span></li>';
-                        Manager.append(groupli);
-                        StaticGroups.append(groupli);
-                        var groupp = '<p class="selected-group"><span title="'+ data.groups[i].name +'">'+ data.groups[i].name +' </span><i class="delete-selected-group fa fa-close" title="删除"></i></p>';
-                        $(".multisend-contacts").append(groupp);
+                    if (data.groups[i].name != "") {
+                    	var result = data.groups[i].id.match(regex);
+	                    var count = !result ? 0 : result.length;
+	                    var groupid = data.groups[i].id.substring(count , data.groups[i].id.length);
+	                    var need = (data.groups[i].need == true) ? 'fa fa-check-square' : 'fa fa-square-o';
+	                    var grouppic = '<img class="message-pic" src="data:image/jpg;base64,'+ data.groups[i].grouppic +'"/>';
+	                    var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ grouppic +'</span>'
+	                                  + '<span class="group-name" title="'+ data.groups[i].name +'" data-content="'+ groupid +'">'+ data.groups[i].name +'</span>'
+	                                  + '<span class="choosebox pull-right"><i class="'+ need +'"></i></span></li>';
+	                    Allgroups.append(groupli);
+	                    if (need == 'fa fa-check-square') {
+	                        var groupli = '<li class="single-message" data-aite="'+ count +'"><span class="group-pic">'+ grouppic +'</span>'
+	                                      + '<span class="group-name" title="'+ data.groups[i].name +'" data-content="'+ groupid +'">'+ data.groups[i].name +'</span></li>';
+	                        //Manager.append(groupli);
+	                        StaticGroups.append(groupli);
+	                        var groupp = '<p class="selected-group"><span title="'+ data.groups[i].name +'">'+ data.groups[i].name +' </span><i class="delete-selected-group fa fa-close" title="删除"></i></p>';
+	                        $(".allgroups-contacts").append(groupp);
+	                    }
                     }
                 }
                 DeleteSelectedGroup();
                 $(".choosebox").unbind("click").bind("click",function(){
                     var name = $(this).prev().attr("title");
+                    var allgroups = $(this).parents("ul").parent().parent().next().find(".allgroups-contacts");
                     if ($(this).find("i").hasClass("fa-check-square")) {
                         $(this).find("i").removeClass("fa-check-square");
                         $(this).find("i").addClass("fa-square-o");
-                        $(".multisend-contacts").find(".selected-group").each(function(){
+                        allgroups.find(".selected-group").each(function(){
                             if ($(this).find("span").attr("title") == name) {
                                 $(this).remove();
                             }
@@ -923,7 +956,7 @@ function getBasicInfo() {
                         $(this).find("i").removeClass("fa-square-o");
                         $(this).find("i").addClass("fa-check-square");
                         var groupp = '<p class="selected-group"><span title="'+ name +'">'+ name +' </span><i class="fa fa-close" title="删除"></i></p>';
-                        $(".multisend-contacts").append(groupp);
+                        allgroups.append(groupp);
                     }
                     DeleteSelectedGroup();
                 });
@@ -1243,4 +1276,9 @@ function PagingTable(table,trsHtml,singlenum) {
     $(".last").unbind("click").bind("click",function(){
     	$(this).prev().prev().find(".page-span").last().click();
     });
+}
+
+function getHistoryMessage(e) {
+	var gname = $(e).parent().prev().html();
+	window.open("/logg/" + gname);
 }
