@@ -283,8 +283,6 @@ class ChatRun(object):
     def getgrouppic(self,gid):
         list2 = []
         # img = itchat.get_head_img(x['UserName'])
-        memberlist = self.getGroupMember(gid)
-        num = 0
         img = itchat.get_head_img(chatroomUserName=gid)
         try:
             # buffer = BytesIO(img)
