@@ -10,7 +10,8 @@ def getactivite(gname):
         user=database1.user,
         passwd=database1.passwd,
         db=database1.db,
-        charset="utf8"
+        charset="utf8",
+        buffered = True
     )
     activite3 = []
     try:

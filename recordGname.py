@@ -8,7 +8,8 @@ def recordGname(gname,manager):
         user=database1.user,
         passwd=database1.passwd,
         db=database1.db,
-        charset="utf8"
+        charset="utf8",
+        buffered=True
     )
     try:
         cur2 = conn.cursor()

@@ -11,7 +11,8 @@ def messagelog(beg,end,group):
         user=database1.user,
         passwd=database1.passwd,
         db=database1.db,
-        charset="utf8"
+        charset="utf8",
+        buffered = True
     )
     jsonStr =''
     try:

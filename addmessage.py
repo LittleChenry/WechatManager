@@ -9,12 +9,13 @@ def addmessage(dic):
         user=database1.user,
         passwd=database1.passwd,
         db=database1.db,
-        charset="utf8mb4"
+        charset="utf8mb4",
+        buffered = True
     )
-    cur1 = conn.cursor()
-    cur2 = conn.cursor()
-    cur3 = conn.cursor()
     try:
+        cur1 = conn.cursor()
+        cur2 = conn.cursor()
+        cur3 = conn.cursor()
         sel="select id from members where nickname='%s'" % dic['rename']
         cur1.execute(sel)
         memberid =cur1.fetchone()
