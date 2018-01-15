@@ -1,6 +1,6 @@
 import mysql.connector
 import database1
-
+#
 def recordbadinfo(word):
     conn = mysql.connector.connect(
         host=database1.host,
