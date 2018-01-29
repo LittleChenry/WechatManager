@@ -110,6 +110,26 @@ class ChatRun(object):
 
             for gs in gid:
                 if msg['FromUserName'] in gs:
+                    text = msg['Text']
+                    if msg['Type'] is "Note":
+                        who = ''
+                        invite1 = re.compile(r'^\w+ invited (\S*) to the group chat$')
+                        m = invite1.match(text)
+                        invite2 = re.compile(r'^"(\S*)" joined the group chat via the QR Code shared by "\S*".$')
+                        m2 = invite2.match(text)
+                        invite3 = invite3 = re.compile(r'^"\S*"邀请"(\S*)"加入了群聊$')
+                        m3 = invite3.match('"一乙张志明"邀请"一乙王峰"加入了群聊')
+                        invite4 = re.compile(r'^"(\S*)"通过扫描"\S*"分享的二维码加入群聊$')
+                        m4 = invite4.match(text)
+                        if m:
+                            itchat.send(u"欢迎" + m.group(1) + u"加入本群 @" + m.group(1), msg['FromUserName'])
+                        elif m2:
+                            itchat.send(u"欢迎" + m2.group(1) + u"加入本群 @" + m2.group(1), msg['FromUserName'])
+                        elif m3:
+                            itchat.send(u"欢迎" + m3.group(1) + u"加入本群 @" + m3.group(1), msg['FromUserName'])
+                        elif m4:
+                            itchat.send(u"欢迎" + m4.group(1) + u"加入本群 @" + m4.group(1), msg['FromUserName'])
+
                     flag = False
                     if not self.getmySelfID() == msg['FromUserName']:
                         infomation = msg['Text']
