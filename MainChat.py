@@ -115,11 +115,11 @@ class ChatRun(object):
                         who = ''
                         invite1 = re.compile(r'^\w+ invited (\S*) to the group chat$')
                         m = invite1.match(text)
-                        invite2 = re.compile(r'^"(\S*)" joined the group chat via the QR Code shared by "\S*".$')
+                        invite2 = re.compile(r'^"?([^"]*)"? joined the group chat via the QR Code shared by "?\S*"?.$')
                         m2 = invite2.match(text)
-                        invite3 = invite3 = re.compile(r'^"？\S*"？邀请"(\S*)"加入了群聊( )*( 撤销)?$')
+                        invite3 = re.compile(u'^"?\S*"?邀请"?([^"]*)"?加入了群聊 *$')
                         m3 = invite3.match(text)
-                        invite4 = re.compile(r'^"(\S*)"通过扫描"？\S*"？分享的二维码加入群聊( )*( 撤销)?$')
+                        invite4 = re.compile(u'^"?([^"]*)"?通过扫描"?\S*"?分享的二维码加入群聊( )*( 撤销)?$')
                         m4 = invite4.match(text)
                         if m:
                             itchat.send(u"欢迎" + m.group(1) + u"加入本群 @" + m.group(1), msg['FromUserName'])
