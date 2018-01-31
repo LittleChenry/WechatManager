@@ -480,16 +480,18 @@ function PageInit() {
 		
 	});
 
-	$("#mypic").unbind("click").bind("click",function(){
-		$.ajax({
-			type: "post",
-			url: "/logout",
-			async: false,
-			dataType: "json",
-			success: function (data) {
-			}
-		});
-	})
+	$("#mypic").unbind("click").bind("click",function(e){
+		e.stopPropagation();
+		var logoutspan = '<div class="logoutdiv"><button class="btn" type="button" onclick="Logout()">注销</button></div>';
+		$(this).parent().append(logoutspan);
+		var top = $(this).offset().top;
+		var left = $(this).offset().left + 50;
+		$(this).parent().find(".logoutdiv").offset({top : top, left: left});
+	});
+
+	$(document).unbind('click').bind('click',function() {
+        $(".logoutdiv").remove();
+    });
 
    	socket.on('logout', function (msg) {
         window.location.href="RELOGIN";
@@ -1281,4 +1283,15 @@ function PagingTable(table,trsHtml,singlenum) {
 function getHistoryMessage(e) {
 	var gname = $(e).parent().prev().html();
 	window.open("/logg/" + gname);
+}
+
+function Logout() {
+	$.ajax({
+		type: "post",
+		url: "/logout",
+		async: false,
+		dataType: "json",
+		success: function (data) {
+		}
+	});
 }

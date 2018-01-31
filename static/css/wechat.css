@@ -756,6 +756,13 @@ i {
     border-radius: 5px;
 }
 
+.logoutdiv {
+    background-color: white;
+    position: absolute;
+    padding: 10px 20px;
+    z-index: 100;
+}
+
 .system-message {
     text-align: center;
     font-size: 12px;
